@@ -136,19 +136,32 @@ if parametros[1]==1:
    # Se calculan los valores necesrios para realizar la modificacion de los limites
    reserva_nueva=parametros[0]*gensadi/100
    dif_nueva=list()
+   for i in range(0,len(reserva)):
+      dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+   print(dif_nueva)
 
    pmaxinueva=list()
+   for i in range(0,len(potencia_maxima)):
+      pmaxinueva.append(potencia_maxima[i]+dif_nueva[i])
+
    pmaxinueva2=list()
+   for i in range(0,len(potencia_maxima)):
+      pmaxinueva2.append(potencia_maxima[i]*(1+porcentaje[i]/100))
+
    reserva_nuevax=0
-   total_dif=0
-   total_max=0
+   for i in range(0,len(potencia_maxima)):
+      reserva_nuevax+=(pmaxinueva[i]-potencia_maxima[i])
+
+   print(reserva_nuevax)
+   total_dif=sum(dif_nueva)
+   total_max=sum(pmaxinueva)-sum(potencia_maxima)
    if parametros[2]==0:
       print('optima')
    else:
       print('dato')
    # 15 - Analisis de cada governor para cambiar los limites (2204)
 
-   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (3329)
+   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
 
 
 
