@@ -135,7 +135,6 @@ if parametros[1]==1:
       print('optima')
    else:
       print('dato')
-      #recorta por area
    # 14 - Anñalisis de cada governor para cambiar los limites (2204)
 
    # 15 Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (3329)
