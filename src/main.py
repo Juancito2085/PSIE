@@ -110,10 +110,10 @@ for pq in cmpval_sale:
       pge+=pq.real()
 
 # 10 - Areas a restar
-iarea,mobre_area=lectura.regiones_paises_limitrofes()
+iarea,nombre_area=lectura.regiones_paises_limitrofes()
 
 for i in range(0,len(iarea)):
-   cmpval_area=verificaciondatos.generadores_no_suman(iarea[i],mobre_area[i])
+   cmpval_area=verificaciondatos.area(iarea[i],nombre_area[i])
 pga=0
 for pq in cmpval_sale:
    if pq is not None:

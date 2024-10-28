@@ -188,6 +188,8 @@ def area (iarea,nombre_area):
     #CALL ARDAT(iarea,'INT',PiA,QiA,ierr) revisar esto
     
     return(cmpva_area)
+
+ 
 #Datos de salida para este modulo:
 #nombre-> nombre completo del generador
 #cmpval-> valores complejos de la maquina P y Q 

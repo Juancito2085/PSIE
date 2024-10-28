@@ -31,7 +31,7 @@ def total():
     #write 2; 'ERROR EN EL STRING '
     #write 2; ' '
 
-    for pq in cmpval:
-        p=pq.real
-        q=pq.imag
-    return p,q
+    p=cmpval.real
+    q=cmpval.imag
+    print(p,q)
+    return(p,q)
