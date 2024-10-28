@@ -114,7 +114,9 @@ iarea,nombre_area=lectura.regiones_paises_limitrofes()
 
 for i in range(0,len(iarea)):
    cmpval_area=verificaciondatos.area(iarea[i],nombre_area[i])
+
 pga=0
+
 for pq in cmpval_sale:
    if pq is not None:
       pga+=pq.real()
@@ -127,17 +129,26 @@ generacion_total=total_A
 gensadi=generacion_total-pge-pga
 print(gensadi)
 
-# 13 - Sección donde recorta si el parametro[1]==1
+# 14 - Sección donde recorta si el parametro[1]==1
 print(parametros)
 if parametros[1]==1:
    print('recorta')
+   # Se calculan los valores necesrios para realizar la modificacion de los limites
+   reserva_nueva=parametros[0]*gensadi/100
+   dif_nueva=list()
+
+   pmaxinueva=list()
+   pmaxinueva2=list()
+   reserva_nuevax=0
+   total_dif=0
+   total_max=0
    if parametros[2]==0:
       print('optima')
    else:
       print('dato')
-   # 14 - Anñalisis de cada governor para cambiar los limites (2204)
+   # 15 - Analisis de cada governor para cambiar los limites (2204)
 
-   # 15 Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (3329)
+   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (3329)
 
 
 
@@ -158,16 +169,23 @@ que generacion de que regiones se restan TOTALRESTA=TOTALRESTA+PA)
 RESERVANUEVA=((RESERVAOPTIMA/100.)*(GENSADI)) se calcula la nueva reserva una vez calculada la generacion del SADI 
 
 DIFNUE(IGEN)= RESERVANUEVA*DIFEGEN(IGEN)/RESERVATOTAL2 aca se calcula la nueva reserva para el generador en cuestion 
+donde 
+difegen es la reserva
+reservatotal2 es la reserva total
 
 PMAXINUE(IGEN)=P(IGEN)+DIFNUE(IGEN) se calcula nueva potencia maxima del generador para poder cambiar los limites
+donde p es la potencia del generador (se usa en caso de hacerlo con respecto a la optima)
 
 PMAXINUE2(IGEN)=P(IGEN)*(1.+PORCE(IGEN)/100.) se calcula la nueva potencia maxima en base al porcentaje del generador
+donde porce es el porcentaje del generador (se usa en caso de hacerlo con respecto al dato)
 
-RESERVANUEVAX=(PMAXINUE(IGEN)-P(IGEN))+RESERVANUEVAX
+RESERVANUEVAX=(PMAXINUE(IGEN)-P(IGEN))+RESERVANUEVAX suma de las reservas basada en la potencia de reserva optima
 
 totadif=totadif+DIFNUE(IGEN)
+nueva reserva total
 
 totamax=totamax+pmaxiNUE(IGEN)-P(IGEN)
+otra nueva reserva total
 """
 #Se registran los generadores que tienen PMAX<PGEN (1721)
 #ERRROR EN GENERADOR, ibus, id, nombre
