@@ -122,14 +122,21 @@ for pq in cmpval_sale:
 # 11 - Generación total a restar
 total_A, total_R=generacion.total()
 generacion_total=total_A
+
 # 12 - informes de todo esto
 gensadi=generacion_total-pge-pga
 print(gensadi)
-# 13 - Sección donde recorta si el parametro[1]==1
 
+# 13 - Sección donde recorta si el parametro[1]==1
+print(parametros)
 if parametros[1]==1:
    print('recorta')
-   # 14 - Anñalisis de cada governor para cambiar los limites ()
+   if parametros[2]==0:
+      print('optima')
+   else:
+      print('dato')
+      #recorta por area
+   # 14 - Anñalisis de cada governor para cambiar los limites (2204)
 
    # 15 Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (3329)
 
@@ -155,7 +162,7 @@ DIFNUE(IGEN)= RESERVANUEVA*DIFEGEN(IGEN)/RESERVATOTAL2 aca se calcula la nueva r
 
 PMAXINUE(IGEN)=P(IGEN)+DIFNUE(IGEN) se calcula nueva potencia maxima del generador para poder cambiar los limites
 
-PMAXINUE2(IGEN)=P(IGEN)*(1.+PORCE(IGEN)/100.)
+PMAXINUE2(IGEN)=P(IGEN)*(1.+PORCE(IGEN)/100.) se calcula la nueva potencia maxima en base al porcentaje del generador
 
 RESERVANUEVAX=(PMAXINUE(IGEN)-P(IGEN))+RESERVANUEVAX
 
