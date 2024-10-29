@@ -141,16 +141,16 @@ if parametros[1]==1:
    print(dif_nueva)
 
    pmaxinueva=list()
-   for i in range(0,len(potencia_maxima)):
-      pmaxinueva.append(potencia_maxima[i]+dif_nueva[i])
+   for i in range(0,len(P)):
+      pmaxinueva.append(P[i]+dif_nueva[i])
 
    pmaxinueva2=list()
-   for i in range(0,len(potencia_maxima)):
-      pmaxinueva2.append(potencia_maxima[i]*(1+porcentaje[i]/100))
+   for i in range(0,len(P)):
+      pmaxinueva2.append(P[i]*(1+porcentaje[i]/100))
 
    reserva_nuevax=0
-   for i in range(0,len(potencia_maxima)):
-      reserva_nuevax+=(pmaxinueva[i]-potencia_maxima[i])
+   for i in range(0,len(P)):
+      reserva_nuevax+=(pmaxinueva[i]-P[i])
 
    print(reserva_nuevax)
    total_dif=sum(dif_nueva)
@@ -160,7 +160,7 @@ if parametros[1]==1:
    else:
       print('dato')
    # 15 - Analisis de cada governor para cambiar los limites (2204)
-
+   
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
 
 
