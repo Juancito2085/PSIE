@@ -23,6 +23,7 @@ import modules.informe as informe
 import modules.VerificacionDatos as verificaciondatos
 import modules.CalculoReserva as CR
 import modules.generacion as generacion
+import modules.CambiarLimites as CL
 
 _i = psspy.getdefaultint()
 _f = psspy.getdefaultreal()
@@ -160,7 +161,9 @@ if parametros[1]==1:
    else:
       print('dato')
    # 15 - Analisis de cada governor para cambiar los limites (2204)
-   
+   for i in range(0,len(governor)):
+      CL.cambiar_limites(nombre[i],indice_ini[i],rval[i], v[i], parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
 
 

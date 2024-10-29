@@ -17,14 +17,14 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 
 import psspy
 
-def cambiar_limites(nombre,indice_ini,rval,v,potencia, normal,difnue, pmaxinue, pmaxinue2):
+def cambiar_limites(nombre,indice_ini,rval, v, normal,difnue, pmaxinue, pmaxinue2,CON):
     if nombre=='HYGOV':
-        HYGOV(difnue)
+        HYGOV(indice_ini,normal, difnue, pmaxinue, pmaxinue2, CON)
     if nombre=='TGOV1':
-        TGOV1(difnue,v)
+        TGOV1(normal,difnue, pmaxinue, pmaxinue2,v, indice_ini,CON)
     return
 
-def HYGOV(normal, difnue, pmaxinue, pmaxinue2):
+def HYGOV(indice_ini,normal, difnue, pmaxinue, pmaxinue2, CON):
     ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
     ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
     if (difnue>0):
@@ -35,11 +35,11 @@ def HYGOV(normal, difnue, pmaxinue, pmaxinue2):
         psspy.change_con(indice_ini+CON,limnue)
     return
 
-def TGOV1(normal,difnue, pmaxinue, pmaxinue2,v):
-    if (difnue>0.0):
+def TGOV1(normal,difnue, pmaxinue, pmaxinue2,v, indice_ini,CON):
+    if (difnue>0):
         if(normal==1):
             limnue=pmaxinue2/v
         else:
             limnue=pmaxinue/v
-
+        psspy.chage_con(indice_ini+CON,limnue)
     return
