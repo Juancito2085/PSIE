@@ -163,16 +163,11 @@ if parametros[1]==1:
       print('dato')
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    for i in range(0,len(governor)):
-      CL.cambiar_limites(governor[i],indice_ini[i],rval[i], v[i], parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+      CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i], parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
       
  
 
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
-
-
-
-
-
 
 """
 Revisar esto porque no puede ser la potencia generada mayor que la maxima y debe estar considerado en los errores->

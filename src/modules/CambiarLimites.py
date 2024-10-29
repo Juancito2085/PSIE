@@ -17,14 +17,14 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 
 import psspy
 
-def cambiar_limites(nombre,indice_ini,rval, v, normal,difnue, pmaxinue, pmaxinue2,CON):
+def cambiar_limites(nombre,indice_ini,rval, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
     if nombre=='HYGOV':
-        HYGOV(indice_ini,normal, difnue, v, pmaxinue, pmaxinue2, CON)
+        HYGOV(indice_ini,normal, difnue, v, P,  pmaxinue, pmaxinue2, CON)
     if nombre=='TGOV1':
-        TGOV1(normal,difnue, v,pmaxinue, pmaxinue2, indice_ini,CON)
+        TGOV1(normal,difnue, v, P, pmaxinue, pmaxinue2, indice_ini,CON)
     return
 
-def HYGOV(indice_ini, v, normal,difnue, pmaxinue, pmaxinue2,CON):
+def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
     
     ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
     ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
@@ -35,11 +35,13 @@ def HYGOV(indice_ini, v, normal,difnue, pmaxinue, pmaxinue2,CON):
     psspy.change_con(indice_ini+CON,limnue)
     #agregado
     potencia_maxima=((limnue-rval20)*rval22)*v
-    print(potencia_maxima)
+    reserva=potencia_maxima-P
+    print('la potencia maxima es',potencia_maxima)
+    print('la reserva es ', reserva)
 
     return 
 
-def TGOV1(indice_ini, v, normal,difnue, pmaxinue, pmaxinue2,CON):
+def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
 
     if(normal==1):
         limnue=pmaxinue2/v
@@ -48,5 +50,7 @@ def TGOV1(indice_ini, v, normal,difnue, pmaxinue, pmaxinue2,CON):
     psspy.change_con(indice_ini+CON,limnue)
     #agregado
     potencia_maxima=v*limnue
-    print(potencia_maxima)
+    reserva=potencia_maxima-P
+    print('la potencia maxima es',potencia_maxima)
+    print('la reserva es ', reserva)
     return 
