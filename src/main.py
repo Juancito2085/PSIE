@@ -6,11 +6,11 @@ sys.path.append(sys_path_PSSE)
 
  
 os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += ';' + os_path_PSSE
-os.environ['PATH'] += ';' + sys_path_PSSE
+os.environ['PATH'] += '' + os_path_PSSE
+os.environ['PATH'] += '' + sys_path_PSSE
  
 # Importación de librerias necesarias
-import redirect
+#import redirect
 import datetime
 import re
 import tkinter
@@ -83,14 +83,15 @@ reserva=list()
 potencia_maxima=list()
 for i,gov in enumerate(governor):
    res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
+   print('potencia maxima ',pmax, 'potencia operativa ',P[i], 'reserva ',res, 'resultado ',pmax-P[i])
    reserva.append(res)
    potencia_maxima.append(pmax)
 
 # 6 - Registro de la reserva de todos los generadores en la hoja "Pmax_Pgen.prn"
 reserva_por=list()
 for i in range(0,len(bus)):
-   reserva_por.append((reserva[i]/P[i])*100)
-
+   reserva_por.append(round(((reserva[i]/P[i])*100),2))
+   print(round(((reserva[i]/P[i])*100),2))
 informe.Pmax_Pgen(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
 # 7 - Registro de los generadores con reserva por debajo de la optima
@@ -121,18 +122,95 @@ pga=0
 for pq in cmpval_sale:
    if pq is not None:
       pga+=pq.real()
-'''
+
 # 11 - Generación total a restar
 total_A, total_R=generacion.total()
 generacion_total=total_A
 
 # 12 - informes de todo esto
+'''
+'            ************************'
+'            *    C.A.M.M.E.S.A.    *'
+'            ************************'
+' '
+'------------------------------------------------------------------------------------'
+'Gcia. de Programación de la Producción - Gcia. de Análisis y Control de la Producción'
+'      Area Sistemas de Potencia        -            Area Modelos'
+'------------------------------------------------------------------------------------'
+' '
+'**************************'
+'* ANALISIS DE LA RESERVA *'
+'**************************'
+' '
+
+'ESCENARIO:'
+'------------------------------------------------------------'
+title1
+title2
+'------------------------------------------------------------'
+/*
+'RESERVA rotante TOTAL HIDRO   en maq reg (MW  =',reservahidro:10.2 (es la suma de todos los hidraulicos)
+'RESERVA rotante TOTAL TERMICA en maq reg (MW) =',reservatermi:10.2 (es la suma de todos los termicos)
+'RESERVA rotante TOTAL SISTEMA en maq reg (MW) =',(reservatermi+RESERVAHIDRO):10.2 (suma de termicos e hidraulicos)
+' '
+'RESERVA HIDRO   util para RPF recortando al 10% (MW) =',reservaHIDRO5:10.2
+'RESERVA TERMICA util para RPF recortando al  5% (MW) =',reservaTERMI5:10.2
+'RESERVA SISTEMA util para RPF             (MW)       =',(reservaTERMI5+reservaHIDRO5):10.2
+' '
+
+
+'RESERVA ROTANTE EN MAQUINAS QUE REGULAN '
+'--------------------------------------- '
+'                TOTAL HIDRO          (MW) =',reservahidro:10.2
+'                TOTAL TERMICA        (MW) =',reservatermi:10.2
+'                TOTAL SISTEMA        (MW) =',(reservatermi+RESERVAHIDRO):10.2
+'-----------------------------------------------------------'
+'RESERVA ROTANTE DEL PARQUE REGULANTE  (%) =',((((reservatermi+RESERVAHIDRO))/(GENSADI))*100.):9.2
+(porcenaje de reserva respecto del total de la generacion)
+'-----------------------------------------------------------'
+ ' '
+'RESERVA PROGRAMADA A 50Hz PARA RPF '
+'---------------------------------- '
+'                 RESERVA HIDRO   10% (MW) =',reservaHIDRO5:10.2
+'                 RESERVA TERMICA  5% (MW) =',reservaTERMI5:10.2
+'                 TOTAL   SISTEMA     (MW) =',(reservaTERMI5+reservaHIDRO5):10.2
+(esta parte es lo mismo solo que la reserva tiene que ser mayor al porcentaje establecido como dato)
+'-----------------------------------------------------------'
+'RESERVA PARA RPF                      (%) =',(((reservaTERMI5+reservaHIDRO5)/(GENSADI))*100.):9.2
+(calcula el porcentaje como antes pero con los datos anteriores)
+'-----------------------------------------------------------'
+ ' '
+'COLABORACIÓN DEL PARQUE HIDRO EN RSF (MW) =',(reservahidro-reservaHIDRO5):10.2
+'COLABORACIÓN DEL PARQUE HIDRO EN RSF  (%) =',(((reservahidro-reservaHIDRO5)/GENSADI)*100.):10.2
+ ' '
+'POTENCIA OPERABLE EN EL PARQUE REGULANTE '
+'---------------------------------------- '
+'                         HIDRO       (MW) =',pothi:10.2 (suma de potencias maximas de hidraulicos)
+'                         TERM. TG-CC (MW) =',pottg:10.2 (suma de potencias maximas de las tgs)
+'                         TERM. TV    (MW) =',pottv:10.2 (suma de potencias maximas de las tvs)
+'                     ----TOTAL------ (MW) =',(pottv+pottg+pothi):10.2 (suma total de potencias maximas)
+ ' '
+'RESERVA PROGRAMADA EN EL PARQUE REGULANTE '
+'----------------------------------------- '
+'                         HIDRO       (MW) =',reservaHIDRO5:10.2
+'                         TERM. TG-CC (MW) =',restg:10.2 (reserva de las tgs)
+'                         TERM. TV    (MW) =',restv:10.2 (reserva de las tvs)
+'                     ----TOTAL------ (MW) =',(restv+restg+reservaHIDRO5):10.2 (suma total de las reservas)
+ ' '
+
+RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
+' '
+'==========================================================='
+' RESERVANUEVA = ',RESERVANUEVA
+' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas)
+'''
 gensadi=generacion_total-pge-pga
 print(gensadi)
 
-# 14 - Sección donde recorta si el parametro[1]==1
+'''
+# 14 - Sección donde recorta si el para
 print(parametros)
-if parametros[1]==1:
+if param:
    print('recorta')
    # Se calculan los valores necesrios para realizar la modificacion de los limites
    reserva_nueva=parametros[0]*gensadi/100
@@ -147,7 +225,7 @@ if parametros[1]==1:
 
    pmaxinueva2=list()
    for i in range(0,len(P)):
-      pmaxinueva2.append(P[i]*(1+porcentaje[i]/100))
+      pmaxinueva2.append(+porcentaje[i]/100))
 
    reserva_nuevax=0
    for i in range(0,len(P)):
@@ -171,7 +249,52 @@ if parametros[1]==1:
       potencia_maxima_cl.append(pot_max_temp)
       print('la reserva es ',res_temp, 'y la potencia maxima es ',pot_max_temp)'''
       
+'''
+'-----------------------------------------------------------'
+'LUEGO DEL RECORTE EN LA POTENCIA MAXIMA '
+'(PARA OBTENER UNA RESERVA ROTANTE TOTAL EN MAQ.'
+'REG IGUAL A ROPT dato.)'
+'-----------------------------------------------------------'
+' '
+'RESERVA ROTANTE EN MAQUINAS QUE REGULAN '
+'--------------------------------------- '
+'                TOTAL HIDRO          (MW) =',reservahidro:10.2 (es la suma de todos los hidraulicos)
+'                TOTAL TERMICA        (MW) =',reservatermi:10.2 (es la suma de todos los termicos)
+'                TOTAL SISTEMA        (MW) =',(reservatermi+RESERVAHIDRO):10.2 (suma de termicos e hidraulicos)
+'-----------------------------------------------------------'
+'RESERVA ROTANTE DEL PARQUE REGULANTE  (%) =',((((reservatermi+RESERVAHIDRO))/(GENSADI))*100.):9.2 
+(porcenaje de reserva respecto del total de la generacion)
+'-----------------------------------------------------------'
+ ' '
+'RESERVA PROGRAMADA A 50Hz PARA RPF '
+'---------------------------------- '
+'                 RESERVA HIDRO   10% (MW) =',reservaHIDRO5:10.2
+'                 RESERVA TERMICA  5% (MW) =',reservaTERMI5:10.2
+'                 TOTAL   SISTEMA     (MW) =',(reservaTERMI5+reservaHIDRO5):10.2
+(esta parte es lo mismo solo que la reserva tiene que ser mayor al porcentaje establecido como dato)
+'-----------------------------------------------------------'
+'RESERVA PARA RPF                      (%) =',(((reservaTERMI5+reservaHIDRO5)/(GENSADI))*100.):9.2 (calcula el porcentaje como antes pero con los datos anteriores)
+'-----------------------------------------------------------'
+ ' '
+'POTENCIA OPERABLE EN EL PARQUE REGULANTE '
+'---------------------------------------- '
+'                         HIDRO       (MW) =',pothi:10.2 (suma de potencias maximas de hidraulicos)
+'                         TERM. TG-CC (MW) =',pottg:10.2 (suma de potencias maximas de las tgs)
+'                         TERM. TV    (MW) =',pottv:10.2 (suma de potencias maximas de las tvs)
+(suma de potencias maximas de cada tipo de maquina)
+'                     ----TOTAL------ (MW) =',(pottv+pottg+pothi):10.2(suma total de potencias maximas)
+ ' '
+'RESERVA PROGRAMADA EN EL PARQUE REGULANTE '
+'----------------------------------------- '
+'                         HIDRO       (MW) =',reservaHIDRO5:10.2
+'                         TERM. TG-CC (MW) =',restg:10.2 (reserva de las tgs)
+'                         TERM. TV    (MW) =',restv:10.2 (reserva de las tvs)
+'                     ----TOTAL------ (MW) =',(restv+restg+reservaHIDRO5):10.2
+ ' '
+' RESERVANUEVA = ',RESERVANUEVA
+' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas)
 
+'''
  
 
    
@@ -198,7 +321,7 @@ reservatotal2 es la reserva total
 PMAXINUE(IGEN)=P(IGEN)+DIFNUE(IGEN) se calcula nueva potencia maxima del generador para poder cambiar los limites
 donde p es la potencia del generador (se usa en caso de hacerlo con respecto a la optima)
 
-PMAXINUE2(IGEN)=P(IGEN)*(1.+PORCE(IGEN)/100.) se calcula la nueva potencia maxima en base al porcentaje del generador
+PMAXINUE2(IGEN)=P(I.+PORCE(IGEN)/100.) se calcula la nueva potencia maxima en base al porcentaje del generador
 donde porce es el porcentaje del generador (se usa en caso de hacerlo con respecto al dato)
 
 RESERVANUEVAX=(PMAXINUE(IGEN)-P(IGEN))+RESERVANUEVAX suma de las reservas basada en la potencia de reserva optima
