@@ -83,7 +83,6 @@ reserva=list()
 potencia_maxima=list()
 for i,gov in enumerate(governor):
    res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
-   print('la reserva es ',res, 'y la potencia maxima es ',pmax)
    reserva.append(res)
    potencia_maxima.append(pmax)
 
@@ -122,7 +121,7 @@ pga=0
 for pq in cmpval_sale:
    if pq is not None:
       pga+=pq.real()
-
+'''
 # 11 - Generación total a restar
 total_A, total_R=generacion.total()
 generacion_total=total_A
@@ -141,7 +140,7 @@ if parametros[1]==1:
    for i in range(0,len(reserva)):
       dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
    print(dif_nueva)
-
+   print(reserva)
    pmaxinueva=list()
    for i in range(0,len(P)):
       pmaxinueva.append(P[i]+dif_nueva[i])
@@ -162,12 +161,20 @@ if parametros[1]==1:
    else:
       print('dato')
    # 15 - Analisis de cada governor para cambiar los limites (2204)
-   for i in range(0,len(governor)):
-      CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i], parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
+   reserva_cl=list()
+   potencia_maxima_cl=list()
+   for i,gov in enumerate(governor):
+      print(P[i])
+      CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+       reserva_cl.append(res_temp)
+      potencia_maxima_cl.append(pot_max_temp)
+      print('la reserva es ',res_temp, 'y la potencia maxima es ',pot_max_temp)'''
       
+
  
 
-   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
+   
 
 """
 Revisar esto porque no puede ser la potencia generada mayor que la maxima y debe estar considerado en los errores->

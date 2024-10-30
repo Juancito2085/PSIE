@@ -25,32 +25,33 @@ def cambiar_limites(nombre,indice_ini,rval, v, P, normal,difnue, pmaxinue, pmaxi
     return
 
 def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
-    
-    ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
-    ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
-    if(normal==1):
-        limnue=(pmaxinue2/(v*rval22))+rval20
-    else:
-        limnue=(pmaxinue/(v*rval22))+rval20
-    psspy.change_con(indice_ini+CON,limnue)
-    #agregado
-    potencia_maxima=((limnue-rval20)*rval22)*v
-    reserva=potencia_maxima-P
-    print('la potencia maxima es',potencia_maxima)
-    print('la reserva es ', reserva)
-
+    if difnue>0:
+        ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
+        ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
+        if(normal==1):
+            limnue=(pmaxinue2/(v*rval22))+rval20
+        else:
+            limnue=(pmaxinue/(v*rval22))+rval20
+        psspy.change_con(indice_ini+CON,limnue)
+        #agregado
+        potencia_maxima=((limnue-rval20)*rval22)*v
+        reserva=potencia_maxima-P
+        print(reserva)
+        print(potencia_maxima)
+        print(P)
     return 
 
 def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
-
-    if(normal==1):
-        limnue=pmaxinue2/v
-    else:
-        limnue=pmaxinue/v
-    psspy.change_con(indice_ini+CON,limnue)
-    #agregado
-    potencia_maxima=v*limnue
-    reserva=potencia_maxima-P
-    print('la potencia maxima es',potencia_maxima)
-    print('la reserva es ', reserva)
+    if difnue>0:
+        if(normal==1):
+            limnue=pmaxinue2/v
+        else:
+            limnue=pmaxinue/v
+        psspy.change_con(indice_ini+CON,limnue)
+        #agregado
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-P
+        print(reserva)
+        print(potencia_maxima)
+        print(P)
     return 

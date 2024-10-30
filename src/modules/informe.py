@@ -21,7 +21,7 @@ def crear (ruta):
     wb['Mayor_maxima.prn'].append(['IBUS','NOMBRE','ID','POT_MAX[MW]','POT_GEN[MW]','MAX_GEN[MW]','RESERVA_DATO[%]','PORCENTAJE[%]','RESOPT[%]'])
     wb['Menor_optima.prn'].append(['IBUS','NOMBRE','ID','POT_MAX[MW]','POT_GEN[MW]','MAX_GEN[MW]','RESERVA_DATO[%]','PORCENTAJE[%]','RESOPT[%]'])
     wb['Reserva.rep'].append(['Escenario','Reserva Hidro','Reserva Termica','Reserva Total'])#2
-    wb['Reserva.err'].append(['Escenario','Reserva Hidro','Reserva Termica','Reserva Total'])#3
+    wb['Reserva.err'].append(['Error'])#3
     # Guardamos el excel con el nombre Reserva_salida.xlsx
     ruta_completa= ruta+'/Reserva_salida1.xlsx'
     wb.save(ruta_completa)
@@ -85,7 +85,7 @@ def Mayor_maxima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,re
     # Escribimos todos los datos de las listas donde los generadores tenga una reserva mayor a la maxima
     j=0
     for i in range(len(ibus)):
-        if reserva[i]>por_dato[i]:
+        if reserva[i]>resopt:
             row=j+2
             sheet.cell(row=row, column=1).value = ibus[i]
             sheet.cell(row=row, column=2).value = nombre[i]
@@ -146,14 +146,18 @@ def Reserva_rep(ruta):
 
     return
 
-def Reserva_err(ruta):
+def Reserva_err(ruta, error):
     """Completa los datos de la hoja Reserva.err
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta)
+    workbook = openpyxl.load_workbook(ruta +'/Reserva_salida1.xlsx')
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['Reserva.err']
-    #Escribimos los datos en la hoja debajo de los encabezados en la fila 2
+    #Escribimos los datos en la primera celda en blanco
+    last_row = sheet.max_row + 1
+    sheet.cell(row=last_row, column=1, value=error)
+    workbook.save(ruta+'/Reserva_salida1.xlsx')
+    workbook.close()
 
     return
 
