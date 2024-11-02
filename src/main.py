@@ -1,10 +1,14 @@
 import os
 import sys
- 
+#ruta para notebook
+os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
+#ruta para pc de escritorio
 sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
 sys.path.append(sys_path_PSSE)
 
- 
+#ruta para notebook
+os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
+#ruta para pc de escritorio
 os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
 os.environ['PATH'] += '' + os_path_PSSE
 os.environ['PATH'] += '' + sys_path_PSSE
@@ -128,6 +132,45 @@ total_A, total_R=generacion.total()
 generacion_total=total_A
 
 # 12 - informes de todo esto
+#Inicializacion de variables
+reservahidro=0
+reservatermica=0
+reservahidro_rpf=0
+reservatermica_rpf=0
+pot_hidro=0
+pot_termica=0
+
+# Calculo de la reserva de los hidraulicos, termicos y ambos
+
+for i,tipo in enumerate(tipo):
+   if tipo=='HIDRO':
+      pot_hidro+=potencia_maxima[i]
+      reservahidro+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservahidro_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservahidro_rpf+=reserva[i]
+   elif tipo=='TERMICA':
+      pot_termica+=potencia_maxima[i]
+      reservatermica+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+reservatotal=reservahidro+reservatermica
+
+porcentaje_reserva_total=((reservatermica+reservahidro)/generacion_total)*100
+
+reservatotal_rpf=reservahidro_rpf+reservatermica_rpf
+
+porcentaje_reserva_total_rpf=((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100
+
+# Reserva hidro RSF
+reservahidro_rsf=reservahidro-reservahidro_rpf
+porcentaje_reserva_hidro_rsf=((reservahidro-reservahidro_rpf)/generacion_total)*100
+
+# Potencia operable en el parque regulante
+
 '''
 '            ************************'
 '            *    C.A.M.M.E.S.A.    *'
@@ -147,23 +190,12 @@ generacion_total=total_A
 '------------------------------------------------------------'
 title1
 title2
-'------------------------------------------------------------'
-/*
-'RESERVA rotante TOTAL HIDRO   en maq reg (MW  =',reservahidro:10.2 (es la suma de todos los hidraulicos)
-'RESERVA rotante TOTAL TERMICA en maq reg (MW) =',reservatermi:10.2 (es la suma de todos los termicos)
-'RESERVA rotante TOTAL SISTEMA en maq reg (MW) =',(reservatermi+RESERVAHIDRO):10.2 (suma de termicos e hidraulicos)
-' '
-'RESERVA HIDRO   util para RPF recortando al 10% (MW) =',reservaHIDRO5:10.2
-'RESERVA TERMICA util para RPF recortando al  5% (MW) =',reservaTERMI5:10.2
-'RESERVA SISTEMA util para RPF             (MW)       =',(reservaTERMI5+reservaHIDRO5):10.2
-' '
-
-
+#'------------------------------------------------------------'
 'RESERVA ROTANTE EN MAQUINAS QUE REGULAN '
 '--------------------------------------- '
-'                TOTAL HIDRO          (MW) =',reservahidro:10.2
-'                TOTAL TERMICA        (MW) =',reservatermi:10.2
-'                TOTAL SISTEMA        (MW) =',(reservatermi+RESERVAHIDRO):10.2
+'                TOTAL HIDRO          (MW) =',reservahidro:10.2 (es la suma de todos los hidraulicos)
+'                TOTAL TERMICA        (MW) =',reservatermi:10.2 (es la suma de todos los termicos)
+'                TOTAL SISTEMA        (MW) =',(reservatermi+RESERVAHIDRO):10.2 (suma de termicos e hidraulicos)
 '-----------------------------------------------------------'
 'RESERVA ROTANTE DEL PARQUE REGULANTE  (%) =',((((reservatermi+RESERVAHIDRO))/(GENSADI))*100.):9.2
 (porcenaje de reserva respecto del total de la generacion)
