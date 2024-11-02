@@ -138,25 +138,45 @@ reservatermica=0
 reservahidro_rpf=0
 reservatermica_rpf=0
 pot_hidro=0
-pot_termica=0
+pot_TV=0
+pot_CC=0
+pot_TG=0
+reserva_TV=0
+reserva_CC=0
+reserva_TG=0
 
 # Calculo de la reserva de los hidraulicos, termicos y ambos
 
 for i,tipo in enumerate(tipo):
-   if tipo=='HIDRO':
+   if tipo=='HI':
       pot_hidro+=potencia_maxima[i]
       reservahidro+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservahidro_rpf+=P[i]*porcentaje[i]/100
       else:
          reservahidro_rpf+=reserva[i]
-   elif tipo=='TERMICA':
-      pot_termica+=potencia_maxima[i]
-      reservatermica+=reserva[i]
+   elif tipo=='TG':
+      pot_TG+=potencia_maxima[i]
+      reserva_TG+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
          reservatermica_rpf+=reserva[i]
+   elif tipo=='TV':
+      pot_TV+=potencia_maxima[i]
+      reserva_TV+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+   elif tipo=='CC':
+      pot_CC+=potencia_maxima[i]
+      reserva_CC+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+
 reservatotal=reservahidro+reservatermica
 
 porcentaje_reserva_total=((reservatermica+reservahidro)/generacion_total)*100
@@ -168,6 +188,16 @@ porcentaje_reserva_total_rpf=((reservatermica_rpf+reservahidro_rpf)/generacion_t
 # Reserva hidro RSF
 reservahidro_rsf=reservahidro-reservahidro_rpf
 porcentaje_reserva_hidro_rsf=((reservahidro-reservahidro_rpf)/generacion_total)*100
+
+pot_operable=pot_hidro+pot_TV+pot_CC+pot_TG
+
+reserva_programada=reserva_TV+reserva_CC+reserva_TG+reservahidro_rpf
+
+gensadi=generacion_total-pge-pga
+
+reserva_nueva=parametros[0]*gensadi/100
+
+
 
 # Potencia operable en el parque regulante
 
@@ -234,18 +264,16 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 ' '
 '==========================================================='
 ' RESERVANUEVA = ',RESERVANUEVA
-' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas)
+' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas menores a la optima)
 '''
 gensadi=generacion_total-pge-pga
 print(gensadi)
 
 '''
-# 14 - Sección donde recorta si el para
+# 14 - Sección donde recorta si el parametro[1] es 1
 print(parametros)
-if param:
+if parametros[1]==1:
    print('recorta')
-   # Se calculan los valores necesrios para realizar la modificacion de los limites
-   reserva_nueva=parametros[0]*gensadi/100
    dif_nueva=list()
    for i in range(0,len(reserva)):
       dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
@@ -257,7 +285,7 @@ if param:
 
    pmaxinueva2=list()
    for i in range(0,len(P)):
-      pmaxinueva2.append(+porcentaje[i]/100))
+      pmaxinueva2.append(P[i]*(1+porcentaje[i]/100))
 
    reserva_nuevax=0
    for i in range(0,len(P)):
@@ -275,11 +303,12 @@ if param:
    reserva_cl=list()
    potencia_maxima_cl=list()
    for i,gov in enumerate(governor):
-      print(P[i])
-      CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
-       reserva_cl.append(res_temp)
-      potencia_maxima_cl.append(pot_max_temp)
-      print('la reserva es ',res_temp, 'y la potencia maxima es ',pot_max_temp)'''
+      if por_reserva[i]>parametros[0]:
+         print(P[i])
+         reserva[i],potencia_maxima[i]=CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+         print('la reserva es ',reserva[i], 'y la potencia maxima es ',potencia_maxima[i])
+      else:
+         print('no se cambia en ', gov[i])'''
       
 '''
 '-----------------------------------------------------------'
@@ -424,3 +453,46 @@ for i,gov in enumerate(governor):
       print('el limite es ',reserva)
    total+=reserva
 print('la reserva total es ',total)"""
+
+
+
+'''
+# 14 - Sección donde recorta si el parametro[1] es 1
+print(parametros)
+if parametros[1]==1:
+   print('recorta')
+   dif_nueva=list()
+   for i in range(0,len(reserva)):
+      dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+   print(dif_nueva)
+   print(reserva)
+   pmaxinueva=list()
+   for i in range(0,len(P)):
+      pmaxinueva.append(P[i]+dif_nueva[i])
+
+   pmaxinueva2=list()
+   for i in range(0,len(P)):
+      pmaxinueva2.append(P[i]*(1+porcentaje[i]/100))
+
+   reserva_nuevax=0
+   for i in range(0,len(P)):
+      reserva_nuevax+=(pmaxinueva[i]-P[i])
+
+   print(reserva_nuevax)
+   total_dif=sum(dif_nueva)
+   total_max=sum(pmaxinueva)-sum(potencia_maxima)
+   if parametros[2]==0:
+      print('optima')
+   else:
+      print('dato')
+   # 15 - Analisis de cada governor para cambiar los limites (2204)
+   # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
+   reserva_cl=list()
+   potencia_maxima_cl=list()
+   for i,gov in enumerate(governor):
+      print(P[i])
+      CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+       reserva_cl.append(res_temp)
+      potencia_maxima_cl.append(pot_max_temp)
+      print('la reserva es ',res_temp, 'y la potencia maxima es ',pot_max_temp)'''
+      

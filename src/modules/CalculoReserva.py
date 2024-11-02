@@ -72,7 +72,7 @@ def RAVYA3(rval,potencia):
         potencia_maxima=rval
     if (potencia_maxima>=potencia):
         reserva_maquina=potencia_maxima-potencia
-    return(reserva_maquina, potencia)
+    return(reserva_maquina, potencia_maxima)
 
 def GAST2A(indice_ini,potencia):
     c=0.0

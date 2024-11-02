@@ -18,11 +18,34 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 import psspy
 
 def cambiar_limites(nombre,indice_ini,rval, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if nombre=='BSASGO':
+        BSASGO(indice_ini, P,normal,difnue,pmaxinue,pmaxinue2,CON)
+    if nombre=='RAVYA3':
+        RAVYA3(rval,P,normal,difnue,pmaxinue,pmaxinue2,CON)
     if nombre=='HYGOV':
         HYGOV(indice_ini,normal, difnue, v, P,  pmaxinue, pmaxinue2, CON)
     if nombre=='TGOV1':
         TGOV1(normal,difnue, v, P, pmaxinue, pmaxinue2, indice_ini,CON)
     return
+
+def BSASGO(indice_ini, potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if difnue>0:
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
+        ierr,rval2=psspy.dsrval('CON',(indice_ini+10))
+        ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
+        if(normal==1):
+            limnue=pmaxinue2/(rval1*rval3)
+        else:
+            limnue=pmaxinue/(rval1*rval3)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=rval1*rval2*rval3     
+        reserva=potencia_maxima-potencia
+    return(reserva,potencia_maxima)
+
+def RAVYA3(rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    potencia_maxima=rval
+    reserva=potencia_maxima-potencia
+    return(reserva, potencia_maxima)
 
 def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
     if difnue>0:
@@ -39,7 +62,7 @@ def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
         print(reserva)
         print(potencia_maxima)
         print(P)
-    return 
+    return (reserva,potencia_maxima)
 
 def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
     if difnue>0:
@@ -54,4 +77,4 @@ def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
         print(reserva)
         print(potencia_maxima)
         print(P)
-    return 
+    return (reserva,potencia_maxima)
