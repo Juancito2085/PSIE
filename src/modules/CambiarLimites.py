@@ -167,53 +167,29 @@ def HYGV7P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
         reserva=potencia_maxima-potencia
     return (reserva,potencia_maxima)
 
-/*
------ IEEEG1 --------------------------------------------
-*/
+def IEEEG1(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0):
+        if(normal==1):
+            limnue=pmaxinue2/(v)
+        else:
+            limnue=pmaxinue/(v)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-potencia
 
-if (nombre1(NGEN)=='IEEEG1')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=IEEEG1'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(v)
-  ELSE
-  limnue=pmaxinue/(v)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+    return (reserva,potencia_maxima)
 
-/*
------ IEEEG3 --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='IEEEG3')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=IEEEG3'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(v)
-  ELSE
-  limnue=pmaxinue/(v)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def IEEEG3 (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0.0)then
+        if(normal==1):
+            limnue=pmaxinue2/(v)
+        else:
+            limnue=pmaxinue/(v)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
+        
 
 /*
 ----- IEEEG2 --------------------------------------------
