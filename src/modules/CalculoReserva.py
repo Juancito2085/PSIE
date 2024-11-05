@@ -218,7 +218,7 @@ def STGV1P(indice_ini,rval,potencia):
 
 def STGV4P(indice_ini,potencia):
     if (potencia>0.0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini(ngen)+21))
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
         potencia_maxima=rval*rval1
         if (potencia_maxima>=potencia):
             reserva_maquina=potencia_maxima-potencia

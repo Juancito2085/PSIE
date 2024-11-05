@@ -191,127 +191,66 @@ def IEEEG3 (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
     return (reserva,potencia_maxima)
         
 
-/*
------ IEEEG2 --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='IEEEG2')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=IEEEG2'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(v)
-  ELSE
-  limnue=pmaxinue/(v)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
-
-/*
------ IEESGO --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='IEESGO')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=IEESGO'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(v)
-  ELSE
-  limnue=pmaxinue/(v)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
-
-/*
------ STGV1P --------------------------------------------
-*/
+def IEEEG2(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0.0):
+        IF(NORMAL==1):
+            limnue=pmaxinue2/(v)
+        else:
+            limnue=pmaxinue/(v)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
 
-if (nombre1(NGEN)=='STGV1P')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=STGV1P'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(rval1)
-  ELSE
-  limnue=pmaxinue/(rval1)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def IEESGO (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0):
+        IF(NORMAL==1)THEN
+            limnue=pmaxinue2/(v)
+        else:
+            limnue=pmaxinue/(v)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
+  
+def STGV1P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0):
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
+        if(normal==1):
+            limnue=pmaxinue2/(rval1)
+        else:
+            limnue=pmaxinue/(rval1)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=rval1*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)   
 
-/*
------ STGV4P --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='STGV4P')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=STGV4P'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(rval1)
-  ELSE
-  limnue=pmaxinue/(rval1)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def STGV4P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0.0)then
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
+        if(normal==1):
+            limnue=pmaxinue2/(rval1)
+        else:
+            limnue=pmaxinue/(rval1)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=rval1*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
 
-/*
------ STGV2P --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='STGV2P')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=STGV2P'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(rval1)
-  ELSE
-  limnue=pmaxinue/(rval1)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def STGV2P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
+    if (difnue>0.0):
+            ierr,rval1=psspy.dsrval('CON',(indice_ini+18))
+            ierr,rval3=psspy.dsrval('CON',(indice_ini+14))
+        if(normal==1):
+            limnue=pmaxinue2/(rval1)
+        else:
+            limnue=pmaxinue/(rval1)
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=rval1*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
 '''
 def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
@@ -330,168 +269,112 @@ def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
     return (reserva,potencia_maxima)
 
 '''
-if (nombre1(NGEN)=='WPIDHY')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=WPIDHY'
-  IF(NORMAL==1)THEN
-  limnue=pmaxinue2/(v)
-  ELSE
-  limnue=pmaxinue/(v)
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def WPIDHY (indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if (difnue>0):
+        if(normal==1):
+            limnue=pmaxinue2(v
+        else:
+            limnue=pmaxinue/v
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=v*limnue
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
-/*
------ GAST5 --------------------------------------------
-*/
+def GAST5(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if (difnue>0):
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+9))
+        if(NORMAL==1):
+            limnue=(pmaxinue2/v)+rval1
+        else:
+            limnue=(pmaxinue/v)+rval1
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia:(limnue-rval1)*v  
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
-if (nombre1(NGEN)=='GAST5')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=GAST5'
-  IF(NORMAL==1)THEN
-  limnue=(pmaxinue2/v)+rval1
-  ELSE
-  limnue=(pmaxinue/v)+rval1
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
 
-/*
------ SIE943 --------------------------------------------
-*/
+def SIE943(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if (difnue>0.0)then
+        AF1=0
+        ierr,AF1=psspy.dsrval('CON',(indice_ini+23))
+        BF1=0
+        ierr,BF1=psspy.dsrval('CON',(indice_ini+24))
+        RMAX4=0
+        ierr,RMAX4=psspy.dsrval('CON',(indice_ini+32))
+        AF2=0
+        ierr,AF2=psspy.dsrval('CON',(indice_ini+34))            
+        BF2=0 
+        ierr,BF2=psspy.dsrval('CON',(indice_ini+35))
+        AF3=0
+        ierr,AF3psspy.dsrval('CON',(indice_ini+37)) 
+        CF3=0 
+        ierr,CF3=psspy.dsrval('CON',(indice_ini+39))
+        DF3=0.
+        ierr,DF3=psspy.dsrval('CON',(indice_ini+40))
+        TLIM=0.
+        ierr,TLIM=psspy.dsrval('CON',(indice_ini+47))
+        TAMB=0.
+        ierr,TAMB=psspy.dsrval('CON',(indice_ini+60))
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+6))                     
+        if(nromal==1):
+            rQg=((pmaxinue2/rval1)-bf1)/af1
+            limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
+        else:
+            rQg=((pmaxinue/rval1)-bf1)/af1
+            limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
+        psspy.change_con(indice_ini+CON,limnue)
+        rQg=(tlim-af3*tamb-bf3*((af2*rmax4+bf2)*1.0)-df3)/cf3
+        #revisar esto
+        potencia_maxima=rval1*rQg
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
-if (nombre1(NGEN)=='SIE943')then
- AF1=0.
- CALL DSRVAL('CON',(is+23),af1,ierr)
- BF1=0.
- CALL DSRVAL('CON',(is+24),bf1,ierr)
- RMAX4=0.
- CALL DSRVAL('CON',(is+32),rmax4,ierr)
- AF2=0.
- CALL DSRVAL('CON',(is+34),af2,ierr) 
- BF2=0. 
- CALL DSRVAL('CON',(is+35),bf2,ierr)
- AF3=0.
- CALL DSRVAL('CON',(is+37),af3,ierr)
- BF3=0.
- CALL DSRVAL('CON',(is+38),bf3,ierr) 
- CF3=0. 
- CALL DSRVAL('CON',(is+39),cf3,ierr)
- DF3=0.
- CALL DSRVAL('CON',(is+40),df3,ierr)
- TLIM=0.
- CALL DSRVAL('CON',(is+47),tlim,ierr)
- TAMB=0.
- CALL DSRVAL('CON',(is+60),tamb,ierr)
- CALL DSRVAL('CON',(is+6),rval1,ierr)
- write 2; 'Valor de TRATE= ',rval1             
- if (difnue>0.0)then
-  write 2; 'REGULADOR=SIE943'             
-  IF(NORMAL==1)THEN
-   rQg=((pmaxinue2/rval1)-bf1)/af1
-   limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
-  ELSE
-   rQg=((pmaxinue/rval1)-bf1)/af1
-   limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif
-endif
+def TUCUGO(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if (difnue>0.0):
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
+        ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
+        ierr,rval4=psspy.dsrval('CON',(indice_ini+14))      
+        if(normal==1):
+            limnue=((pmaxinue2/rval1)+rval4)/rval3
+        else:
+            limnue=((pmaxinue/rval1)+rval4)/rval3
+            psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=((lim*rval3)-rval4)*rval1 
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
-/*
------ TUCUGO --------------------------------------------
-*/
+def GASV94 (indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
+    if (difnue>0.0)then 
+        AF6=0.
+        TAMB=0.0
+        BF6=0.0
+        AF4=0.0
+        BF4=0.0
+        DF6=0.0
+        CF6=0.0
+        AF5=0.0
+        BF5=0.0
+        
+        ierr,rval1=psspy.dsrval('CON',(indice_ini+50))
+        ierr,AF6=psspy.dsrval('CON',(indice_ini+61))   
+        ierr,TAMB=psspy.dsrval('CON',(indice_ini+53))
+        ierr,BF6=psspy.dsrval('CON',(indice_ini+62))
+        ierr,AF4=psspy.dsrval('CON',(indice_ini+57))
+        ierr,BF4=psspy.dsrval('CON',(indice_ini+58))
+        ierr,DF6=psspy.dsrval('CON',(indice_ini+64))
+        ierr,CF6=psspy.dsrval('CON',(indice_ini+63))
+        ierr,AF5=psspy.dsrval('CON',(indice_ini+59))
+        ierr,BF5=psspy.dsrval('CON',(indice_ini+60))
 
-if (nombre1(NGEN)=='TUCUGO')then
- if (difnue>0.0)then
-  write 2; 'REGULADOR=TUCUGO'             
-  IF(NORMAL==1)THEN
-  limnue=((pmaxinue2/rval1)+rval4)/rval3
-  ELSE
-  limnue=((pmaxinue/rval1)+rval4)/rval3
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
- endif 
-endif 
-
-/*
------ GASV94 --------------------------------------------
-*/
-
-if (nombre1(NGEN)=='GASV94')then
- AF6=0.
- TAMB=0.0
- BF6=0.0
- AF4=0.0
- BF4=0.0
- DF6=0.0
- CF6=0.0
- AF5=0.0
- BF5=0.0
- write 2; 'REGULADOR=GASV94'             
- CALL DSRVAL('CON',(is+50),rval1,ierr)
- CALL DSRVAL('CON',(is+61),AF6,ierr)
- CALL DSRVAL('CON',(is+53),TAMB,ierr)
- CALL DSRVAL('CON',(is+62),BF6,ierr)
- CALL DSRVAL('CON',(is+57),AF4,ierr)
- CALL DSRVAL('CON',(is+58),BF4,ierr)
- CALL DSRVAL('CON',(is+64),DF6,ierr)
- CALL DSRVAL('CON',(is+63),CF6,ierr)
- CALL DSRVAL('CON',(is+59),AF5,ierr)
- CALL DSRVAL('CON',(is+60),BF5,ierr)
-
- if (difnue>0.0)then
-  write 2; 'REGULADOR=GASV94'             
-  RQG=0.
-  IF(NORMAL==1)THEN
-   RQg=((pmaxinue2/rval1)-bf5)/Bf5
-   limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
-  ELSE
-   RQg=((pmaxinue/rval1)-bf5)/Bf5
-   limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
-  ENDIF
-  write 2;ibus,' ',nombre,' limite nuevo= ',limnue
-  push 'ALTR'
-  push '2'
-  push is+i5
-  push 'Y'
-  push limnue
-  push '0'
-  push '0'
-  push '0'
+        if(NORMAL==1):
+            RQg=((pmaxinue2/rval1)-bf5)/Bf5
+            limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
+        else:
+            RQg=((pmaxinue/rval1)-bf5)/Bf5
+            limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
+        psspy.change_con(indice_ini+CON,limnue)
+        potencia_maxima=buscar solucion
+        reserva=potencia_maxima-potencia
+    return (reserva,potencia_maxima)
 
 '''
