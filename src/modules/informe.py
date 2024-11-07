@@ -1,5 +1,6 @@
 import openpyxl
 import os
+from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 
 def crear (ruta):
     """Crea el archivo excel de salida para los reportes en la ruta especificada
@@ -16,7 +17,7 @@ def crear (ruta):
     wb.create_sheet('Reserva.rep')
     wb.create_sheet('Reserva.err')
     # Creamos los enacabezados de las hojas
-    wb['reserva_total.prn'].append(['Escenario','Reserva Hidro','Reserva Termica','Reserva Total'])#1
+    #wb['reserva_total.prn'].append(['Escenario','Reserva Hidro','Reserva Termica','Reserva Total'])#1
     wb['Pmax_Pgen.prn'].append(['IBUS','NOMBRE','ID','POT_MAX[MW]','POT_GEN[MW]','MAX_GEN[MW]','RESERVA_DATO[%]','PORCENTAJE[%]','RES_OPT[%]'])
     wb['Mayor_maxima.prn'].append(['IBUS','NOMBRE','ID','POT_MAX[MW]','POT_GEN[MW]','MAX_GEN[MW]','RESERVA_DATO[%]','PORCENTAJE[%]','RESOPT[%]'])
     wb['Menor_optima.prn'].append(['IBUS','NOMBRE','ID','POT_MAX[MW]','POT_GEN[MW]','MAX_GEN[MW]','RESERVA_DATO[%]','PORCENTAJE[%]','RESOPT[%]'])
@@ -33,11 +34,71 @@ def reserva_total(ruta):
     """Completa los datos de la hoja reserva_total.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta)
+    workbook = openpyxl.load_workbook(ruta + '/Reserva_salida1.xlsx')
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['reserva_total.prn']
-    #Escribimos los datos en la hoja debajo de los encabezados en la fila 2
+    # Defino formatos y funciones de formatos
+    bordes_titulos = Border(left=Side(style='thin'), 
+                         right=Side(style='thin'), 
+                         top=Side(style='thin'), 
+                         bottom=Side(style='thin'))
+    
+    def bordes_celdas(bordes,fila):
+        for col in range(1, 7):
+            cell = sheet.cell(row=fila, column=col)
+            cell.alignment = Alignment(horizontal='center')
+            cell.border = bordes
+    
+    def unir_celdas_resultados(fila_inicial, fila_final):
+        for row in range(fila_inicial, fila_final+1):
+            sheet.merge_cells('A'+str(row)+':C'+str(row))
+            sheet.merge_cells('D'+str(row)+':F'+str(row))
+        return
 
+    #Escribimos los datos en la hoja debajo de los encabezados en la fila 2
+    sheet['A1'] = 'Análisis de la Reserva Total'
+    # sheet['A2'] = 'Escenario'
+    sheet['A3'] = 'RESERVA ROTANTE EN MAQUINAS QUE REGULAN'
+    sheet.merge_cells('A3:F3')
+    bordes_celdas(bordes_titulos,3)
+    sheet['A3'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A4'] = 'RESERVA HIDRO [MW]'
+    sheet['A5'] = 'RESERVA TERMICA [MW]'
+    sheet['A6'] = 'RESERVA TOTAL [MW]'
+    unir_celdas_resultados(4,6)
+    sheet['A7'] = 'RESERVA ROTANTE DEL PARQUE REGULANTE'
+    sheet.merge_cells('A7:G7')
+    bordes_celdas(bordes_titulos,7)
+    sheet['A7'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A8'] = 'RESERVA HIDRO'
+    sheet['A9'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
+    sheet['A10'] = 'RESERVA HIDRO'
+    sheet['A11'] = 'RESERVA TÉRMICA'
+    sheet['A12'] = 'TOTAL SISTEMA'
+    sheet['A13'] = 'RESERVA PARA RPF'
+    sheet['A14'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]'
+    sheet['A15'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]'
+    sheet['A16'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A16:F16')
+    bordes_celdas(bordes_titulos,16)
+    sheet['A16'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A17'] = 'HIDRO'
+    sheet['A18'] = 'TÉRMICA TG-CC'
+    sheet['A19'] = 'TÉRMICA TV'
+    sheet['A20'] = 'TOTAL'
+    sheet['A21'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A21:F21')
+    bordes_celdas(bordes_titulos,21)
+    sheet['A21'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A22'] = 'HIDRO'
+    sheet['A23'] = 'TÉRMICA TG-CC'
+    sheet['A24'] = 'TÉRMICA TV'
+    sheet['A25'] = 'TOTAL'
+    sheet['A26'] = 'RESERVA NUEVA'
+    sheet['A27'] = 'RESERVA TOTAL 2'
+
+    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.close()
     return
 
 def Pmax_Pgen(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):

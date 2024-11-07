@@ -197,8 +197,7 @@ gensadi=generacion_total-pge-pga
 
 reserva_nueva=parametros[0]*gensadi/100
 
-
-
+informe.reserva_total(ruta)
 # Potencia operable en el parque regulante
 
 '''
