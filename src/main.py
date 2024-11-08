@@ -134,8 +134,10 @@ for pq in cmpval_sale:
 # 11 - Generación total a restar
 total_A, total_R=generacion.total()
 generacion_total=total_A
+print('la generacion total es ',generacion_total)
+print('la generacion a restar es ',pge)
+print('la generacion de las areas a restar es ',pga)
 
-'''
 # Revisar generacion total del SADI
 gensadi=generacion_total-pge-pga
 
@@ -166,6 +168,7 @@ for i,tipo in enumerate(tipo):
    elif tipo=='TG':
       pot_TG+=potencia_maxima[i]
       reserva_TG+=reserva[i]
+      reservatermica+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -173,6 +176,7 @@ for i,tipo in enumerate(tipo):
    elif tipo=='TV':
       pot_TV+=potencia_maxima[i]
       reserva_TV+=reserva[i]
+      reservatermica+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -180,36 +184,56 @@ for i,tipo in enumerate(tipo):
    elif tipo=='CC':
       pot_CC+=potencia_maxima[i]
       reserva_CC+=reserva[i]
+      reservatermica+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
          reservatermica_rpf+=reserva[i]
+
+reservahidro=round(reservahidro,2)
+reservatermica=round(reservatermica,2)
+reservahidro_rpf=round(reservahidro_rpf,2)
+reservatermica_rpf=round(reservatermica_rpf,2)
+pot_hidro=round(pot_hidro,2)
+pot_TV=round(pot_TV,2)
+pot_CC=round(pot_CC,2)
+pot_TG=round(pot_TG,2)
+reserva_TV=round(reserva_TV,2)
+reserva_CC=round(reserva_CC,2)
+reserva_TG=round(reserva_TG,2)
+reservahidro_rpf=round(reservahidro_rpf,2)
+reservatermica_rpf=round(reservatermica_rpf,2)
+
+
 print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
 print('-----')
 print('RESERVA HIDRO [MW]',reservahidro)
 print('RESERVA TERMICA [MW]',reservatermica)
 print('RESERVA TOTAL [MW]',reservahidro+reservatermica)
-print('RESERVA ROTANTE DEL PARQUE REGULANTE ',((reservatermica+reservahidro)/generacion_total)*100)
+print('RESERVA ROTANTE DEL PARQUE REGULANTE [%]',round(((reservatermica+reservahidro)/generacion_total)*100))
+print('-----')
 print('RESERVA PROGRAMADA A 50Hz PARA RPF')
 print('RESERVA HIDRO RPF [MW]',reservahidro_rpf)
 print('RESERVA TERMICA RPF [MW]',reservatermica_rpf)
 print('RESERVA TOTAL SISTEMA [MW]',reservatermica_rpf+reservahidro_rpf)
-print('RESERVA PARA RPF [MW]',((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100)
+print('RESERVA PARA RPF [%]',round(((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100))
 print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]',reservahidro-reservahidro_rpf)
-print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]',((reservahidro-reservahidro_rpf)/generacion_total)*100)
+print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]',((reservahidro-reservahidro_rpf)/generacion_total)*100)
+print('-----')
 print('POTENCIA OPERABLE EN EL PARQUE REGULANTE')
 print('HIDRO [MW]',pot_hidro)
 print('TERM. TG-CC [MW]',pot_TG)
 print('TERM. TV [MW]',pot_TV)
 print('TOTAL [MW]',pot_TV+pot_TG+pot_hidro)
+print('-----')
 print('RESERVA PROGRAMADA EN EL PARQUE REGULANTE')
 print('HIDRO [MW]',reservahidro_rpf)
 print('TERM. TG-CC [MW]',reserva_TG+reserva_CC)
 print('TERM. TV [MW]',reserva_TV)
 print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
-print('RESERVA NUEVA',parametros[0]*generacion_total/100)
-print('RESERVA TOTAL 2',reservatermica_rpf+reservahidro_rpf)
-
+print('RESERVA NUEVA',round(parametros[0]*generacion_total/100))
+print('RESERVA TOTAL2',reservatermica_rpf+reservahidro_rpf)
+'''
 
 porcentaje_reserva_total=((reservatermica+reservahidro)/generacion_total)*100
 
