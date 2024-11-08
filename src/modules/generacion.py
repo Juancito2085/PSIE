@@ -27,5 +27,6 @@ def total():
 
     p=cmpval.real
     q=cmpval.imag
-    print(p,q)
+    print(round(p,2),round(q,2))
+ 
     return(p,q)

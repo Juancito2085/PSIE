@@ -87,7 +87,11 @@ reserva=list()
 potencia_maxima=list()
 for i,gov in enumerate(governor):
    res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
-   print('potencia maxima ',pmax, 'potencia operativa ',P[i], 'reserva ',res, 'resultado ',pmax-P[i])
+   if res==(pmax-P[i]):
+      correcto='Correcto'
+   else:
+      correcto='Incorrecto'
+   print('potencia maxima ',round(pmax,2), 'potencia operativa ',round(P[i],2), 'reserva ',round(res,2), 'resultado ',correcto)
    reserva.append(res)
    potencia_maxima.append(pmax)
 
@@ -95,10 +99,10 @@ for i,gov in enumerate(governor):
 reserva_por=list()
 for i in range(0,len(bus)):
    reserva_por.append(round(((reserva[i]/P[i])*100),2))
-   print(round(((reserva[i]/P[i])*100),2))
+   print('Porcentaje de reserva ',round(((reserva[i]/P[i])*100),2))
 informe.Pmax_Pgen(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
-# 7 - Registro de los generadores con reserva por debajo de la optima
+# 7 - Registro de los generadores con reserva por debajo de la óptima
 informe.Menor_optima(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
 # 8 - Registro de los generadores con reserva mayor a la maxima
@@ -130,6 +134,10 @@ for pq in cmpval_sale:
 # 11 - Generación total a restar
 total_A, total_R=generacion.total()
 generacion_total=total_A
+
+'''
+# Revisar generacion total del SADI
+gensadi=generacion_total-pge-pga
 
 # 12 - informes de todo esto
 #Inicializacion de variables
@@ -176,8 +184,32 @@ for i,tipo in enumerate(tipo):
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
          reservatermica_rpf+=reserva[i]
+print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
+print('-----')
+print('RESERVA HIDRO [MW]',reservahidro)
+print('RESERVA TERMICA [MW]',reservatermica)
+print('RESERVA TOTAL [MW]',reservahidro+reservatermica)
+print('RESERVA ROTANTE DEL PARQUE REGULANTE ',((reservatermica+reservahidro)/generacion_total)*100)
+print('RESERVA PROGRAMADA A 50Hz PARA RPF')
+print('RESERVA HIDRO RPF [MW]',reservahidro_rpf)
+print('RESERVA TERMICA RPF [MW]',reservatermica_rpf)
+print('RESERVA TOTAL SISTEMA [MW]',reservatermica_rpf+reservahidro_rpf)
+print('RESERVA PARA RPF [MW]',((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100)
+print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]',reservahidro-reservahidro_rpf)
+print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]',((reservahidro-reservahidro_rpf)/generacion_total)*100)
+print('POTENCIA OPERABLE EN EL PARQUE REGULANTE')
+print('HIDRO [MW]',pot_hidro)
+print('TERM. TG-CC [MW]',pot_TG)
+print('TERM. TV [MW]',pot_TV)
+print('TOTAL [MW]',pot_TV+pot_TG+pot_hidro)
+print('RESERVA PROGRAMADA EN EL PARQUE REGULANTE')
+print('HIDRO [MW]',reservahidro_rpf)
+print('TERM. TG-CC [MW]',reserva_TG+reserva_CC)
+print('TERM. TV [MW]',reserva_TV)
+print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
+print('RESERVA NUEVA',parametros[0]*generacion_total/100)
+print('RESERVA TOTAL 2',reservatermica_rpf+reservahidro_rpf)
 
-reservatotal=reservahidro+reservatermica
 
 porcentaje_reserva_total=((reservatermica+reservahidro)/generacion_total)*100
 
@@ -193,14 +225,12 @@ pot_operable=pot_hidro+pot_TV+pot_CC+pot_TG
 
 reserva_programada=reserva_TV+reserva_CC+reserva_TG+reservahidro_rpf
 
-gensadi=generacion_total-pge-pga
-
 reserva_nueva=parametros[0]*gensadi/100
 
 informe.reserva_total(ruta)
 # Potencia operable en el parque regulante
 
-'''
+
 '            ************************'
 '            *    C.A.M.M.E.S.A.    *'
 '            ************************'
@@ -264,11 +294,11 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 '==========================================================='
 ' RESERVANUEVA = ',RESERVANUEVA
 ' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas menores a la optima)
-'''
+
 gensadi=generacion_total-pge-pga
 print(gensadi)
 
-'''
+
 # 14 - Sección donde recorta si el parametro[1] es 1
 print(parametros)
 if parametros[1]==1:
@@ -297,6 +327,7 @@ if parametros[1]==1:
       print('optima')
    else:
       print('dato')
+ 
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
    reserva_cl=list()
