@@ -60,42 +60,47 @@ def reserva_total(ruta):
     # sheet['A2'] = 'Escenario'
     sheet['A3'] = 'RESERVA ROTANTE EN MAQUINAS QUE REGULAN'
     sheet.merge_cells('A3:F3')
-    bordes_celdas(bordes_titulos,3)
     sheet['A3'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    bordes_celdas(bordes_titulos,3)
     sheet['A4'] = 'RESERVA HIDRO [MW]'
     sheet['A5'] = 'RESERVA TERMICA [MW]'
     sheet['A6'] = 'RESERVA TOTAL [MW]'
     unir_celdas_resultados(4,6)
     sheet['A7'] = 'RESERVA ROTANTE DEL PARQUE REGULANTE'
-    sheet.merge_cells('A7:G7')
-    bordes_celdas(bordes_titulos,7)
+    sheet.merge_cells('A7:E7')
     sheet['A7'].alignment = openpyxl.styles.Alignment(horizontal='center')
-    sheet['A8'] = 'RESERVA HIDRO'
-    sheet['A9'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
-    sheet['A10'] = 'RESERVA HIDRO'
-    sheet['A11'] = 'RESERVA TÉRMICA'
-    sheet['A12'] = 'TOTAL SISTEMA'
-    sheet['A13'] = 'RESERVA PARA RPF'
-    sheet['A14'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]'
-    sheet['A15'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]'
-    sheet['A16'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
-    sheet.merge_cells('A16:F16')
-    bordes_celdas(bordes_titulos,16)
-    sheet['A16'].alignment = openpyxl.styles.Alignment(horizontal='center')
-    sheet['A17'] = 'HIDRO'
-    sheet['A18'] = 'TÉRMICA TG-CC'
-    sheet['A19'] = 'TÉRMICA TV'
-    sheet['A20'] = 'TOTAL'
-    sheet['A21'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
-    sheet.merge_cells('A21:F21')
-    bordes_celdas(bordes_titulos,21)
-    sheet['A21'].alignment = openpyxl.styles.Alignment(horizontal='center')
-    sheet['A22'] = 'HIDRO'
-    sheet['A23'] = 'TÉRMICA TG-CC'
-    sheet['A24'] = 'TÉRMICA TV'
-    sheet['A25'] = 'TOTAL'
-    sheet['A26'] = 'RESERVA NUEVA'
-    sheet['A27'] = 'RESERVA TOTAL 2'
+    sheet['A8'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
+    sheet.merge_cells('A8:F8')
+    bordes_celdas(bordes_titulos,8)
+    sheet['A9'] = 'RESERVA HIDRO'
+    sheet['A10'] = 'RESERVA TÉRMICA'
+    sheet['A11'] = 'TOTAL SISTEMA'
+    unir_celdas_resultados(9,11)
+    sheet['A12'] = 'RESERVA PARA RPF'
+    sheet.merge_cells('A12:E12')
+    sheet['A13'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]'
+    sheet.merge_cells('A13:E13')
+    sheet['A14'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]'
+    sheet.merge_cells('A14:E14')
+    sheet['A15'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A15:F15')
+    sheet['A15'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A16'] = 'HIDRO'
+    sheet['A17'] = 'TÉRMICA TG-CC'
+    sheet['A18'] = 'TÉRMICA TV'
+    sheet['A19'] = 'TOTAL'
+    unir_celdas_resultados(16,19)
+    sheet['A20'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A20:F20')
+    bordes_celdas(bordes_titulos,20)
+    sheet['A20'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A21'] = 'HIDRO'
+    sheet['A22'] = 'TÉRMICA TG-CC'
+    sheet['A23'] = 'TÉRMICA TV'
+    sheet['A24'] = 'TOTAL'
+    unir_celdas_resultados(21,24)
+    sheet['A25'] = 'RESERVA NUEVA'
+    sheet['A26'] = 'RESERVA TOTAL 2'
 
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
