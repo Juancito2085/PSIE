@@ -233,27 +233,10 @@ print('TERM. TV [MW]',reserva_TV)
 print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
 print('RESERVA NUEVA',round(parametros[0]*generacion_total/100))
 print('RESERVA TOTAL2',reservatermica_rpf+reservahidro_rpf)
-'''
-
-porcentaje_reserva_total=((reservatermica+reservahidro)/generacion_total)*100
-
-reservatotal_rpf=reservahidro_rpf+reservatermica_rpf
-
-porcentaje_reserva_total_rpf=((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100
-
-# Reserva hidro RSF
-reservahidro_rsf=reservahidro-reservahidro_rpf
-porcentaje_reserva_hidro_rsf=((reservahidro-reservahidro_rpf)/generacion_total)*100
-
-pot_operable=pot_hidro+pot_TV+pot_CC+pot_TG
-
-reserva_programada=reserva_TV+reserva_CC+reserva_TG+reservahidro_rpf
-
-reserva_nueva=parametros[0]*gensadi/100
 
 informe.reserva_total(ruta)
 # Potencia operable en el parque regulante
-
+'''
 
 '            ************************'
 '            *    C.A.M.M.E.S.A.    *'
@@ -319,8 +302,7 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 ' RESERVANUEVA = ',RESERVANUEVA
 ' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas menores a la optima)
 
-gensadi=generacion_total-pge-pga
-print(gensadi)
+'''
 
 
 # 14 - Sección donde recorta si el parametro[1] es 1
@@ -351,7 +333,7 @@ if parametros[1]==1:
       print('optima')
    else:
       print('dato')
- 
+'''
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
    reserva_cl=list()
@@ -365,6 +347,35 @@ if parametros[1]==1:
          print('no se cambia en ', gov[i])'''
       
 '''
+print(****************************************************************************************)
+print(****************************************************************************************)
+print('LUEGO DEL RECORTE QUEDA)
+print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
+print('-----')
+print('RESERVA HIDRO [MW]')
+print('RESERVA TERMICA [MW]')
+print('RESERVA TOTAL [MW]')
+print('RESERVA ROTANTE DEL PARQUE REGULANTE [%]')
+print('-----')
+print('RESERVA PROGRAMADA A 50Hz PARA RPF')
+print('RESERVA HIDRO RPF [MW]')
+print('RESERVA TERMICA RPF [MW]')
+print('RESERVA TOTAL SISTEMA [MW]')
+print('RESERVA PARA RPF [%]')
+print('POTENCIA OPERABLE EN EL PARQUE REGULANTE')
+print('HIDRO [MW]')
+print('TERM. TG-CC [MW]')
+print('TERM. TV [MW]')
+print('TOTAL [MW]')
+print('-----')
+print('RESERVA PROGRAMADA EN EL PARQUE REGULANTE')
+print('HIDRO [MW]')
+print('TERM. TG-CC [MW]')
+print('TERM. TV [MW]')
+print('TOTAL [MW]')
+print('RESERVA NUEVA')
+print('RESERVA TOTAL2')
+
 '-----------------------------------------------------------'
 'LUEGO DEL RECORTE EN LA POTENCIA MAXIMA '
 '(PARA OBTENER UNA RESERVA ROTANTE TOTAL EN MAQ.'
