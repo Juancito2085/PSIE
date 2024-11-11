@@ -313,33 +313,42 @@ if parametros[1]==1:
       print('optima')
       dif_nueva=list()
       for i in range(0,len(reserva)):
-         dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+         if reserva[i]>parametros[0]:
+            dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+         else:
+            dif_nueva.append(0)
       print(dif_nueva)
 
       pmaxinueva=list()
       for i in range(0,len(P)):
-         pmaxinueva.append(P[i]+dif_nueva[i])
+         if reserva[i]>parametros[0]:
+            pmaxinueva.append(P[i]+dif_nueva[i])
+         else:
+            pmaxinueva.append(0)
+      print(pmaxinueva)
       reserva_nuevax=0
       for i in range(0,len(P)):
-         reserva_nuevax+=(pmaxinueva[i]-P[i])
+         if pmaxinueva[i]>0:
+            reserva_nuevax+=(pmaxinueva[i]-P[i])
    else:
       print('dato')
       pmaxinueva=list()
       for i in range(0,len(P)):
-         pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+         if reserva[i]>parametros[0]:
+            pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
 
-'''
+
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
    reserva_cl=list()
    potencia_maxima_cl=list()
    for i,gov in enumerate(governor):
-      if por_reserva[i]>parametros[0]:
+      if reserva_por[i]>parametros[0] and dif_nueva[i]>0:
          print(P[i])
          reserva[i],potencia_maxima[i]=CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i],CON[i])
          print('la reserva es ',reserva[i], 'y la potencia maxima es ',potencia_maxima[i])
       else:
-         print('no se cambia en ', gov[i])'''
+         print('no se cambia en ', gov[i])
       
 '''
 print(****************************************************************************************)

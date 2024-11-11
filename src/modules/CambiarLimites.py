@@ -128,7 +128,7 @@ def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
         ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
         ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
         limnue=(pmaxinue2/(v*rval22))+rval20
-        psspy.change_con(indice_ini+CON,limnue)
+        #psspy.change_con(indice_ini+CON,limnue)
         #agregado
         potencia_maxima=((limnue-rval20)*rval22)*v
         reserva=potencia_maxima-P
@@ -254,7 +254,7 @@ def STGV2P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
 def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue,CON):
     if difnue>0:
         limnue=pmaxinue/v
-        psspy.change_con(indice_ini+CON,limnue)
+        #psspy.change_con(indice_ini+CON,limnue)
         #agregado
         potencia_maxima=v*limnue
         reserva=potencia_maxima-P
