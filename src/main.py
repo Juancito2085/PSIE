@@ -204,6 +204,7 @@ reserva_TG=round(reserva_TG,2)
 reservahidro_rpf=round(reservahidro_rpf,2)
 reservatermica_rpf=round(reservatermica_rpf,2)
 reserva_nueva=parametros[0]*generacion_total/100
+reservatotal2=reservahidro_rpf+reservatermica_rpf
 
 print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
 print('-----')
@@ -232,7 +233,7 @@ print('TERM. TG-CC [MW]',reserva_TG+reserva_CC)
 print('TERM. TV [MW]',reserva_TV)
 print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
 print('RESERVA NUEVA',round(parametros[0]*generacion_total/100))
-print('RESERVA TOTAL2',reservatermica_rpf+reservahidro_rpf)
+print('RESERVA TOTAL2',reservatotal2)
 
 informe.reserva_total(ruta)
 # Potencia operable en el parque regulante
@@ -312,30 +313,62 @@ if parametros[1]==1:
    if parametros[2]==0:
       print('optima')
       dif_nueva=list()
-      for i in range(0,len(reserva)):
-         if reserva[i]>parametros[0]:
-            dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
-         else:
-            dif_nueva.append(0)
-      print(dif_nueva)
-
       pmaxinueva=list()
-      for i in range(0,len(P)):
-         if reserva[i]>parametros[0]:
-            pmaxinueva.append(P[i]+dif_nueva[i])
-         else:
-            pmaxinueva.append(0)
-      print(pmaxinueva)
       reserva_nuevax=0
-      for i in range(0,len(P)):
-         if pmaxinueva[i]>0:
-            reserva_nuevax+=(pmaxinueva[i]-P[i])
+      for i in range(0,len(reserva)):
+         if parametros[3]==1 and tipo[i]!='HI':
+            if reserva_por[i]>parametros[0]:
+               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+            else:
+               dif_nueva.append(0)
+            if reserva_por[i]>parametros[0]:
+               pmaxinueva.append(P[i]+dif_nueva[i])
+            else:
+               pmaxinueva.append(0)
+            if pmaxinueva[i]>0:
+               reserva_nuevax+=(pmaxinueva[i]-P[i])
+         elif parametros[3]==1 and tipo[i]=='HI':
+            if reserva_por[i]>parametros[0]:
+               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+            else:
+               dif_nueva.append(0)
+            if reserva_por[i]>parametros[0]:
+               pmaxinueva.append(P[i]+dif_nueva[i])
+            else:
+               pmaxinueva.append(0)
+            if pmaxinueva[i]>0:
+               reserva_nuevax+=(pmaxinueva[i]-P[i])
+         elif parametros[3]==0:
+            if reserva_por[i]>parametros[0]:
+               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+            else:
+               dif_nueva.append(0)
+            if reserva_por[i]>parametros[0]:
+               pmaxinueva.append(P[i]+dif_nueva[i])
+            else:
+               pmaxinueva.append(0)
+            if pmaxinueva[i]>0:
+               reserva_nuevax+=(pmaxinueva[i]-P[i])
    else:
       print('dato')
       pmaxinueva=list()
       for i in range(0,len(P)):
-         if reserva[i]>parametros[0]:
-            pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+         if reserva_por[i]>parametros[0]:
+            if parametros[3]==1 and tipo[i]!='HI':
+               if reserva_por[i]>parametros[0]:
+                  pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+               else:
+                  pmaxinueva.append(0)
+            elif parametros[3]==2 and tipo[i]=='HI':
+               if reserva_por[i]>parametros[0]:
+                  pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+               else:
+                  pmaxinueva.append(0)
+            elif parametros[3]==0:
+               if reserva_por[i]>parametros[0]:
+                  pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+               else:
+                  pmaxinueva.append(0)
 
 
    # 15 - Analisis de cada governor para cambiar los limites (2204)
@@ -351,6 +384,56 @@ if parametros[1]==1:
          print('no se cambia en ', gov[i])
       
 '''
+# Calculo de la reserva de los hidraulicos, termicos y ambos
+
+for i,tipo in enumerate(tipo):
+   if tipo=='HI':
+      pot_hidro+=potencia_maxima[i]
+      reservahidro+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservahidro_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservahidro_rpf+=reserva[i]
+   elif tipo=='TG':
+      pot_TG+=potencia_maxima[i]
+      reserva_TG+=reserva[i]
+      reservatermica+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+   elif tipo=='TV':
+      pot_TV+=potencia_maxima[i]
+      reserva_TV+=reserva[i]
+      reservatermica+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+   elif tipo=='CC':
+      pot_CC+=potencia_maxima[i]
+      reserva_CC+=reserva[i]
+      reservatermica+=reserva[i]
+      if reserva_por[i]>porcentaje[i]:
+         reservatermica_rpf+=P[i]*porcentaje[i]/100
+      else:
+         reservatermica_rpf+=reserva[i]
+
+reservahidro=round(reservahidro,2)
+reservatermica=round(reservatermica,2)
+reservahidro_rpf=round(reservahidro_rpf,2)
+reservatermica_rpf=round(reservatermica_rpf,2)
+pot_hidro=round(pot_hidro,2)
+pot_TV=round(pot_TV,2)
+pot_CC=round(pot_CC,2)
+pot_TG=round(pot_TG,2)
+reserva_TV=round(reserva_TV,2)
+reserva_CC=round(reserva_CC,2)
+reserva_TG=round(reserva_TG,2)
+reservahidro_rpf=round(reservahidro_rpf,2)
+reservatermica_rpf=round(reservatermica_rpf,2)
+reserva_nueva=parametros[0]*generacion_total/100
+
 print(****************************************************************************************)
 print(****************************************************************************************)
 print('LUEGO DEL RECORTE QUEDA)
