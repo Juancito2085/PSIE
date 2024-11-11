@@ -203,7 +203,7 @@ reserva_CC=round(reserva_CC,2)
 reserva_TG=round(reserva_TG,2)
 reservahidro_rpf=round(reservahidro_rpf,2)
 reservatermica_rpf=round(reservatermica_rpf,2)
-
+reserva_nueva=parametros[0]*generacion_total/100
 
 print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
 print('-----')
@@ -309,30 +309,25 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 print(parametros)
 if parametros[1]==1:
    print('recorta')
-   dif_nueva=list()
-   for i in range(0,len(reserva)):
-      dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
-   print(dif_nueva)
-   print(reserva)
-   pmaxinueva=list()
-   for i in range(0,len(P)):
-      pmaxinueva.append(P[i]+dif_nueva[i])
-
-   pmaxinueva2=list()
-   for i in range(0,len(P)):
-      pmaxinueva2.append(P[i]*(1+porcentaje[i]/100))
-
-   reserva_nuevax=0
-   for i in range(0,len(P)):
-      reserva_nuevax+=(pmaxinueva[i]-P[i])
-
-   print(reserva_nuevax)
-   total_dif=sum(dif_nueva)
-   total_max=sum(pmaxinueva)-sum(potencia_maxima)
    if parametros[2]==0:
       print('optima')
+      dif_nueva=list()
+      for i in range(0,len(reserva)):
+         dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+      print(dif_nueva)
+
+      pmaxinueva=list()
+      for i in range(0,len(P)):
+         pmaxinueva.append(P[i]+dif_nueva[i])
+      reserva_nuevax=0
+      for i in range(0,len(P)):
+         reserva_nuevax+=(pmaxinueva[i]-P[i])
    else:
       print('dato')
+      pmaxinueva=list()
+      for i in range(0,len(P)):
+         pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
+
 '''
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
@@ -341,7 +336,7 @@ if parametros[1]==1:
    for i,gov in enumerate(governor):
       if por_reserva[i]>parametros[0]:
          print(P[i])
-         reserva[i],potencia_maxima[i]=CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i], pmaxinueva2[i],CON[i])
+         reserva[i],potencia_maxima[i]=CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i],CON[i])
          print('la reserva es ',reserva[i], 'y la potencia maxima es ',potencia_maxima[i])
       else:
          print('no se cambia en ', gov[i])'''
