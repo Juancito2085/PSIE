@@ -120,9 +120,13 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
     sheet['D24'] = reserva_TV + reserva_CC + reserva_TG
     unir_celdas_resultados(21,24)
     sheet['A25'] = 'RESERVA NUEVA [MW]'
-    sheet['D25'] = reserva_nueva
+    sheet.merge_cells('A25:E25')
+    bordes_celdas(bordes_titulos,25)
+    sheet['F25'] = reserva_nueva
     sheet['A26'] = 'RESERVA TOTAL 2 [MW]'
-    sheet['D26'] = reservatotal2
+    sheet['F26'] = reservatotal2
+    sheet.merge_cells('A26:E26')
+    bordes_celdas(bordes_titulos,26)
 
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()

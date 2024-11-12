@@ -317,7 +317,7 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 ' RESERVANUEVA = ',RESERVANUEVA
 ' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas menores a la optima)
 '''
-'''
+
 # 14 - Sección donde recorta si el parametro[1] es 1
 print(parametros)
 if parametros[1]==1:
@@ -382,7 +382,7 @@ if parametros[1]==1:
                else:
                   pmaxinueva.append(0)
 
-
+'''
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
    reserva_cl=list()
