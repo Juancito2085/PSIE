@@ -18,6 +18,7 @@ os.environ['PATH'] += '' + sys_path_PSSE
 import datetime
 import re
 import tkinter
+from tkinter import filedialog, messagebox
 import pssexplore34
 import psspy
 
@@ -154,6 +155,7 @@ pot_TG=0
 reserva_TV=0
 reserva_CC=0
 reserva_TG=0
+reservatotal2=0
 
 # Calculo de la reserva de los hidraulicos, termicos y ambos
 
@@ -161,6 +163,8 @@ for i,tipo in enumerate(tipo):
    if tipo=='HI':
       pot_hidro+=potencia_maxima[i]
       reservahidro+=reserva[i]
+      if reserva_por[i]>parametros[0]:
+         reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservahidro_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -169,6 +173,8 @@ for i,tipo in enumerate(tipo):
       pot_TG+=potencia_maxima[i]
       reserva_TG+=reserva[i]
       reservatermica+=reserva[i]
+      if reserva_por[i]>parametros[0]:
+         reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -177,6 +183,8 @@ for i,tipo in enumerate(tipo):
       pot_TV+=potencia_maxima[i]
       reserva_TV+=reserva[i]
       reservatermica+=reserva[i]
+      if reserva_por[i]>parametros[0]:
+         reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -185,6 +193,8 @@ for i,tipo in enumerate(tipo):
       pot_CC+=potencia_maxima[i]
       reserva_CC+=reserva[i]
       reservatermica+=reserva[i]
+      if reserva_por[i]>parametros[0]:
+         reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
       else:
@@ -204,26 +214,27 @@ reserva_TG=round(reserva_TG,2)
 reservahidro_rpf=round(reservahidro_rpf,2)
 reservatermica_rpf=round(reservatermica_rpf,2)
 reserva_nueva=parametros[0]*generacion_total/100
-reservatotal2=reservahidro_rpf+reservatermica_rpf
+reservatotal2=round(reservatotal2,2)
 
+print('****************************************************************************************')
 print('RESERVA ROTANTE EN MAQUINAS QUE REGULAN')
 print('-----')
 print('RESERVA HIDRO [MW]',reservahidro)
 print('RESERVA TERMICA [MW]',reservatermica)
 print('RESERVA TOTAL [MW]',reservahidro+reservatermica)
-print('RESERVA ROTANTE DEL PARQUE REGULANTE [%]',round(((reservatermica+reservahidro)/generacion_total)*100))
+print('RESERVA ROTANTE DEL PARQUE REGULANTE [%]',round(((reservatermica+reservahidro)/generacion_total)*100,2))
 print('-----')
 print('RESERVA PROGRAMADA A 50Hz PARA RPF')
 print('RESERVA HIDRO RPF [MW]',reservahidro_rpf)
 print('RESERVA TERMICA RPF [MW]',reservatermica_rpf)
 print('RESERVA TOTAL SISTEMA [MW]',reservatermica_rpf+reservahidro_rpf)
-print('RESERVA PARA RPF [%]',round(((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100))
+print('RESERVA PARA RPF [%]',round(((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100,2))
 print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]',reservahidro-reservahidro_rpf)
-print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]',((reservahidro-reservahidro_rpf)/generacion_total)*100)
+print('COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]',round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2))
 print('-----')
 print('POTENCIA OPERABLE EN EL PARQUE REGULANTE')
 print('HIDRO [MW]',pot_hidro)
-print('TERM. TG-CC [MW]',pot_TG)
+print('TERM. TG-CC [MW]',pot_TG+pot_CC)
 print('TERM. TV [MW]',pot_TV)
 print('TOTAL [MW]',pot_TV+pot_TG+pot_hidro)
 print('-----')
@@ -232,12 +243,15 @@ print('HIDRO [MW]',reservahidro_rpf)
 print('TERM. TG-CC [MW]',reserva_TG+reserva_CC)
 print('TERM. TV [MW]',reserva_TV)
 print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
-print('RESERVA NUEVA',round(parametros[0]*generacion_total/100))
+print('RESERVA NUEVA',round(parametros[0]*generacion_total/100,2))
 print('RESERVA TOTAL2',reservatotal2)
 
-informe.reserva_total(ruta)
-# Potencia operable en el parque regulante
+informe.reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
+                     generacion_total,reserva_nueva,reservatotal2)
 '''
+# Potencia operable en el parque regulante
+
 
 '            ************************'
 '            *    C.A.M.M.E.S.A.    *'
@@ -302,10 +316,8 @@ RESERVANUEVA =((RESERVAOPTIMA/100.)*(GENSADI))
 '==========================================================='
 ' RESERVANUEVA = ',RESERVANUEVA
 ' RESERVAtotal2 = ',RESERVATOTAL2 (es la suma de todas las reservas menores a la optima)
-
 '''
-
-
+'''
 # 14 - Sección donde recorta si el parametro[1] es 1
 print(parametros)
 if parametros[1]==1:
@@ -383,7 +395,6 @@ if parametros[1]==1:
       else:
          print('no se cambia en ', gov[i])
       
-'''
 # Calculo de la reserva de los hidraulicos, termicos y ambos
 
 for i,tipo in enumerate(tipo):

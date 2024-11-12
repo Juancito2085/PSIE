@@ -30,7 +30,9 @@ def crear (ruta):
     print('Archivo creado en la ruta: ',ruta_completa)
     return
 
-def reserva_total(ruta):
+def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+                    pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
+                    generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
@@ -63,44 +65,64 @@ def reserva_total(ruta):
     sheet['A3'].alignment = openpyxl.styles.Alignment(horizontal='center')
     bordes_celdas(bordes_titulos,3)
     sheet['A4'] = 'RESERVA HIDRO [MW]'
+    sheet['D4'] = reservahidro
     sheet['A5'] = 'RESERVA TERMICA [MW]'
+    sheet['D5'] = reservatermica
     sheet['A6'] = 'RESERVA TOTAL [MW]'
+    sheet['D6'] = reservahidro + reservatermica
     unir_celdas_resultados(4,6)
-    sheet['A7'] = 'RESERVA ROTANTE DEL PARQUE REGULANTE'
+    sheet['A7'] = 'RESERVA ROTANTE DEL PARQUE REGULANTE [%]'
     sheet.merge_cells('A7:E7')
     sheet['A7'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['F7'] =round(((reservatermica+reservahidro)/generacion_total)*100,2)
     sheet['A8'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
     sheet.merge_cells('A8:F8')
     bordes_celdas(bordes_titulos,8)
-    sheet['A9'] = 'RESERVA HIDRO'
-    sheet['A10'] = 'RESERVA TÉRMICA'
-    sheet['A11'] = 'TOTAL SISTEMA'
+    sheet['A9'] = 'RESERVA HIDRO [MW]'
+    sheet['D9'] = reservahidro_rpf
+    sheet['A10'] = 'RESERVA TÉRMICA [MW]'
+    sheet['D10'] = reservatermica_rpf
+    sheet['A11'] = 'TOTAL SISTEMA [MW]'
+    sheet['D11'] = reservahidro_rpf + reservatermica_rpf
     unir_celdas_resultados(9,11)
-    sheet['A12'] = 'RESERVA PARA RPF'
+    sheet['A12'] = 'RESERVA PARA RPF [%]'
     sheet.merge_cells('A12:E12')
+    sheet['F12']=round(((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100,2)
     sheet['A13'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]'
     sheet.merge_cells('A13:E13')
+    sheet['F13'] = reservahidro-reservahidro_rpf
     sheet['A14'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]'
     sheet.merge_cells('A14:E14')
+    sheet['F14'] = round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2)
     sheet['A15'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
     sheet.merge_cells('A15:F15')
     sheet['A15'].alignment = openpyxl.styles.Alignment(horizontal='center')
-    sheet['A16'] = 'HIDRO'
-    sheet['A17'] = 'TÉRMICA TG-CC'
-    sheet['A18'] = 'TÉRMICA TV'
-    sheet['A19'] = 'TOTAL'
+    sheet['A16'] = 'HIDRO [MW]'
+    sheet['D16'] = pot_hidro
+    sheet['A17'] = 'TÉRMICA TG-CC [MW]'
+    sheet['D17'] = pot_TG + pot_CC
+    sheet['A18'] = 'TÉRMICA TV [MW]'
+    sheet['D18'] = pot_TV
+    sheet['A19'] = 'TOTAL [MW]'
+    sheet['D19'] = pot_hidro + pot_TG + pot_CC + pot_TV
     unir_celdas_resultados(16,19)
     sheet['A20'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
     sheet.merge_cells('A20:F20')
     bordes_celdas(bordes_titulos,20)
     sheet['A20'].alignment = openpyxl.styles.Alignment(horizontal='center')
-    sheet['A21'] = 'HIDRO'
-    sheet['A22'] = 'TÉRMICA TG-CC'
-    sheet['A23'] = 'TÉRMICA TV'
-    sheet['A24'] = 'TOTAL'
+    sheet['A21'] = 'HIDRO [MW]'
+    sheet['D21'] = reserva_TV
+    sheet['A22'] = 'TÉRMICA TG-CC [MW]'
+    sheet['D22'] = reserva_CC+reserva_TG
+    sheet['A23'] = 'TÉRMICA TV [MW]'
+    sheet['D23'] = reserva_TV
+    sheet['A24'] = 'TOTAL [MW]'
+    sheet['D24'] = reserva_TV + reserva_CC + reserva_TG
     unir_celdas_resultados(21,24)
-    sheet['A25'] = 'RESERVA NUEVA'
-    sheet['A26'] = 'RESERVA TOTAL 2'
+    sheet['A25'] = 'RESERVA NUEVA [MW]'
+    sheet['D25'] = reserva_nueva
+    sheet['A26'] = 'RESERVA TOTAL 2 [MW]'
+    sheet['D26'] = reservatotal2
 
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
