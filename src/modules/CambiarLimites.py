@@ -17,17 +17,19 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 
 import psspy
 
-def cambiar_limites(nombre,indice_ini,rval, v, P, normal,difnue, pmaxinue, CON):
-    if nombre=='BSASGO':
-        BSASGO(indice_ini, P,normal,difnue,pmaxinue,pmaxinue2,CON)
+def cambiar_limites(nombre,indice_ini,rval, v, P,difnue, pmaxinue,CON):
+    '''if nombre=='BSASGO':
+        BSASGO(indice_ini, P,normal,difnue,pmaxinue,pmaxinue,CON)
     if nombre=='RAVYA3':
-        RAVYA3(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue2,CON)
+        RAVYA3(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue,CON)
     if nombre=='GAST2A':
-        GAST2A(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue2,CON)
+        GAST2A(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue,CON)'''
     if nombre=='HYGOV':
-        HYGOV(indice_ini,normal, difnue, v, P,  pmaxinue, CON)
+        print('v en la llamada', v)
+        HYGOV(indice_ini, difnue, v, P,  pmaxinue, CON)
     if nombre=='TGOV1':
-        TGOV1(normal,difnue, v, P, pmaxinue, indice_ini,CON)
+        print('v en la llamada', v)
+        TGOV1(indice_ini, v, pmaxinue, CON)
     return
 '''
 def BSASGO(indice_ini, potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
@@ -123,19 +125,14 @@ def GASTWD(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
 
 
 '''
-def HYGOV(indice_ini, v, P, normal,difnue, pmaxinue, pmaxinue2,CON):
+def HYGOV(indice_ini, v, P,difnue, pmaxinue, CON):
     if difnue>0:
         ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
         ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
-        limnue=(pmaxinue2/(v*rval22))+rval20
-        #psspy.change_con(indice_ini+CON,limnue)
-        #agregado
-        potencia_maxima=((limnue-rval20)*rval22)*v
-        reserva=potencia_maxima-P
-        print(reserva)
-        print(potencia_maxima)
-        print(P)
-    return (reserva,potencia_maxima)
+        limnue=(pmaxinue/(v*rval22))+rval20
+        psspy.change_con(indice_ini+CON,limnue)
+        
+    return 
 
 '''
 def HYGV5P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
@@ -251,17 +248,18 @@ def STGV2P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
     return (reserva,potencia_maxima)
 
 '''
-def TGOV1(indice_ini, v, P,normal,difnue, pmaxinue,CON):
-    if difnue>0:
-        limnue=pmaxinue/v
-        #psspy.change_con(indice_ini+CON,limnue)
-        #agregado
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-P
-        print(reserva)
-        print(potencia_maxima)
-        print(P)
-    return (reserva,potencia_maxima)
+def TGOV1(indice_ini, v, pmaxinue,CON):
+    v_local=v
+    print('V adentro',v_local)
+    limnue=pmaxinue/v_local
+        
+    print(pmaxinue)
+    print(limnue)
+
+    psspy.change_con(indice_ini+CON,limnue)
+    #agregado
+
+    return 
 
 '''
 def WPIDHY (indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):

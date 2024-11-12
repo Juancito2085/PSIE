@@ -76,7 +76,8 @@ for i in range(0,len(bus)):
    v1.append(v1_temp)
    indice_ini.append(indice_ini_temp)
    rval.append(rval_temp)
-
+print('V', v)
+print('RVAL', rval)
 # 5 - Determinación de los margenes de reserva
 P=list()
 Q=list()
@@ -361,40 +362,124 @@ if parametros[1]==1:
                pmaxinueva.append(0)
             if pmaxinueva[i]>0:
                reserva_nuevax+=(pmaxinueva[i]-P[i])
+      print(reserva)
+      print(dif_nueva)
+      print(pmaxinueva)
+      print(reserva_nuevax)
+      print('-------------')
    else:
       print('dato')
       pmaxinueva=list()
+      dif_nueva=list()
       for i in range(0,len(P)):
-         if reserva_por[i]>parametros[0]:
             if parametros[3]==1 and tipo[i]!='HI':
+               if reserva_por[i]>parametros[0]:
+                  dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               else:
+                  dif_nueva.append(0)
                if reserva_por[i]>parametros[0]:
                   pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
                else:
                   pmaxinueva.append(0)
             elif parametros[3]==2 and tipo[i]=='HI':
                if reserva_por[i]>parametros[0]:
+                  dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               else:
+                  dif_nueva.append(0)
+               if reserva_por[i]>parametros[0]:
                   pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
                else:
                   pmaxinueva.append(0)
             elif parametros[3]==0:
                if reserva_por[i]>parametros[0]:
+                  dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               else:
+                  dif_nueva.append(0)
+               if reserva_por[i]>parametros[0]:
                   pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
                else:
                   pmaxinueva.append(0)
+      print(reserva)
+      print(dif_nueva)
+      print(pmaxinueva)
+      print('-------------')
 
-'''
+
+
    # 15 - Analisis de cada governor para cambiar los limites (2204)
    # 16  - Análisis de cada governor para determinar los margenes de reserva con los limites corregidos (2813)
    reserva_cl=list()
    potencia_maxima_cl=list()
    for i,gov in enumerate(governor):
       if reserva_por[i]>parametros[0] and dif_nueva[i]>0:
-         print(P[i])
-         reserva[i],potencia_maxima[i]=CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i],  parametros[2],dif_nueva[i], pmaxinueva[i],CON[i])
-         print('la reserva es ',reserva[i], 'y la potencia maxima es ',potencia_maxima[i])
+         print('V afuera',v[i])
+         CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i], dif_nueva[i], pmaxinueva[i],CON[i])
       else:
-         print('no se cambia en ', gov[i])
+         print('no se cambia en ', governor[i])
+
+   def volver_a_simular():
+      # Cargar el caso
+      psspy.case('savnw.sav')
       
+      # Configurar la simulación
+      psspy.cong(0)
+      psspy.conl(0, 1, 1, [0, 0], [100.0, 0.0, 0.0, 100.0])
+      psspy.conl(0, 1, 2, [0, 0], [100.0, 0.0, 0.0, 100.0])
+      psspy.conl(0, 1, 3, [0, 0], [100.0, 0.0, 0.0, 100.0])
+      psspy.fact()
+      psspy.tysl(0)
+      
+      '''# Inicializar la simulación
+      ierr = psspy.strt(0, 'output_file.out')
+      if ierr != 0:
+         print('Error al inicializar la simulación')
+         return'''
+    
+      # Ejecutar la simulación
+      ierr = psspy.run(0, 1.0, 1, 1, 0)
+      if ierr != 0:
+         print('Error al ejecutar la simulación')
+         return
+   volver_a_simular()
+
+   # 4 - Verificacion de los datos
+   nombre=list()
+   cmpval=list()
+   v=list()
+   v1=list()
+   indice_ini=list()
+   rval=list()
+   for i in range(0,len(bus)):
+      nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(bus[i],idg[i],CON[i])
+      nombre.append(nombre_temp)
+      cmpval.append(cmpval_temp)
+      v.append(v_temp)
+      v1.append(v1_temp)
+      indice_ini.append(indice_ini_temp)
+      rval.append(rval_temp)
+   print('V',v)
+   print('RVAL',rval)
+
+   # 5 - Determinación de los margenes de reserva
+   P=list()
+   Q=list()
+   for pq in cmpval:
+      P.append(pq.real)
+      Q.append(pq.imag)
+
+   reserva=list()
+   potencia_maxima=list()
+   for i,gov in enumerate(governor):
+      res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
+      if res==(pmax-P[i]):
+         correcto='Correcto'
+      else:
+         correcto='Incorrecto'
+      print('potencia maxima ',round(pmax,2), 'potencia operativa ',round(P[i],2), 'reserva ',round(res,2), 'resultado ',correcto)
+      reserva.append(res)
+      potencia_maxima.append(pmax)
+'''
+
 # Calculo de la reserva de los hidraulicos, termicos y ambos
 
 for i,tipo in enumerate(tipo):
@@ -658,4 +743,3 @@ if parametros[1]==1:
        reserva_cl.append(res_temp)
       potencia_maxima_cl.append(pot_max_temp)
       print('la reserva es ',res_temp, 'y la potencia maxima es ',pot_max_temp)'''
-      
