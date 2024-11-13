@@ -96,6 +96,7 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
     sheet['F14'] = round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2)
     sheet['A15'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
     sheet.merge_cells('A15:F15')
+    bordes_celdas(bordes_titulos,15)
     sheet['A15'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A16'] = 'HIDRO [MW]'
     sheet['D16'] = pot_hidro
@@ -119,6 +120,7 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
     sheet['A24'] = 'TOTAL [MW]'
     sheet['D24'] = reserva_TV + reserva_CC + reserva_TG
     unir_celdas_resultados(21,24)
+    bordes_celdas(bordes_titulos,24)
     sheet['A25'] = 'RESERVA NUEVA [MW]'
     sheet.merge_cells('A25:E25')
     bordes_celdas(bordes_titulos,25)
@@ -127,6 +129,107 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
     sheet['F26'] = reservatotal2
     sheet.merge_cells('A26:E26')
     bordes_celdas(bordes_titulos,26)
+
+    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.close()
+    return
+
+def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+                    pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
+                    generacion_total,reserva_nueva,reservatotal2):
+    """Completa los datos de la hoja reserva_total.prn con los valores despues del recorte
+    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+    #Abrimos el archivo de excel
+    workbook = openpyxl.load_workbook(ruta + '/Reserva_salida1.xlsx')
+    #Seleccionamos la hoja donde vamos a completar con datos
+    sheet = workbook['reserva_total.prn']
+    # Defino formatos y funciones de formatos
+    bordes_titulos = Border(left=Side(style='thin'), 
+                         right=Side(style='thin'), 
+                         top=Side(style='thin'), 
+                         bottom=Side(style='thin'))
+    
+    def bordes_celdas(bordes,fila):
+        for col in range(1, 7):
+            cell = sheet.cell(row=fila, column=col)
+            cell.alignment = Alignment(horizontal='center')
+            cell.border = bordes
+    
+    def unir_celdas_resultados(fila_inicial, fila_final):
+        for row in range(fila_inicial, fila_final+1):
+            sheet.merge_cells('A'+str(row)+':C'+str(row))
+            sheet.merge_cells('D'+str(row)+':F'+str(row))
+        return
+    
+    sheet['A29'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA EN LOS GENERADORES EN BASE A '
+    sheet.merge_cells('A29:H29')
+    sheet['A30'] = 'RESERVA ROTANTE EN MÁQUINAS QUE REGULAN'
+    sheet.merge_cells('A30:F30')
+    bordes_celdas(bordes_titulos,30)
+    sheet['A31'] = 'RESERVA HIDRO [MW]'
+    sheet['D31'] = reservahidro
+    sheet['A32'] = 'RESERVA TERMICA [MW]'
+    sheet['D32'] = reservatermica
+    sheet['A33'] = 'RESERVA TOTAL [MW]'
+    sheet['D33'] = reservahidro + reservatermica
+    unir_celdas_resultados(31,33)
+    sheet['A34'] = 'RESERVA ROTANTE DEL PARQUE REGULANTE [%]'
+    sheet.merge_cells('A34:E34')
+    sheet['F34'] =round(((reservatermica+reservahidro)/generacion_total)*100,2)
+    sheet['A35'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
+    sheet.merge_cells('A35:F35')
+    bordes_celdas(bordes_titulos,35)
+    sheet['A36'] = 'RESERVA HIDRO [MW]'
+    sheet['D36'] = reservahidro_rpf
+    sheet['A37'] = 'RESERVA TÉRMICA [MW]'
+    sheet['D37'] = reservatermica_rpf
+    sheet['A38'] = 'TOTAL SISTEMA [MW]'
+    sheet['D38'] = reservahidro_rpf + reservatermica_rpf
+    unir_celdas_resultados(36,38)
+    sheet['A39'] = 'RESERVA PARA RPF [%]'
+    sheet.merge_cells('A39:E39')
+    sheet['F39']=round(((reservatermica_rpf+reservahidro_rpf)/generacion_total)*100,2)
+    sheet['A40'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [MW]'
+    sheet.merge_cells('A40:E40')
+    sheet['F40'] = reservahidro-reservahidro_rpf
+    sheet['A41'] = 'COLABORACIÓN DEL PARQUE HIDRO EN RSF [%]'
+    sheet.merge_cells('A41:E41')
+    sheet['F41'] = round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2)
+    sheet['A42'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A42:F42')
+    bordes_celdas(bordes_titulos,42)
+    sheet['A42'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A43'] = 'HIDRO [MW]'
+    sheet['D43'] = pot_hidro
+    sheet['A44'] = 'TÉRMICA TG-CC [MW]'
+    sheet['D44'] = pot_TG + pot_CC
+    sheet['A45'] = 'TÉRMICA TV [MW]'
+    sheet['D45'] = pot_TV
+    sheet['A46'] = 'TOTAL [MW]'
+    sheet['D46'] = pot_hidro + pot_TG + pot_CC + pot_TV
+    unir_celdas_resultados(43,46)
+    sheet['A47'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
+    sheet.merge_cells('A47:F47')
+    bordes_celdas(bordes_titulos,47)
+    sheet['A47'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A48'] = 'HIDRO [MW]'
+    sheet['D48'] = reserva_TV
+    sheet['A49'] = 'TÉRMICA TG-CC [MW]'
+    sheet['D49'] = reserva_CC+reserva_TG
+    sheet['A50'] = 'TÉRMICA TV [MW]'
+    sheet['D50'] = reserva_TV
+    sheet['A51'] = 'TOTAL [MW]'
+    sheet['D51'] = reserva_TV + reserva_CC + reserva_TG
+    unir_celdas_resultados(48,51)
+    bordes_celdas(bordes_titulos,51)
+    sheet['A52'] = 'RESERVA NUEVA [MW]'
+    sheet.merge_cells('A52:E52')
+    bordes_celdas(bordes_titulos,52)
+    sheet['F52'] = reserva_nueva
+    sheet['A53'] = 'RESERVA TOTAL 2 [MW]'
+    sheet['F53'] = reservatotal2
+    sheet.merge_cells('A53:E53')
+    bordes_celdas(bordes_titulos,53)
 
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
