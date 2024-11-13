@@ -400,6 +400,7 @@ if parametros[1]==1:
                else:
                   pmaxinueva.append(0)
       print(reserva)
+      print(P)
       print(dif_nueva)
       print(pmaxinueva)
       print('-------------')
@@ -429,11 +430,11 @@ if parametros[1]==1:
       psspy.fact()
       psspy.tysl(0)
       
-      '''# Inicializar la simulación
+      # Inicializar la simulación
       ierr = psspy.strt(0, 'output_file.out')
       if ierr != 0:
          print('Error al inicializar la simulación')
-         return'''
+         return
     
       # Ejecutar la simulación
       ierr = psspy.run(0, 1.0, 1, 1, 0)
@@ -478,8 +479,8 @@ if parametros[1]==1:
       print('potencia maxima ',round(pmax,2), 'potencia operativa ',round(P[i],2), 'reserva ',round(res,2), 'resultado ',correcto)
       reserva.append(res)
       potencia_maxima.append(pmax)
-'''
 
+'''
 # Calculo de la reserva de los hidraulicos, termicos y ambos
 
 for i,tipo in enumerate(tipo):

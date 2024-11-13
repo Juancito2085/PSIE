@@ -26,9 +26,8 @@ def cambiar_limites(nombre,indice_ini,rval, v, P,difnue, pmaxinue,CON):
         GAST2A(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue,CON)'''
     if nombre=='HYGOV':
         print('v en la llamada', v)
-        HYGOV(indice_ini, difnue, v, P,  pmaxinue, CON)
+        HYGOV(indice_ini,v, pmaxinue, CON)
     if nombre=='TGOV1':
-        print('v en la llamada', v)
         TGOV1(indice_ini, v, pmaxinue, CON)
     return
 '''
@@ -125,13 +124,13 @@ def GASTWD(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
 
 
 '''
-def HYGOV(indice_ini, v, P,difnue, pmaxinue, CON):
-    if difnue>0:
-        ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
-        ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
-        limnue=(pmaxinue/(v*rval22))+rval20
-        psspy.change_con(indice_ini+CON,limnue)
-        
+def HYGOV(indice_ini, v, pmaxinue, CON):
+    print('v en la funcion', v)
+    ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
+    ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
+    limnue=(pmaxinue/(v*rval22))+rval20
+    psspy.change_con(indice_ini+CON,limnue)
+
     return 
 
 '''
@@ -249,13 +248,7 @@ def STGV2P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
 
 '''
 def TGOV1(indice_ini, v, pmaxinue,CON):
-    v_local=v
-    print('V adentro',v_local)
-    limnue=pmaxinue/v_local
-        
-    print(pmaxinue)
-    print(limnue)
-
+    limnue=pmaxinue/v
     psspy.change_con(indice_ini+CON,limnue)
     #agregado
 
