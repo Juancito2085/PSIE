@@ -162,7 +162,7 @@ for i,clase in enumerate(tipo):
    if clase=='HI':
       pot_hidro+=potencia_maxima[i]
       reservahidro+=reserva[i]
-      if reserva_por[i]>parametros[0]:
+      if reserva_por[i]>=parametros[0]:
          reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservahidro_rpf+=P[i]*porcentaje[i]/100
@@ -172,7 +172,7 @@ for i,clase in enumerate(tipo):
       pot_TG+=potencia_maxima[i]
       reserva_TG+=reserva[i]
       reservatermica+=reserva[i]
-      if reserva_por[i]>parametros[0]:
+      if reserva_por[i]>=parametros[0]:
          reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
@@ -182,7 +182,7 @@ for i,clase in enumerate(tipo):
       pot_TV+=potencia_maxima[i]
       reserva_TV+=reserva[i]
       reservatermica+=reserva[i]
-      if reserva_por[i]>parametros[0]:
+      if reserva_por[i]>=parametros[0]:
          reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
@@ -192,7 +192,7 @@ for i,clase in enumerate(tipo):
       pot_CC+=potencia_maxima[i]
       reserva_CC+=reserva[i]
       reservatermica+=reserva[i]
-      if reserva_por[i]>parametros[0]:
+      if reserva_por[i]>=parametros[0]:
          reservatotal2+=reserva[i]
       if reserva_por[i]>porcentaje[i]:
          reservatermica_rpf+=P[i]*porcentaje[i]/100
@@ -410,7 +410,6 @@ if parametros[1]==1:
    potencia_maxima_cl=list()
    for i,gov in enumerate(governor):
       if reserva_por[i]>parametros[0] and dif_nueva[i]>0:
-         print('V afuera',v[i])
          CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i], dif_nueva[i], pmaxinueva[i],CON[i])
       else:
          print('no se cambia en ', governor[i])
@@ -497,34 +496,42 @@ if parametros[1]==1:
    reserva_TG=0
    reservatotal2=0
    
-   for i,tipo in enumerate(tipo):
-      if tipo=='HI':
+   for i,clase in enumerate(tipo):
+      if clase=='HI':
          pot_hidro+=potencia_maxima[i]
          reservahidro+=reserva[i]
+         if reserva_por[i]>=parametros[0]:
+            reservatotal2+=reserva[i]
          if reserva_por[i]>porcentaje[i]:
             reservahidro_rpf+=P[i]*porcentaje[i]/100
          else:
             reservahidro_rpf+=reserva[i]
-      elif tipo=='TG':
+      elif clase=='TG':
          pot_TG+=potencia_maxima[i]
          reserva_TG+=reserva[i]
          reservatermica+=reserva[i]
+         if reserva_por[i]>=parametros[0]:
+            reservatotal2+=reserva[i]
          if reserva_por[i]>porcentaje[i]:
             reservatermica_rpf+=P[i]*porcentaje[i]/100
          else:
             reservatermica_rpf+=reserva[i]
-      elif tipo=='TV':
+      elif clase=='TV':
          pot_TV+=potencia_maxima[i]
          reserva_TV+=reserva[i]
          reservatermica+=reserva[i]
+         if reserva_por[i]>=parametros[0]:
+            reservatotal2+=reserva[i]
          if reserva_por[i]>porcentaje[i]:
             reservatermica_rpf+=P[i]*porcentaje[i]/100
          else:
             reservatermica_rpf+=reserva[i]
-      elif tipo=='CC':
+      elif clase=='CC':
          pot_CC+=potencia_maxima[i]
          reserva_CC+=reserva[i]
          reservatermica+=reserva[i]
+         if reserva_por[i]>=parametros[0]:
+            reservatotal2+=reserva[i]
          if reserva_por[i]>porcentaje[i]:
             reservatermica_rpf+=P[i]*porcentaje[i]/100
          else:
@@ -661,15 +668,3 @@ nueva reserva total
 totamax=totamax+pmaxiNUE(IGEN)-P(IGEN)
 otra nueva reserva total
 """
-#Se registran los generadores que tienen PMAX<PGEN (1721)
-#ERRROR EN GENERADOR, ibus, id, nombre
-
-#Se registran en pmax_pgen.prn "DETALLES DE RESERVA DE GENERADORES" (1732)
-#IBUS NOMBRE ID POT_MAX POT_GEN MAX_GEN RESERVA% PORCENTAJE DATO RESOPT 
-
-#DIFPOT=pmax-p es la reserva que queda
-
-#Registrar generadores con reserva por debajo de la optima (1799)
-
-#Registrar generadores con reserva mayoor a la maxima (1831)
-
