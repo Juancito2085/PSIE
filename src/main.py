@@ -70,7 +70,7 @@ indice_ini=list()
 rval=list()
 for i in range(0,len(bus)):
    nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(bus[i],idg[i],CON[i])
-   nombre.append(nombre_temp)
+   nombre.append(nombre_temp.split()[0])
    cmpval.append(cmpval_temp)
    v.append(v_temp)
    v1.append(v1_temp)

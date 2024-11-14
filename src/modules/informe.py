@@ -59,6 +59,8 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
 
     #Escribimos los datos en la hoja debajo de los encabezados en la fila 2
     sheet['A1'] = 'Análisis de la Reserva Total'
+    sheet.merge_cells('A1:F1')
+    sheet['A1'].alignment = openpyxl.styles.Alignment(horizontal='center')
     # sheet['A2'] = 'Escenario'
     sheet['A3'] = 'RESERVA ROTANTE EN MAQUINAS QUE REGULAN'
     sheet.merge_cells('A3:F3')
@@ -161,8 +163,9 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
             sheet.merge_cells('D'+str(row)+':F'+str(row))
         return
     
-    sheet['A29'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA EN LOS GENERADORES EN BASE A '
-    sheet.merge_cells('A29:H29')
+    sheet['A29'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA '
+    sheet.merge_cells('A29:F29')
+    sheet['A29'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A30'] = 'RESERVA ROTANTE EN MÁQUINAS QUE REGULAN'
     sheet.merge_cells('A30:F30')
     bordes_celdas(bordes_titulos,30)
@@ -233,6 +236,7 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
 
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
+    
     return
 
 def Pmax_Pgen(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
@@ -252,14 +256,29 @@ def Pmax_Pgen(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resop
         sheet.cell(row=row, column=1).value = ibus[i]
         sheet.cell(row=row, column=2).value = nombre[i]
         sheet.cell(row=row, column=3).value = id[i]
-        sheet.cell(row=row, column=4).value = pot_max[i]
-        sheet.cell(row=row, column=5).value = pot_gen[i]
-        sheet.cell(row=row, column=6).value = max_gen[i]
-        sheet.cell(row=row, column=7).value = reserva[i]
+        sheet.cell(row=row, column=4).value = round(pot_max[i],2)
+        sheet.cell(row=row, column=5).value = round(pot_gen[i],2)
+        sheet.cell(row=row, column=6).value = round(max_gen[i],2)
+        sheet.cell(row=row, column=7).value = round(reserva[i],2)
         sheet.cell(row=row, column=8).value = por_dato[i]
         sheet.cell(row=row, column=9).value = resopt
 
-    
+    # Se hace el recuadro de los datos y los bordes de las celdas
+    for col in range(1, 10):
+        cell = sheet.cell(row=1, column=col)
+        cell.alignment = Alignment(horizontal='center')
+        cell.font = Font(bold=True) 
+    for row in range(1, len(ibus)+2):
+        for col in range(1, 10):
+            cell = sheet.cell(row=row, column=col)
+            cell.alignment = Alignment(horizontal='center')
+            cell.border = Border(left=Side(style='thin'), 
+                         right=Side(style='thin'), 
+                         top=Side(style='thin'), 
+                         bottom=Side(style='thin'))
+    # Se ajusta la celda para que se vea mejor
+    for col in range(1, 10):
+        sheet.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 20
 
     # Guardamos el archivo de excel
     workbook.save(ruta + '/Reserva_salida1.xlsx')
@@ -285,13 +304,30 @@ def Mayor_maxima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,re
             sheet.cell(row=row, column=1).value = ibus[i]
             sheet.cell(row=row, column=2).value = nombre[i]
             sheet.cell(row=row, column=3).value = id[i]
-            sheet.cell(row=row, column=4).value = pot_max[i]
-            sheet.cell(row=row, column=5).value = pot_gen[i]
-            sheet.cell(row=row, column=6).value = max_gen[i]
+            sheet.cell(row=row, column=4).value = round(pot_max[i],2)
+            sheet.cell(row=row, column=5).value = round(pot_gen[i],2)
+            sheet.cell(row=row, column=6).value = round(max_gen[i],2)
             sheet.cell(row=row, column=7).value = reserva[i]
             sheet.cell(row=row, column=8).value = por_dato[i]
             sheet.cell(row=row, column=9).value = resopt
             j+=1
+    # Se hace el recuadro de los datos y los bordes de las celdas
+    for col in range(1, 10):
+        cell = sheet.cell(row=1, column=col)
+        cell.alignment = Alignment(horizontal='center')
+        cell.font = Font(bold=True) 
+    for row in range(1, j+2):
+        for col in range(1, 10):
+            cell = sheet.cell(row=row, column=col)
+            cell.alignment = Alignment(horizontal='center')
+            cell.border = Border(left=Side(style='thin'), 
+                         right=Side(style='thin'), 
+                         top=Side(style='thin'), 
+                         bottom=Side(style='thin'))
+    # Se ajusta la celda para que se vea mejor
+    for col in range(1, 10):
+        sheet.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 20 
+
 
     # Guardamos el archivo de excel
     workbook.save(ruta + '/Reserva_salida1.xlsx')
@@ -317,13 +353,30 @@ def Menor_optima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,re
             sheet.cell(row=row, column=1).value = ibus[i]
             sheet.cell(row=row, column=2).value = nombre[i]
             sheet.cell(row=row, column=3).value = id[i]
-            sheet.cell(row=row, column=4).value = pot_max[i]
-            sheet.cell(row=row, column=5).value = pot_gen[i]
-            sheet.cell(row=row, column=6).value = max_gen[i]
+            sheet.cell(row=row, column=4).value = round(pot_max[i],2)
+            sheet.cell(row=row, column=5).value = round(pot_gen[i],2)
+            sheet.cell(row=row, column=6).value = round(max_gen[i],2)
             sheet.cell(row=row, column=7).value = reserva[i]
             sheet.cell(row=row, column=8).value = por_dato[i]
             sheet.cell(row=row, column=9).value = resopt
             j+=1
+
+    # Se hace el recuadro de los datos y los bordes de las celdas
+    for col in range(1, 10):
+        cell = sheet.cell(row=1, column=col)
+        cell.alignment = Alignment(horizontal='center')
+        cell.font = Font(bold=True) 
+    for row in range(1, j+2):
+        for col in range(1, 10):
+            cell = sheet.cell(row=row, column=col)
+            cell.alignment = Alignment(horizontal='center')
+            cell.border = Border(left=Side(style='thin'), 
+                         right=Side(style='thin'), 
+                         top=Side(style='thin'), 
+                         bottom=Side(style='thin'))
+    # Se ajusta la celda para que se vea mejor
+    for col in range(1, 10):
+        sheet.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 20 
 
     # Guardamos el archivo de excel
     workbook.save(ruta + '/Reserva_salida1.xlsx')
