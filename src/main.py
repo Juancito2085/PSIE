@@ -322,6 +322,12 @@ print(parametros)
 print(tipo)
 if parametros[1]==1:
    print('recorta')
+   if parametros[3]==0:
+      print('ambas')
+   elif parametros[3]==1:
+      print('termicas')
+   elif parametros[3]==2:
+      print('hidraulicas')
    if parametros[2]==0:
       print('optima')
       dif_nueva=list()
@@ -339,7 +345,7 @@ if parametros[1]==1:
                pmaxinueva.append(0)
             if pmaxinueva[i]>0:
                reserva_nuevax+=(pmaxinueva[i]-P[i])
-         elif parametros[3]==1 and tipo[i]=='HI':
+         elif parametros[3]==2 and tipo[i]=='HI':
             if reserva_por[i]>parametros[0]:
                dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
             else:
@@ -361,6 +367,9 @@ if parametros[1]==1:
                pmaxinueva.append(0)
             if pmaxinueva[i]>0:
                reserva_nuevax+=(pmaxinueva[i]-P[i])
+         else:
+            dif_nueva.append(0)
+            pmaxinueva.append(0)
       print(reserva)
       print(dif_nueva)
       print(pmaxinueva)
@@ -398,6 +407,9 @@ if parametros[1]==1:
                   pmaxinueva.append(P[i]*(1+porcentaje[i]/100))
                else:
                   pmaxinueva.append(0)
+            else:
+               dif_nueva.append(0)
+               pmaxinueva.append(0)
       print(reserva)
       print(P)
       print(dif_nueva)
