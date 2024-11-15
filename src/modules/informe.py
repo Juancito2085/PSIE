@@ -163,6 +163,20 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
             sheet.merge_cells('D'+str(row)+':F'+str(row))
         return
     
+    def bordes_celdas_total(bordes, inicio, final):
+        for i in range(inicio, final+1):
+            bordes_celdas(bordes,i)
+        return
+    
+    bordes_celdas_total(bordes_titulos,3,26)
+    # Se rehacen los bordes
+    bordes_celdas(bordes_titulos,3)
+    bordes_celdas(bordes_titulos,8)
+    bordes_celdas(bordes_titulos,15)
+    bordes_celdas(bordes_titulos,20)
+    bordes_celdas(bordes_titulos,24)
+    bordes_celdas(bordes_titulos,26)
+
     sheet['A29'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA '
     sheet.merge_cells('A29:F29')
     sheet['A29'].alignment = openpyxl.styles.Alignment(horizontal='center')
@@ -234,6 +248,7 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
     sheet.merge_cells('A53:E53')
     bordes_celdas(bordes_titulos,53)
 
+    bordes_celdas_total(bordes_titulos,29,53)
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
     
