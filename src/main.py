@@ -17,7 +17,7 @@ os.environ['PATH'] += '' + sys_path_PSSE
 #import redirect
 import datetime
 import re
-import tkinter
+import tkinter as tk
 from tkinter import filedialog, messagebox
 import pssexplore34
 import psspy

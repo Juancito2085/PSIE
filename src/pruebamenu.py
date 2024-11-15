@@ -22,7 +22,14 @@ from tkinter import filedialog, messagebox,Menu
 import pssexplore34
 import psspy
 
-def ejecutar():
+# Definir las variables globales
+destino = None
+caso = None
+nombre = None
+
+# Definición de las funciones
+def ejecutar(destino, caso, nombre):
+    print(destino,caso, nombre)
     tk.messagebox.showinfo("Ejecutando", "El script se está ejecutando")
 
 def seleccionar_destino():
@@ -33,7 +40,13 @@ def seleccionar_destino():
 def seleccionar_caso():
     global caso
     caso = filedialog.askopenfilename(title="Seleccionar caso")
-    caso_label.config(text="Caso seleccionado: "+ caso)
+    if caso:
+        extension = os.path.splitext(caso)[1]
+        if extension.lower() in ['.sav']:  # Verificar si la extensión es .txt o .csv
+            caso_label.config(text="Caso seleccionado: " + caso)
+        else:
+            tk.messagebox.showerror("Error", "El archivo seleccionado no tiene una extensión válida (.sav)")
+            caso = None
 
 def nombre_informe():
     global nombre
@@ -127,7 +140,7 @@ nombre_label = tk.Label(root, text="Sin nombre seleccionado", font=("Arial", 14)
 nombre_label.pack(pady=20)
 
 # Crear un boton para ejecutar el script principal
-run_button = tk.Button(root, text="Ejecutar", font=("Arial", 14), command=ejecutar)
+run_button = tk.Button(root, text="Ejecutar", font=("Arial", 14), command=lambda: ejecutar(destino, caso, nombre))
 run_button.pack(pady=20)
 
 # Inicio del bucle principal
