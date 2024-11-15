@@ -53,6 +53,7 @@ psspy.dynamicsmode(0)
 
 # 1 - Crear el archivo de salida
 ruta='C:/Users/jcbru/Desktop/psie'
+nombre = 'Reserva_salida'
 informe.crear(ruta)
 
 # 2 - Lectura de los parametros
@@ -61,6 +62,7 @@ parametros=lectura.parametros()
 # 3 - Lectura de datos del archivo "reserva.dat"
 bus,governor,CON,porcentaje,idg,comentario,tipo=lectura.generadores()
 print(tipo)
+
 # 4 - Verificacion de los datos
 nombre=list()
 cmpval=list()
@@ -76,6 +78,7 @@ for i in range(0,len(bus)):
    v1.append(v1_temp)
    indice_ini.append(indice_ini_temp)
    rval.append(rval_temp)
+   
 # 5 - Determinación de los margenes de reserva
 P=list()
 Q=list()
