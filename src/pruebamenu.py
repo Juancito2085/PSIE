@@ -30,6 +30,15 @@ nombre = None
 # Definición de las funciones
 def ejecutar(destino, caso, nombre):
     print(destino,caso, nombre)
+    if destino is None:
+        tk.messagebox.showerror("Error", "No se ha seleccionado una carpeta de destino")
+        return
+    elif caso is None:
+        tk.messagebox.showerror("Error", "No se ha seleccionado un caso")
+        return
+    elif nombre is None:
+        tk.messagebox.showerror("Error", "No se ha seleccionado un nombre para el informe")
+        return
     tk.messagebox.showinfo("Ejecutando", "El script se está ejecutando")
 
 def seleccionar_destino():
