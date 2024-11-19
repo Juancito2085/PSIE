@@ -26,6 +26,7 @@ import psspy
 destino = None
 caso = None
 nombre = None
+entrada = None
  
 # Definición de las funciones
 def ejecutar(destino, caso, nombre):
@@ -40,6 +41,17 @@ def ejecutar(destino, caso, nombre):
         tk.messagebox.showerror("Error", "No se ha seleccionado un nombre para el informe")
         return
     tk.messagebox.showinfo("Ejecutando", "El script se está ejecutando")
+
+def seleccionar_entrada():
+    global entrada
+    entrada = filedialog.askopenfilename(title="Seleccionar entrada")
+    if entrada:
+        extension = os.path.splitext(entrada)[1]
+        if extension.lower() in ['.xlsx']:  # Verificar si la extensión es .xlsx
+            entrada_label.config(text="Archivo seleccionado: " + entrada)
+        else:
+            tk.messagebox.showerror("Error", "El archivo seleccionado no tiene una extensión válida .xlsx")
+            entrada = None
 
 def seleccionar_destino():
     global destino
@@ -115,7 +127,30 @@ def quit_app():
 # Creacion de la ventana principal
 root = tk.Tk()
 root.title("Calculo de reserva")
-root.geometry("800x600")
+
+
+# Obtener el tamaño de la pantalla
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
+
+# Definir el tamaño de la ventana
+window_width = 1200
+window_height = 800
+
+# Calcular la posición para centrar la ventana
+position_top = int(screen_height / 2 - window_height / 2)
+position_right = int(screen_width / 2 - window_width / 2)
+
+# Establecer la geometría de la ventana
+root.geometry("{}x{}+{}+{}".format(window_width, window_height, position_right, position_top))
+
+# Label para mostrar el archivo de entrada
+entrada_label = tk.Label(root, text="Selecciona un archivo de entrada", font=("Arial", 14))
+entrada_label.pack(pady=20)
+
+# Crear botones
+btn_seleccionar_entrada = tk.Button(root, text="Seleccionar entrada", command=seleccionar_entrada, width=20, height=2)
+btn_seleccionar_entrada.pack(pady=10)
 
 # Label para mostrar el destino seleccionado
 destino_label = tk.Label(root, text="Selecciona una carpeta para guardar el informe", font=("Arial", 14))
