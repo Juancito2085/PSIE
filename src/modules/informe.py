@@ -136,7 +136,7 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
     workbook.close()
     return
 
-def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+def reserva_total_recorte(ruta,ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                     generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn con los valores despues del recorte
@@ -170,7 +170,10 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
     
     bordes_celdas_total(bordes_titulos,3,26)
 
-    sheet['A29'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA '
+    sheet['A28'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA '
+    sheet.merge_cells('A28:F28')
+    sheet['A28'].alignment = openpyxl.styles.Alignment(horizontal='center')
+    sheet['A29'] = 'AJUSTE EN BASE A '+ajuste+' SOBRE '+tipo_ajustado
     sheet.merge_cells('A29:F29')
     sheet['A29'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A30'] = 'RESERVA ROTANTE EN MÁQUINAS QUE REGULAN'
@@ -235,7 +238,7 @@ def reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,rese
     sheet['F53'] = reservatotal2
     sheet.merge_cells('A53:E53')
 
-    bordes_celdas_total(bordes_titulos,29,53)
+    bordes_celdas_total(bordes_titulos,28,53)
     workbook.save(ruta + '/Reserva_salida1.xlsx')
     workbook.close()
     

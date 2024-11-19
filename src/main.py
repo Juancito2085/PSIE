@@ -327,19 +327,23 @@ if parametros[1]==1:
    print('recorta')
    if parametros[3]==0:
       print('ambas')
+      tipo_ajustado='AMBAS'
    elif parametros[3]==1:
       print('termicas')
+      tipo_ajustado='TERMICAS'
    elif parametros[3]==2:
       print('hidraulicas')
+      tipo_ajustado='HIDRAULICAS'
    if parametros[2]==0:
       print('optima')
+      ajuste='ÓPTIMA'
       dif_nueva=list()
       pmaxinueva=list()
       reserva_nuevax=0
       for i in range(0,len(reserva)):
          if parametros[3]==1 and tipo[i]!='HI':
             if reserva_por[i]>parametros[0]:
-               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               dif_nueva.append(reserva_nueva*reserva[i]/reservatotal2)
             else:
                dif_nueva.append(0)
             if reserva_por[i]>parametros[0]:
@@ -350,7 +354,7 @@ if parametros[1]==1:
                reserva_nuevax+=(pmaxinueva[i]-P[i])
          elif parametros[3]==2 and tipo[i]=='HI':
             if reserva_por[i]>parametros[0]:
-               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               dif_nueva.append(reserva_nueva*reserva[i]/reservatotal2)
             else:
                dif_nueva.append(0)
             if reserva_por[i]>parametros[0]:
@@ -361,7 +365,7 @@ if parametros[1]==1:
                reserva_nuevax+=(pmaxinueva[i]-P[i])
          elif parametros[3]==0:
             if reserva_por[i]>parametros[0]:
-               dif_nueva.append(reserva_nueva*reserva[i]/sum(reserva))
+               dif_nueva.append(reserva_nueva*reserva[i]/reservatotal2)
             else:
                dif_nueva.append(0)
             if reserva_por[i]>parametros[0]:
@@ -380,6 +384,7 @@ if parametros[1]==1:
       print('-------------')
    else:
       print('dato')
+      ajuste='DATO'
       pmaxinueva=list()
       dif_nueva=list()
       for i in range(0,len(P)):
@@ -568,7 +573,7 @@ if parametros[1]==1:
    reserva_nueva=round(parametros[0]*generacion_total/100,2)
    reservatotal2=round(reservatotal2,2)
 
-   informe.reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+   informe.reserva_total_recorte(ruta,ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                         pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                         generacion_total,reserva_nueva,reservatotal2)
    print('****************************************************************************************')
@@ -590,7 +595,7 @@ if parametros[1]==1:
    print('HIDRO [MW] ' ,pot_hidro)
    print('TERM. TG-CC [MW] ',pot_TG+pot_CC)
    print('TERM. TV [MW] ',pot_TV)
-   print('TOTAL [MW] ',pot_TV+pot_TG+pot_hidro)
+   print('TOTAL [MW] ',round(pot_TV+pot_TG+pot_hidro,2))
    print('-----')
    print('RESERVA PROGRAMADA EN EL PARQUE REGULANTE')
    print('HIDRO [MW] ',reservahidro_rpf)
