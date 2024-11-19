@@ -141,12 +141,11 @@ btn_nombre_informe = tk.Button(root, text="Nombre informe", command=abrir_ventan
 btn_nombre_informe.pack(pady=10)
 
 # Crear botón para ejecutar el script
-btn_ejecutar = tk.Button(root, text="Ejecutar", command=lambda: ejecutar(destino, caso, nombre), width=20, height=2)
+btn_ejecutar = tk.Button(root, text="Ejecutar", command=lambda: ejecutar(destino, caso, nombre), width=40, height=4)
 btn_ejecutar.pack(pady=10)
 
-btn_salir = tk.Button(root, text="Salir", command=quit_app)
-btn_salir.pack(pady=10)
-
+btn_salir = tk.Button(root, text="Salir", command=quit_app, width=20, height=2)
+btn_salir.pack(pady=30)
 
 # Inicio del bucle principal
 root.mainloop()
