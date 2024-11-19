@@ -78,7 +78,7 @@ for i in range(0,len(bus)):
    v1.append(v1_temp)
    indice_ini.append(indice_ini_temp)
    rval.append(rval_temp)
-   
+
 # 5 - Determinación de los margenes de reserva
 P=list()
 Q=list()
@@ -159,7 +159,7 @@ reserva_CC=0
 reserva_TG=0
 reservatotal2=0
 
-# Calculo de la reserva de los hidraulicos, termicos y ambos
+# 13 - Calculo de la reserva de los hidraulicos, termicos y ambos
 
 for i,clase in enumerate(tipo):
    if clase=='HI':
@@ -215,7 +215,7 @@ reserva_CC=round(reserva_CC,2)
 reserva_TG=round(reserva_TG,2)
 reservahidro_rpf=round(reservahidro_rpf,2)
 reservatermica_rpf=round(reservatermica_rpf,2)
-reserva_nueva=parametros[0]*generacion_total/100
+reserva_nueva=round(parametros[0]*generacion_total/100,2)
 reservatotal2=round(reservatotal2,2)
 
 print('****************************************************************************************')
@@ -565,7 +565,7 @@ if parametros[1]==1:
    reserva_TG=round(reserva_TG,2)
    reservahidro_rpf=round(reservahidro_rpf,2)
    reservatermica_rpf=round(reservatermica_rpf,2)
-   reserva_nueva=parametros[0]*generacion_total/100
+   reserva_nueva=round(parametros[0]*generacion_total/100,2)
    reservatotal2=round(reservatotal2,2)
 
    informe.reserva_total_recorte(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
