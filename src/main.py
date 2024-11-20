@@ -47,20 +47,24 @@ psspy.conl(0,1,3,[0,0],[ 100.0,0.0,0.0, 100.0])
 psspy.fact()
 psspy.tysl(0)
 
+caso = 'C:/Users/jcbru/Desktop/ppp'
+caso = caso + '/savnw'
+
 # Open snap.
-psspy.rstr(r"""savnw""")
+psspy.rstr(caso)
 psspy.dynamicsmode(0)
 
 # 1 - Crear el archivo de salida
 destino ='C:/Users/jcbru/Desktop/psie'
 nombre_archivo = 'Reserva_salida1.xlsx'
 informe.crear(destino, nombre_archivo)
+entrada = r'C:\Users\jcbru\Desktop\psie\Reserva_entrada.xlsx'
 
 # 2 - Lectura de los parametros
-parametros=lectura.parametros()
+parametros=lectura.parametros(entrada)
 
 # 3 - Lectura de datos del archivo "reserva.dat"
-bus,governor,CON,porcentaje,idg,comentario,tipo=lectura.generadores()
+bus,governor,CON,porcentaje,idg,comentario,tipo=lectura.generadores(entrada)
 print(tipo)
 
 # 4 - Verificacion de los datos
@@ -78,6 +82,8 @@ for i in range(0,len(bus)):
    v1.append(v1_temp)
    indice_ini.append(indice_ini_temp)
    rval.append(rval_temp)
+
+print(nombre,cmpval,v,v1,indice_ini,rval)
 
 # 5 - Determinación de los margenes de reserva
 P=list()

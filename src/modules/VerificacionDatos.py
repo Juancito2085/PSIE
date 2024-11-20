@@ -113,7 +113,6 @@ def generadores(ruta, nombre_archivo,ibus,id,i5):
         error='***** POSIBLE ERROR EN LOS DATOS DE FLUJO O DINAMICOS *****''MÁQUINA' + str(id)+ 'EN LA BARRA' +str(ibus)+' '+ str(nombre)+'ORDEN DE CON=0'
         informe.Reserva_err(ruta,error)
 
-
     #DSRVAL devuelve los valores reales dinamicos-- en este caso devuelve los parametros reales del modelo
     ierr,rval = psspy.dsrval("CON",(indice_ini+i5))
     if(ierr==1):
@@ -140,35 +139,36 @@ def gensale(ruta, nombre_archivo, ibus,nombre,id):
 
     if(ierr==1):
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** NO SE ENCUENTRA LA BARRA ' + str(ibus) + ' ' + nombre
-        informe.Reserva_err(ruta, nombre_archivo, error)  
+        informe.Reserva_err(ruta,nombre_archivo, error)  
 
     if(ierr==2):
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** EN LA BARRA ' + str(ibus) + ' ' + nombre + ' NO EXISTEN MÁQUINAS CONECTADAS'
-        informe.Reserva_err(ruta, nombre_archivo, error)
+        informe.Reserva_err(ruta,nombre_archivo, error)
 
     if(ierr==3) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** EN LA BARRA ' + str(ibus) + ' ' + nombre + ' NO EXISTEN MÁQUINAS CONECTADAS'
-        informe.Reserva_err(ruta, nombre_archivo, error)
+        informe.Reserva_err(ruta,nombre_archivo, error)
         pge=0.0
         qge=0.0
 
     if(ierr==4) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** LA BARRA ' + str(ibus) + ' ' + nombre + ' TIENE GENERADORES FUERA DE SERVICIO'
-        informe.Reserva_err(ruta, nombre_archivo, error)    
+        informe.Reserva_err(ruta,nombre_archivo, error)    
         pge=0.0
         qge=0.0
 
     if(ierr==5) :
         error='***** ERROR EN PROGRAMA IPLAN ***** ERROR EN LOS DATOS DE GENSALE.PRN *****''LA BARRA '+str(ibus)+' '+str(nombre)+'ERROR EN EL STRING PQ'
-        informe.Reserva_err(ruta, nombre_archivo, error)    
+        informe.Reserva_err(ruta,nombre_archivo, error)    
 
     if(ierr==6) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** PARA LA BARRA '+str(ibus)+' '+str(nombre)+' NO HAY DATOS DE SECUENCIA'
-        informe.Reserva_err(ruta, nombre_archivo, error)
+        informe.Reserva_err(ruta,nombre_archivo, error)
     
     return(cmpval)
 
-def area (ruta, nombre_archivo, iarea,nombre_area):
+def area (ruta, nombre_archivo,iarea,nombre_area):
+
     ierr,cmpva_area=psspy.ardat(iarea,'GEN')
     if(ierr==1):
         error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** NO SE ENCUENTRA EL AREA INDICADA COMO ' + str(iarea)+' '+str(nombre_area)

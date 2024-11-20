@@ -36,7 +36,7 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
     """Completa los datos de la hoja reserva_total.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
+    workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo )
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['reserva_total.prn']
     # Defino formatos y funciones de formatos
@@ -409,7 +409,7 @@ def Reserva_err(ruta, nombre_archivo, error):
     #Escribimos los datos en la primera celda en blanco
     last_row = sheet.max_row + 1
     sheet.cell(row=last_row, column=1, value=error)
-    workbook.save(ruta + '/' +nombre_archivo)
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
 
     return

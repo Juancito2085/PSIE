@@ -1,9 +1,9 @@
 import openpyxl
 
 
-def parametros():
+def parametros(entrada):
     # Cargar el archivo de Excel
-    workbook = openpyxl.load_workbook('Reserva_entrada.xlsx')
+    workbook = openpyxl.load_workbook(entrada)
     sheet1 = workbook['Parametros']
     #   Creacion de la lista donde se almacenan los parámetros
     parametros=list()
@@ -13,9 +13,9 @@ def parametros():
         parametros.append(cell.value)
     return parametros
 
-def generadores():
+def generadores(entrada):
     # Cargar el archivo de Excel
-    workbook = openpyxl.load_workbook('Reserva_entrada.xlsx')
+    workbook = openpyxl.load_workbook(entrada)
     sheet2 = workbook['Generadores SADI']
     # Creo las listas donde se almacenan los datos
     bus=list()
