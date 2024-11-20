@@ -77,9 +77,24 @@ def nombre_informe():
 def abrir_ventana_secundaria():
     ventana_secundaria = tk.Toplevel(root)
     ventana_secundaria.title("Nombre del informe")
-    ventana_secundaria.geometry("400x300")
-    tk.Label(ventana_secundaria, text="Escriba el nombre del informe").pack(pady=20)
 
+    # Definir el tamaño de la ventana secundaria
+    window_width = 400
+    window_height = 300
+
+    # Obtener el tamaño de la pantalla
+    screen_width = ventana_secundaria.winfo_screenwidth()
+    screen_height = ventana_secundaria.winfo_screenheight()
+
+    # Calcular la posición para centrar la ventana secundaria
+    position_top = int(screen_height / 2 - window_height / 2)
+    position_right = int(screen_width / 2 - window_width / 2)
+
+    # Establecer la geometría de la ventana secundaria usando format()
+    ventana_secundaria.geometry("{}x{}+{}+{}".format(window_width, window_height, position_right, position_top))
+
+    tk.Label(ventana_secundaria, text="Escriba el nombre del informe").pack(pady=20)
+    
     nombre_entry_secundaria = tk.Entry(ventana_secundaria)
     nombre_entry_secundaria.pack(pady=10)
 

@@ -52,9 +52,9 @@ psspy.rstr(r"""savnw""")
 psspy.dynamicsmode(0)
 
 # 1 - Crear el archivo de salida
-ruta='C:/Users/jcbru/Desktop/psie'
-nombre = 'Reserva_salida'
-informe.crear(ruta)
+destino ='C:/Users/jcbru/Desktop/psie'
+nombre_archivo = 'Reserva_salida1.xlsx'
+informe.crear(destino, nombre_archivo)
 
 # 2 - Lectura de los parametros
 parametros=lectura.parametros()
@@ -71,7 +71,7 @@ v1=list()
 indice_ini=list()
 rval=list()
 for i in range(0,len(bus)):
-   nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(bus[i],idg[i],CON[i])
+   nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(destino, nombre_archivo,bus[i],idg[i],CON[i])
    nombre.append(nombre_temp.split()[0])
    cmpval.append(cmpval_temp)
    v.append(v_temp)
@@ -103,20 +103,20 @@ reserva_por=list()
 for i in range(0,len(bus)):
    reserva_por.append(round(((reserva[i]/P[i])*100),2))
    print('Porcentaje de reserva ',round(((reserva[i]/P[i])*100),2))
-informe.Pmax_Pgen(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
+informe.Pmax_Pgen(destino,nombre_archivo,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
 # 7 - Registro de los generadores con reserva por debajo de la óptima
-informe.Menor_optima(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
+informe.Menor_optima(destino,nombre_archivo, bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
 # 8 - Registro de los generadores con reserva mayor a la maxima
-informe.Mayor_maxima(ruta,bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
+informe.Mayor_maxima(destino,nombre_archivo, bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
 # 9 - Extracción de la generación del sistema
 ibus_sale,nombre_sale,id_sale=lectura.generadores_no_suman()
 
 cmpval_sale=list()
 for i in range(0,len(ibus_sale)):
-   cmpval_sale.append(verificaciondatos.gensale(ibus_sale[i],nombre_sale[i],id_sale[i]))
+   cmpval_sale.append(verificaciondatos.gensale(destino, nombre_archivo, ibus_sale[i],nombre_sale[i],id_sale[i]))
 pge=0
 for pq in cmpval_sale:
    if pq is not None:
@@ -126,7 +126,7 @@ for pq in cmpval_sale:
 iarea,nombre_area=lectura.regiones_paises_limitrofes()
 
 for i in range(0,len(iarea)):
-   cmpval_area=verificaciondatos.area(iarea[i],nombre_area[i])
+   cmpval_area=verificaciondatos.area(destino, nombre_archivo,iarea[i],nombre_area[i])
 
 pga=0
 
@@ -248,7 +248,7 @@ print('TOTAL [MW]',reserva_TV+reserva_TG+reservahidro_rpf)
 print('RESERVA NUEVA',round(parametros[0]*generacion_total/100,2))
 print('RESERVA TOTAL2',reservatotal2)
 
-informe.reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+informe.reserva_total(destino,nombre_archivo,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                      pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                      generacion_total,reserva_nueva,reservatotal2)
 
@@ -399,7 +399,7 @@ if parametros[1]==1:
    indice_ini=list()
    rval=list()
    for i in range(0,len(bus)):
-      nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(bus[i],idg[i],CON[i])
+      nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(destino, nombre_archivo, bus[i],idg[i],CON[i])
       nombre.append(nombre_temp)
       cmpval.append(cmpval_temp)
       v.append(v_temp)
@@ -505,7 +505,7 @@ if parametros[1]==1:
    reserva_nueva=round(parametros[0]*generacion_total/100,2)
    reservatotal2=round(reservatotal2,2)
 
-   informe.reserva_total_recorte(ruta,ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+   informe.reserva_total_recorte(destino,nombre_archivo, ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                         pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                         generacion_total,reserva_nueva,reservatotal2)
    print('****************************************************************************************')

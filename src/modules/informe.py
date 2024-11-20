@@ -2,7 +2,7 @@ import openpyxl
 import os
 from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 
-def crear (ruta):
+def crear (ruta, nombre_archivo):
     """Crea el archivo excel de salida para los reportes en la ruta especificada
     :param ruta: ruta donde se guardará el archivo excel"""
     # Creamos el excel en la ruta especificada por el parametro
@@ -24,19 +24,19 @@ def crear (ruta):
     wb['Reserva.rep'].append(['Escenario','Reserva Hidro','Reserva Termica','Reserva Total'])#2
     wb['Reserva.err'].append(['Error'])#3
     # Guardamos el excel con el nombre Reserva_salida.xlsx
-    ruta_completa= ruta+'/Reserva_salida1.xlsx'
+    ruta_completa= ruta +'/'+ nombre_archivo
     wb.save(ruta_completa)
     # Mensaje que avisa que el archivo se ha creado en la ruta especificada
     print('Archivo creado en la ruta: ',ruta_completa)
     return
 
-def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                     generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta + '/Reserva_salida1.xlsx')
+    workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['reserva_total.prn']
     # Defino formatos y funciones de formatos
@@ -132,17 +132,17 @@ def reserva_total(ruta,reservahidro,reservatermica,reservahidro_rpf,reservatermi
    
 
     bordes_celdas_total(bordes_titulos,1,26)
-    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
     return
 
-def reserva_total_recorte(ruta,ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
+def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro,reservatermica,reservahidro_rpf,reservatermica_rpf,
                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                     generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn con los valores despues del recorte
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta + '/Reserva_salida1.xlsx')
+    workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['reserva_total.prn']
     # Defino formatos y funciones de formatos
@@ -239,17 +239,17 @@ def reserva_total_recorte(ruta,ajuste, tipo_ajustado,reservahidro,reservatermica
     sheet.merge_cells('A53:E53')
 
     bordes_celdas_total(bordes_titulos,28,53)
-    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
     
     return
 
-def Pmax_Pgen(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
+def Pmax_Pgen(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Pmax_Pgen.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Verificamos que se pueda abrir el excel
     try:
-        workbook = openpyxl.load_workbook(ruta+'/Reserva_salida1.xlsx')
+        workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     except:
         print('No se pudo abrir el archivo')
         return
@@ -286,16 +286,16 @@ def Pmax_Pgen(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resop
         sheet.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 25
 
     # Guardamos el archivo de excel
-    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
     return
 
-def Mayor_maxima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
+def Mayor_maxima(ruta,nombre_archivo,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Mayor_maxima.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
     try:
-        workbook = openpyxl.load_workbook(ruta+'/Reserva_salida1.xlsx')
+        workbook = openpyxl.load_workbook(ruta +'/' + nombre_archivo)
     except:
         print('No se pudo abrir el archivo')
         return
@@ -335,16 +335,16 @@ def Mayor_maxima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,re
 
 
     # Guardamos el archivo de excel
-    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
     return
 
-def Menor_optima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
+def Menor_optima(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Menor_optima.prn
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
     try:
-        workbook = openpyxl.load_workbook(ruta+'/Reserva_salida1.xlsx')
+        workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     except:
         print('No se pudo abrir el archivo')
         return
@@ -384,7 +384,7 @@ def Menor_optima(ruta,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,re
         sheet.column_dimensions[openpyxl.utils.get_column_letter(col)].width = 25
 
     # Guardamos el archivo de excel
-    workbook.save(ruta + '/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' + nombre_archivo)
     workbook.close()
     return
 
@@ -399,17 +399,17 @@ def Reserva_rep(ruta):
 
     return
 
-def Reserva_err(ruta, error):
+def Reserva_err(ruta, nombre_archivo, error):
     """Completa los datos de la hoja Reserva.err
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
-    workbook = openpyxl.load_workbook(ruta +'/Reserva_salida1.xlsx')
+    workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     #Seleccionamos la hoja donde vamos a completar con datos
     sheet = workbook['Reserva.err']
     #Escribimos los datos en la primera celda en blanco
     last_row = sheet.max_row + 1
     sheet.cell(row=last_row, column=1, value=error)
-    workbook.save(ruta+'/Reserva_salida1.xlsx')
+    workbook.save(ruta + '/' +nombre_archivo)
     workbook.close()
 
     return

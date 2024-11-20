@@ -13,12 +13,11 @@ os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
 os.environ['PATH'] += ';' + os_path_PSSE
 os.environ['PATH'] += ';' + sys_path_PSSE
 
-ruta='C:/Users/jcbru/Desktop/psie'
 
 import psspy
 import modules.informe as informe
 
-def generadores(ibus,id,i5):
+def generadores(ruta, nombre_archivo,ibus,id,i5):
     '''
     Función que verifica los datos obtenidos del archivo"reserva.dat"
     Los parámetros de la funcion son 
@@ -27,6 +26,7 @@ def generadores(ibus,id,i5):
     i5(CON)
     nombre
     '''
+    ruta=ruta+'/'+nombre_archivo
 
     #NOTONA devuelve el nombre extendido de 18 caracteres para el numero de barra identificado
     ierr,nombre=psspy.notona(ibus)
@@ -125,13 +125,13 @@ def generadores(ibus,id,i5):
     return(nombre, cmpval,v,v1, indice_ini,rval)
 
 
-def gensale(ibus,nombre,id):
+def gensale(ruta, nombre_archivo, ibus,nombre,id):
     id=str(id)
     '''Función para verificar los datos de gensale.prn'''
     ierr,ival=psspy.busint(ibus,'TYPE')
     if(ierr==1):
         error= '***** ERROR EN LOS DATOS DE GENSALE.PRN ***** NO SE ENCUENTRA LA BARRA ' + str(ibus) + ' ' + nombre
-        informe.Reserva_err(ruta,error)
+        informe.Reserva_err(ruta,nombre_archivo, error)
     #if (ival==4):
 
     #if (ival==1):
@@ -140,46 +140,46 @@ def gensale(ibus,nombre,id):
 
     if(ierr==1):
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** NO SE ENCUENTRA LA BARRA ' + str(ibus) + ' ' + nombre
-        informe.Reserva_err(ruta, error)  
+        informe.Reserva_err(ruta, nombre_archivo, error)  
 
     if(ierr==2):
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** EN LA BARRA ' + str(ibus) + ' ' + nombre + ' NO EXISTEN MÁQUINAS CONECTADAS'
-        informe.Reserva_err(ruta, error)
+        informe.Reserva_err(ruta, nombre_archivo, error)
 
     if(ierr==3) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** EN LA BARRA ' + str(ibus) + ' ' + nombre + ' NO EXISTEN MÁQUINAS CONECTADAS'
-        informe.Reserva_err(ruta, error)
+        informe.Reserva_err(ruta, nombre_archivo, error)
         pge=0.0
         qge=0.0
 
     if(ierr==4) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** LA BARRA ' + str(ibus) + ' ' + nombre + ' TIENE GENERADORES FUERA DE SERVICIO'
-        informe.Reserva_err(ruta, error)    
+        informe.Reserva_err(ruta, nombre_archivo, error)    
         pge=0.0
         qge=0.0
 
     if(ierr==5) :
         error='***** ERROR EN PROGRAMA IPLAN ***** ERROR EN LOS DATOS DE GENSALE.PRN *****''LA BARRA '+str(ibus)+' '+str(nombre)+'ERROR EN EL STRING PQ'
-        informe.Reserva_err(ruta, error)    
+        informe.Reserva_err(ruta, nombre_archivo, error)    
 
     if(ierr==6) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** PARA LA BARRA '+str(ibus)+' '+str(nombre)+' NO HAY DATOS DE SECUENCIA'
-        informe.Reserva_err(ruta, error)
+        informe.Reserva_err(ruta, nombre_archivo, error)
     
     return(cmpval)
 
-def area (iarea,nombre_area):
+def area (ruta, nombre_archivo, iarea,nombre_area):
     ierr,cmpva_area=psspy.ardat(iarea,'GEN')
     if(ierr==1):
         error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** NO SE ENCUENTRA EL AREA INDICADA COMO ' + str(iarea)+' '+str(nombre_area)
-        informe.Reserva_err(ruta,error)    
+        informe.Reserva_err(ruta,nombre_archivo,error)    
 
     if(ierr==2):
         error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SYSTEMA'
-        informe.Reserva_err(ruta,error)
+        informe.Reserva_err(ruta,nombre_archivo,error)
     if(ierr==3):
         error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SYSTEMA'
-        informe.Reserva_err(ruta,error)   
+        informe.Reserva_err(ruta,nombre_archivo,error)   
 
     #CALL ARDAT(iarea,'INT',PiA,QiA,ierr) revisar esto
     
