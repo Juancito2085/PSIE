@@ -18,111 +18,123 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 import psspy
 
 def cambiar_limites(nombre,indice_ini,rval, v, P,difnue, pmaxinue,CON):
-    '''if nombre=='BSASGO':
-        BSASGO(indice_ini, P,normal,difnue,pmaxinue,pmaxinue,CON)
-    if nombre=='RAVYA3':
-        RAVYA3(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue,CON)
+    if nombre=='BSASGO':
+        BSASGO(indice_ini,pmaxinue,CON)
+    '''if nombre=='RAVYA3':
+        RAVYA3(indice_ini,rval,P,difnue,pmaxinue,pmaxinue,CON)'''
     if nombre=='GAST2A':
-        GAST2A(indice_ini,rval,P,normal,difnue,pmaxinue,pmaxinue,CON)'''
+        GAST2A(indice_ini, pmaxinue, CON)
+    if nombre=='GAST':
+        GAST(indice_ini, v, pmaxinue, CON)
+    if nombre=='GASTWD':
+        GASTWD(indice_ini, pmaxinue, CON)
     if nombre=='HYGOV':
         HYGOV(indice_ini,v, pmaxinue, CON)
+    if nombre=='HYGV5P':
+        HYGV5P(indice_ini, pmaxinue, CON)
+    if nombre=='HYGV7P':
+        HYGV7P(indice_ini, pmaxinue, CON)
+    if nombre=='IEEEG1':
+        IEEEG1(indice_ini, v, pmaxinue, CON)
+    if nombre=='IEEEG3':
+        IEEEG3(indice_ini, v, pmaxinue, CON)
+    if nombre=='IEEEG2':
+        IEEEG2(indice_ini, v, pmaxinue, CON)
+    if nombre=='IEESGO':
+        IEESGO(indice_ini, v, pmaxinue, CON)
+    if nombre=='STGV1P':
+        STGV1P(indice_ini, pmaxinue, CON)
+    if nombre=='STGV4P':
+        STGV4P(indice_ini, pmaxinue, CON)
+    if nombre=='STGV2P':
+        STGV2P(indice_ini, pmaxinue, CON)
     if nombre=='TGOV1':
         TGOV1(indice_ini, v, pmaxinue, CON)
+    if nombre=='WPIDHY':
+        WPIDHY(indice_ini, v, pmaxinue, CON)
+    if nombre=='GAST5':
+        GAST5(indice_ini, v, pmaxinue, CON)
+    if nombre=='SIE943':
+        SIE943(indice_ini, pmaxinue, CON)
+    if nombre=='TUCUGO':
+        TUCUGO(indice_ini, pmaxinue, CON)
+    if nombre=='GASV94':
+        GASV94(indice_ini, pmaxinue, CON)
     return
-'''
-def BSASGO(indice_ini, potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if difnue>0:
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
-        ierr,rval2=psspy.dsrval('CON',(indice_ini+10))
-        ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
-        if(normal==1):
-            limnue=pmaxinue2/(rval1*rval3)
-        else:
-            limnue=pmaxinue/(rval1*rval3)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*rval2*rval3     
-        reserva=potencia_maxima-potencia
-    return(reserva,potencia_maxima)
 
-def RAVYA3(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if difnue>0:
-        if normal==0:
+def BSASGO(indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
+    ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
+    limnue=pmaxinue/(rval1*rval3)
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return
+''' hay que revisar este
+def RAVYA3(indice_ini, rval,pmaxinue,CON):
         potencia_maxima=rval
         psspy.change_con(indice_ini+CON,pmaxinue)
         reserva=potencia_maxima-potencia
-    return(reserva, potencia_maxima)
+    return'''
 
-def GAST2A(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
-        ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
-        ierr,rval18=psspy.dsrval('CON',(indice_ini+6))   
-        ierr,rval12=psspy.dsrval('CON',(indice_ini+25))         
-        ierr,rval13=psspy.dsrval('CON',(indice_ini+12))   
-        ierr,rval14=psspy.dsrval('CON',(indice_ini+26))
-        ierr,rval5=psspy.dsrval('CON',(indice_ini+29)) 
-        ierr,rval6=psspy.dsrval('CON',(indice_ini+8))           
-        ierr,rval17=psspy.dsrval('CON',(indice_ini+11))
-
-        c=rval22
-        kf=rval20
-        trate=rval8
-        af2=rval2
-        a=rval3
-        bf2=rval4
-        k6=rval5
-        max=rval6
-        k3=rval7
-                
-        if(normal==1):
-            limnue=(((pmaxinue2/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
-        else:
-            limnue=(((pmaxinue/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
-        
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=trate*(af2+bf2*(a/(c+a*kf))*(max*k3+k6))
-        
-        reserva=potencia_maxima-potencia
+def GAST2A(indice_ini, pmaxinue, CON):
     
-    return(reserva,potencia_maxima)
+    ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
+    ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
+    ierr,rval8=psspy.dsrval('CON',(indice_ini+6))   
+    ierr,rval2=psspy.dsrval('CON',(indice_ini+25))         
+    ierr,rval3=psspy.dsrval('CON',(indice_ini+12))   
+    ierr,rval4=psspy.dsrval('CON',(indice_ini+26))
+    ierr,rval5=psspy.dsrval('CON',(indice_ini+29)) 
+    ierr,rval6=psspy.dsrval('CON',(indice_ini+8))           
+    ierr,rval7=psspy.dsrval('CON',(indice_ini+11))
 
-def GAST(indice_ini, rval, v, P,normal,difnue, pmaxinue, pmaxinue2,CON):
-    if(difnue>0):
-        if(normal==1):
-            limnue=pmaxinue2/v
-        else: 
-            limnue=pmaxinue/v
+    c=rval22
+    kf=rval20
+    trate=rval8
+    af2=rval2
+    a=rval3
+    bf2=rval4
+    k6=rval5
+    max=rval6
+    k3=rval7
+                
+    limnue=(((pmaxinue/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
+        
+    psspy.change_con(indice_ini+CON,limnue)
+        
+    return
 
-        psspy.change_con(indice_ini+CON,limnue)
+def GAST(indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
 
-    potencia_maxima = v*rval
-    reserva=potencia_maxima-P
-    return (reserva,potencia_maxima)
+    psspy.change_con(indice_ini+CON,limnue)
 
-def GASTWD(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
-        ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
-        ierr,rval18=psspy.dsrval('CON',(indice_ini+6)) 
-        ierr,rval2=psspy.dsrval('CON',(indice_ini+25)) 
-        ierr,rval3=psspy.dsrval('CON',(indice_ini+12))
-        ierr,rval4=psspy.dsrval('CON',(indice_ini+26))
-        ierr,rval5=psspy.dsrval('CON',(indice_ini+29)) 
-        ierr,rval6=psspy.dsrval('CON',(indice_ini+8))
-        ierr,rval7=psspy.dsrval('CON',(indice_ini+11))
-                 
-        if normal==1):
-            limnue=(((pmaxinue2/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
-        else:
-            limnue=(((pmaxinue/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
-        psspy.change_con(indice_ini+CON,limnue)
+    return 
 
-        potencia_maxima=trate*(af2+bf2*(a/(c+a*kf))*(max*k3+k6))
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
+def GASTWD(indice_ini, pmaxinue, CON):
+    ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
+    ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
+    ierr,rval8=psspy.dsrval('CON',(indice_ini+6)) 
+    ierr,rval2=psspy.dsrval('CON',(indice_ini+25)) 
+    ierr,rval3=psspy.dsrval('CON',(indice_ini+12))
+    ierr,rval4=psspy.dsrval('CON',(indice_ini+26))
+    ierr,rval5=psspy.dsrval('CON',(indice_ini+29)) 
+    ierr,rval6=psspy.dsrval('CON',(indice_ini+8))
+    ierr,rval7=psspy.dsrval('CON',(indice_ini+11))
+    c=rval22
+    kf=rval20
+    trate=rval8
+    af2=rval2
+    a=rval3
+    bf2=rval4
+    k6=rval5
+    max=rval6
+    k3=rval7          
+    limnue=(((pmaxinue/trate)-af2)/(bf2*(a/(c+a*kf)))-k6)/k3
+    psspy.change_con(indice_ini+CON,limnue)
 
+    return 
 
-'''
 def HYGOV(indice_ini, v, pmaxinue, CON):
     ierr,rval20=psspy.dsrval('CON',(indice_ini+11))
     ierr,rval22=psspy.dsrval('CON',(indice_ini+9))
@@ -131,234 +143,125 @@ def HYGOV(indice_ini, v, pmaxinue, CON):
 
     return 
 
-'''
-def HYGV5P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+22))
-        if(NORMAL==1):
-            limnue=pmaxinue2/rval1
-        else
-            limnue=pmaxinue/rval1
-
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*rval
-        reserva=potencia_maxima-potencia
+def HYGV5P(indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+22))
+    limnue=pmaxinue/rval1
+    psspy.change_con(indice_ini+CON,limnue)
     
-    return (reserva,potencia_maxima)
+    return 
 
+def HYGV7P (indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+18))
+    limnue=pmaxinue/rval1
+    psspy.change_con(indice_ini+CON,limnue)
 
-def HYGV7P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+18))
-        if(normal==1):
-            limnue=pmaxinue2/rval1
-        else:
-            limnue=pmaxinue/rval1
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*rval
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
+    return 
 
-def IEEEG1(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        if(normal==1):
-            limnue=pmaxinue2/(v)
-        else:
-            limnue=pmaxinue/(v)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-potencia
-
-    return (reserva,potencia_maxima)
-
-def IEEEG3 (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0.0)then
-        if(normal==1):
-            limnue=pmaxinue2/(v)
-        else:
-            limnue=pmaxinue/(v)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-        
-
-def IEEEG2(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0.0):
-        IF(NORMAL==1):
-            limnue=pmaxinue2/(v)
-        else:
-            limnue=pmaxinue/(v)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-
-def IEESGO (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        IF(NORMAL==1)THEN
-            limnue=pmaxinue2/(v)
-        else:
-            limnue=pmaxinue/(v)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-  
-def STGV1P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
-        if(normal==1):
-            limnue=pmaxinue2/(rval1)
-        else:
-            limnue=pmaxinue/(rval1)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)   
-
-def STGV4P(indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0.0)then
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
-        if(normal==1):
-            limnue=pmaxinue2/(rval1)
-        else:
-            limnue=pmaxinue/(rval1)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-
-def STGV2P (indice_ini, rval,potencia,normal,difnue,pmaxinue,pmaxinue2,CON):
-    if (difnue>0.0):
-            ierr,rval1=psspy.dsrval('CON',(indice_ini+18))
-            ierr,rval3=psspy.dsrval('CON',(indice_ini+14))
-        if(normal==1):
-            limnue=pmaxinue2/(rval1)
-        else:
-            limnue=pmaxinue/(rval1)
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=rval1*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-'''
-def TGOV1(indice_ini, v, pmaxinue,CON):
-    
+def IEEEG1(indice_ini, v, pmaxinue, CON):
     limnue=pmaxinue/v
     psspy.change_con(indice_ini+CON,limnue)
 
     return 
 
-'''
-def WPIDHY (indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
-    if (difnue>0):
-        if(normal==1):
-            limnue=pmaxinue2(v
-        else:
-            limnue=pmaxinue/v
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=v*limnue
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
+def IEEEG3 (indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
+    psspy.change_con(indice_ini+CON,limnue)
 
-def GAST5(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
-    if (difnue>0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+9))
-        if(NORMAL==1):
-            limnue=(pmaxinue2/v)+rval1
-        else:
-            limnue=(pmaxinue/v)+rval1
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia:(limnue-rval1)*v  
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-
-def SIE943(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
-    if (difnue>0.0)then
-        AF1=0
-        ierr,AF1=psspy.dsrval('CON',(indice_ini+23))
-        BF1=0
-        ierr,BF1=psspy.dsrval('CON',(indice_ini+24))
-        RMAX4=0
-        ierr,RMAX4=psspy.dsrval('CON',(indice_ini+32))
-        AF2=0
-        ierr,AF2=psspy.dsrval('CON',(indice_ini+34))            
-        BF2=0 
-        ierr,BF2=psspy.dsrval('CON',(indice_ini+35))
-        AF3=0
-        ierr,AF3psspy.dsrval('CON',(indice_ini+37)) 
-        CF3=0 
-        ierr,CF3=psspy.dsrval('CON',(indice_ini+39))
-        DF3=0.
-        ierr,DF3=psspy.dsrval('CON',(indice_ini+40))
-        TLIM=0.
-        ierr,TLIM=psspy.dsrval('CON',(indice_ini+47))
-        TAMB=0.
-        ierr,TAMB=psspy.dsrval('CON',(indice_ini+60))
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+6))                     
-        if(nromal==1):
-            rQg=((pmaxinue2/rval1)-bf1)/af1
-            limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
-        else:
-            rQg=((pmaxinue/rval1)-bf1)/af1
-            limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
-        psspy.change_con(indice_ini+CON,limnue)
-        rQg=(tlim-af3*tamb-bf3*((af2*rmax4+bf2)*1.0)-df3)/cf3
-        #revisar esto
-        potencia_maxima=rval1*rQg
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-def TUCUGO(indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
-    if (difnue>0.0):
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
-        ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
-        ierr,rval4=psspy.dsrval('CON',(indice_ini+14))      
-        if(normal==1):
-            limnue=((pmaxinue2/rval1)+rval4)/rval3
-        else:
-            limnue=((pmaxinue/rval1)+rval4)/rval3
-            psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=((lim*rval3)-rval4)*rval1 
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
-
-def GASV94 (indice_ini, v, potencia, normal,difnue, pmaxinue, pmaxinue2,CON):
-    if (difnue>0.0)then 
-        AF6=0.
-        TAMB=0.0
-        BF6=0.0
-        AF4=0.0
-        BF4=0.0
-        DF6=0.0
-        CF6=0.0
-        AF5=0.0
-        BF5=0.0
+    return 
         
-        ierr,rval1=psspy.dsrval('CON',(indice_ini+50))
-        ierr,AF6=psspy.dsrval('CON',(indice_ini+61))   
-        ierr,TAMB=psspy.dsrval('CON',(indice_ini+53))
-        ierr,BF6=psspy.dsrval('CON',(indice_ini+62))
-        ierr,AF4=psspy.dsrval('CON',(indice_ini+57))
-        ierr,BF4=psspy.dsrval('CON',(indice_ini+58))
-        ierr,DF6=psspy.dsrval('CON',(indice_ini+64))
-        ierr,CF6=psspy.dsrval('CON',(indice_ini+63))
-        ierr,AF5=psspy.dsrval('CON',(indice_ini+59))
-        ierr,BF5=psspy.dsrval('CON',(indice_ini+60))
+def IEEEG2(indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
+    psspy.change_con(indice_ini+CON,limnue)
 
-        if(NORMAL==1):
-            RQg=((pmaxinue2/rval1)-bf5)/Bf5
-            limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
-        else:
-            RQg=((pmaxinue/rval1)-bf5)/Bf5
-            limnue=(RQg*CF6)+DF6+BF6*(AF4+BF4)+AF6*TAMB
-        psspy.change_con(indice_ini+CON,limnue)
-        potencia_maxima=buscar solucion
-        reserva=potencia_maxima-potencia
-    return (reserva,potencia_maxima)
+    return 
 
-'''
+def IEESGO (indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+  
+def STGV1P(indice_ini, pmaxinue, CON):
+    ierr, rval1=psspy.dsrval('CON',(indice_ini+21))
+    limnue=pmaxinue/rval1
+    psspy.change_con(indice_ini+CON,limnue)
+ 
+    return  
+
+def STGV4P(indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
+    limnue=pmaxinue/(rval1)
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def STGV2P (indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+18))
+    limnue=pmaxinue/rval1
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def TGOV1(indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def WPIDHY (indice_ini, v, pmaxinue, CON):
+    limnue=pmaxinue/v
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def GAST5(indice_ini, v, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+9))
+    limnue=(pmaxinue/v)+rval1
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def SIE943(indice_ini, pmaxinue, CON):
+    ierr,af1=psspy.dsrval('CON',(indice_ini+23))
+    ierr,bf1=psspy.dsrval('CON',(indice_ini+24))
+    ierr,af2=psspy.dsrval('CON',(indice_ini+34))            
+    ierr,bf2=psspy.dsrval('CON',(indice_ini+35))
+    ierr,af3=psspy.dsrval('CON',(indice_ini+37)) 
+    ierr,bf3=psspy.dsrval('CON',(indice_ini+38))
+    ierr,cf3=psspy.dsrval('CON',(indice_ini+39))
+    ierr,df3=psspy.dsrval('CON',(indice_ini+40))
+    ierr,tlim=psspy.dsrval('CON',(indice_ini+47))
+    ierr,tamb=psspy.dsrval('CON',(indice_ini+60))
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+6))                     
+    rQg=((pmaxinue/rval1)-bf1)/af1
+    limnue=-(((rQg*cf3+df3-tlim+af3*tamb)/bf3)+bf2)/af2
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def TUCUGO(indice_ini, pmaxinue, CON):
+    ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
+    ierr,rval4=psspy.dsrval('CON',(indice_ini+14))      
+    limnue=((pmaxinue/rval1)+rval4)/rval3
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+def GASV94 (indice_ini, pmaxinue, CON):
+    ierr,rval1=psspy.dsrval('CON',(indice_ini+50))
+    ierr,af6=psspy.dsrval('CON',(indice_ini+61))   
+    ierr,tamb=psspy.dsrval('CON',(indice_ini+53))
+    ierr,bf6=psspy.dsrval('CON',(indice_ini+62))
+    ierr,af4=psspy.dsrval('CON',(indice_ini+57))
+    ierr,bf4=psspy.dsrval('CON',(indice_ini+58))
+    ierr,df6=psspy.dsrval('CON',(indice_ini+64))
+    ierr,cf6=psspy.dsrval('CON',(indice_ini+63))
+    ierr,bf5=psspy.dsrval('CON',(indice_ini+60))
+
+    RQg=((pmaxinue/rval1)-bf5)/bf5
+    limnue=(RQg*cf6)+df6+bf6*(af4+bf4)+af6*tamb
+    psspy.change_con(indice_ini+CON,limnue)
+
+    return 
+
+

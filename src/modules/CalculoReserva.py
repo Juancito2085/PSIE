@@ -256,32 +256,23 @@ def GAST5(indice_ini,rval,v,potencia):
     return(reserva_maquina,potencia_maxima)
 
 def SIE943(indice_ini,potencia):
-    AF1=0
-    ierr,AF1=psspy.dsrval('CON',(indice_ini+23))
-    BF1=0
-    ierr,BF1=psspy.dsrval('CON',(indice_ini+24))
-    RMAX4=0
-    ierr,RMAX4=psspy.dsrval('CON',(indice_ini+32))
-    AF2=0
-    ierr,AF2=psspy.dsrval('CON',(indice_ini+34))            
-    BF2=0 
-    ierr,BF2=psspy.dsrval('CON',(indice_ini+35))
-    AF3=0
-    ierr,AF3psspy.dsrval('CON',(indice_ini+37)) 
-    CF3=0 
-    ierr,CF3=psspy.dsrval('CON',(indice_ini+39))
-    DF3=0.
-    ierr,DF3=psspy.dsrval('CON',(indice_ini+40))
-    TLIM=0.
-    ierr,TLIM=psspy.dsrval('CON',(indice_ini+47))
-    TAMB=0.
-    ierr,TAMB=psspy.dsrval('CON',(indice_ini+60))
+    ierr,af1=psspy.dsrval('CON',(indice_ini+23))
+    ierr,bf1=psspy.dsrval('CON',(indice_ini+24))
+    ierr,rmax4=psspy.dsrval('CON',(indice_ini+32))
+    ierr,af2=psspy.dsrval('CON',(indice_ini+34))            
+    ierr,bf2=psspy.dsrval('CON',(indice_ini+35))
+    ierr,af3=psspy.dsrval('CON',(indice_ini+37)) 
+    ierr,bf3=psspy.dsrval('CON',(indice_ini+38))
+    ierr,cf3=psspy.dsrval('CON',(indice_ini+39))
+    ierr,df3=psspy.dsrval('CON',(indice_ini+40))
+    ierr,tlim=psspy.dsrval('CON',(indice_ini+47))
+    ierr,tamb=psspy.dsrval('CON',(indice_ini+60))
     ierr,rval1=psspy.dsrval('CON',(indice_ini+6))
     if (potencia>0):
         rQg=(tlim-af3*tamb-bf3*((af2*rmax4+bf2)*1.0)-df3)/cf3
         ### rse toma como potencia maxima el menor de 2 calculos
         potencia_maxima1=rval1
-        potencia_maxima2=rval1(ngen)*(af1*rQg+bf1)
+        potencia_maxima2=rval1*(af1*rQg+bf1)
         if potencia_maxima1>potencia_maxima2:
            potencia_maxima=potencia_maxima2
         else:
