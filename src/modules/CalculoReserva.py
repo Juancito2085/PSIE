@@ -53,7 +53,9 @@ def calculo(nombre,indice_ini,rval,v,potencia):
     elif nombre=="SIE943":
         reserva_maquina,potencia_maxima=SIE943(indice_ini,potencia)
     elif nombre=="TUCUGO":
-        reserva_maquina,potencia_maxima=TUCUGO(indice_ini,potencia)
+        reserva_maquina,potencia_maxima=TUCUGO(indice_ini, rval, potencia)
+    elif nombre=="GASV94":
+        reserva_maquina,potencia_maxima=GASV94(indice_ini,rval,potencia)
     return reserva_maquina,potencia_maxima
 
 
@@ -87,13 +89,13 @@ def GAST2A(indice_ini,potencia):
 
     ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
     ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
-    ierr,rval18=psspy.dsrval('CON',(indice_ini+6))   
-    ierr,rval12=psspy.dsrval('CON',(indice_ini+25))         
-    ierr,rval13=psspy.dsrval('CON',(indice_ini+12))   
-    ierr,rval14=psspy.dsrval('CON',(indice_ini+26))
+    ierr,rval8=psspy.dsrval('CON',(indice_ini+6))   
+    ierr,rval2=psspy.dsrval('CON',(indice_ini+25))         
+    ierr,rval3=psspy.dsrval('CON',(indice_ini+12))   
+    ierr,rval4=psspy.dsrval('CON',(indice_ini+26))
     ierr,rval5=psspy.dsrval('CON',(indice_ini+29)) 
     ierr,rval6=psspy.dsrval('CON',(indice_ini+8))           
-    ierr,rval17=psspy.dsrval('CON',(indice_ini+11))
+    ierr,rval7=psspy.dsrval('CON',(indice_ini+11))
 
     if (potencia>0):
         c=rval22
@@ -119,16 +121,6 @@ def GAST(v,rval,potencia):
     return(reserva_maquina,potencia_maxima)
 
 def GASTWD(indice_ini,potencia):
-    c=0.0
-    kf=0.0
-    trate=0.0
-    af2=0.0
-    a=0.0
-    bf2=0.0
-    k6=0.0
-    max=0.0
-    k3=0.0
-
     ierr,rval22=psspy.dsrval('CON',(indice_ini+14))
     ierr,rval20=psspy.dsrval('CON',(indice_ini+16))
     ierr,rval18=psspy.dsrval('CON',(indice_ini+6)) 
@@ -281,7 +273,7 @@ def SIE943(indice_ini,potencia):
            reserva_maquina=potencia_maxima-potencia
     return(reserva_maquina,potencia_maxima)
 
-def TUCUGO(indice_ini,potencia):
+def TUCUGO(indice_ini, rval, potencia):
     ierr,rval1=psspy.dsrval('CON',(indice_ini+15))
     ierr,rval3=psspy.dsrval('CON',(indice_ini+11))
     ierr,rval4=psspy.dsrval('CON',(indice_ini+14))
@@ -292,16 +284,6 @@ def TUCUGO(indice_ini,potencia):
     return(reserva_maquina,potencia_maxima)
 
 def GASV94(indice_ini,rval,potencia):
-    AF6=0.
-    TAMB=0.0
-    BF6=0.0
-    AF4=0.0
-    BF4=0.0
-    DF6=0.0
-    CF6=0.0
-    AF5=0.0
-    BF5=0.0
-    
     ierr,rval1=psspy.dsrval('CON',(indice_ini+50))
     ierr,AF6=psspy.dsrval('CON',(indice_ini+61))   
     ierr,TAMB=psspy.dsrval('CON',(indice_ini+53))
