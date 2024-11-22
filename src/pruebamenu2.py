@@ -1,18 +1,18 @@
 import os
 import sys
 #ruta para notebook
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
+#os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
 #ruta para pc de escritorio
 sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
 sys.path.append(sys_path_PSSE)
 
 #ruta para notebook
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
+#os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
 #ruta para pc de escritorio
 os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
 os.environ['PATH'] += '' + os_path_PSSE
 os.environ['PATH'] += '' + sys_path_PSSE
- 
+
 # Importación de librerias necesarias
 #import redirect
 import datetime
@@ -37,21 +37,6 @@ nombre = None
 entrada = None
  
 # Definición de las funciones
-'''def ejecutar(destino, caso, nombre):
-    print(destino,caso, nombre)
-    if entrada is None:
-        tk.messagebox.showerror("Error", "No se ha seleccionado un archivo de entrada")
-        return
-    elif destino is None:
-        tk.messagebox.showerror("Error", "No se ha seleccionado una carpeta de destino")
-        return
-    elif caso is None:
-        tk.messagebox.showerror("Error", "No se ha seleccionado un caso")
-        return
-    elif nombre is None:
-        tk.messagebox.showerror("Error", "No se ha seleccionado un nombre para el informe")
-        return
-    tk.messagebox.showinfo("Ejecutando", "El script se está ejecutando")'''
 
 def seleccionar_entrada():
     global entrada
@@ -264,16 +249,18 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
     v1=list()
     indice_ini=list()
     rval=list()
+    ierr=list()
     for i in range(0,len(bus)):
         print(bus[i],governor[i],CON[i])
-        nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(destino, nombre_archivo,bus[i],idg[i],CON[i])
+        nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp, ierr_temp=verificaciondatos.generadores(destino, nombre_archivo,bus[i],idg[i],CON[i])
         nombre.append(nombre_temp.split()[0])
         cmpval.append(cmpval_temp)
         v.append(v_temp)
         v1.append(v1_temp)
         indice_ini.append(indice_ini_temp)
         rval.append(rval_temp)
-    print(nombre,cmpval,v,v1,indice_ini,rval)
+        ierr.append(ierr_temp)
+    print(nombre,cmpval,v,v1,indice_ini,rval, ierr)
 
     # 5 - Determinación de los margenes de reserva
     P=list()
@@ -285,16 +272,20 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
     reserva=list()
     potencia_maxima=list()
     for i,gov in enumerate(governor):
-        res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
-        if res==(pmax-P[i]):
-            correcto='Correcto'
+        if ierr[i]==0:
+            res,pmax=CR.calculo(gov,indice_ini[i],rval[i],v[i],P[i])
+            if res==(pmax-P[i]):
+                correcto='Correcto'
+            else:
+                correcto='Incorrecto'
+            print('potencia maxima ',round(pmax,2), 'potencia operativa ',round(P[i],2), 'reserva ',round(res,2), 'resultado ',correcto)
+            reserva.append(res)
+            potencia_maxima.append(pmax)
         else:
-            correcto='Incorrecto'
-        print('potencia maxima ',round(pmax,2), 'potencia operativa ',round(P[i],2), 'reserva ',round(res,2), 'resultado ',correcto)
-        reserva.append(res)
-        potencia_maxima.append(pmax)
+            reserva.append(0)
+            potencia_maxima.append(0)
 
-        # 6 - Registro de la reserva de todos los generadores en la hoja "Pmax_Pgen.prn"
+    # 6 - Registro de la reserva de todos los generadores en la hoja "Pmax_Pgen.prn"
     reserva_por=list()
     for i in range(0,len(bus)):
         reserva_por.append(round(((reserva[i]/P[i])*100),2))
@@ -308,18 +299,21 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
     informe.Mayor_maxima(destino,nombre_archivo, bus,nombre,idg,potencia_maxima,P,reserva,reserva_por,porcentaje,parametros[0])
 
     # 9 - Extracción de la generación del sistema
-    ibus_sale,nombre_sale,id_sale=lectura.generadores_no_suman()
+    ibus_sale,nombre_sale,id_sale=lectura.generadores_no_suman(entrada)
 
     cmpval_sale=list()
+    ierr_gen_sale=list()
     for i in range(0,len(ibus_sale)):
-        cmpval_sale.append(verificaciondatos.gensale(destino, nombre_archivo, ibus_sale[i],nombre_sale[i],id_sale[i]))
+        cmpval_sale_temp, ierr_gen_sale_temp = verificaciondatos.gensale(destino, nombre_archivo, ibus_sale[i],nombre_sale[i],id_sale[i])
+        cmpval_sale.append(cmpval_sale_temp)
+        ierr_gen_sale.append(ierr_gen_sale_temp)
     pge=0
     for pq in cmpval_sale:
-        if pq is not None:
+        if pq is not None and ierr_gen_sale==0:
             pge+=pq.real()
 
     # 10 - Areas a restar
-    iarea,nombre_area=lectura.regiones_paises_limitrofes()
+    iarea,nombre_area=lectura.regiones_paises_limitrofes(entrada)
 
     for i in range(0,len(iarea)):
         cmpval_area=verificaciondatos.area(destino, nombre_archivo,iarea[i],nombre_area[i])
@@ -594,14 +588,16 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
     v1=list()
     indice_ini=list()
     rval=list()
+    ierr=list()
     for i in range(0,len(bus)):
-        nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp=verificaciondatos.generadores(destino, nombre_archivo, bus[i],idg[i],CON[i])
+        nombre_temp, cmpval_temp,v_temp,v1_temp, indice_ini_temp,rval_temp, ierr_temp=verificaciondatos.generadores(destino, nombre_archivo, bus[i],idg[i],CON[i])
         nombre.append(nombre_temp)
         cmpval.append(cmpval_temp)
         v.append(v_temp)
         v1.append(v1_temp)
         indice_ini.append(indice_ini_temp)
         rval.append(rval_temp)
+        ierr
 
 
     # 5 - Determinación de los margenes de reserva

@@ -16,6 +16,7 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 
 import psspy
 import modules.informe as informe
+import textwrap
 
 def generadores(ruta, nombre_archivo,ibus,id,i5):
     '''
@@ -26,8 +27,8 @@ def generadores(ruta, nombre_archivo,ibus,id,i5):
     i5(CON)
     nombre
     '''
-    ruta=ruta+'/'+nombre_archivo
-
+    ruta = ruta+'/'+nombre_archivo
+    ierr = None
     #NOTONA devuelve el nombre extendido de 18 caracteres para el numero de barra identificado
     ierr,nombre=psspy.notona(ibus)
     if (ierr == 1):
@@ -121,19 +122,22 @@ def generadores(ruta, nombre_archivo,ibus,id,i5):
     elif(ierr==2):
         error='***** ERROR EN LOS DATOS DINAMICOS ***** LA BARRA '+str(ibus) + ' '+ str(nombre)+'INDICE DEL ARRAY ERRONEO VERIFIQUE EL ORDEN DE ICON EN ARCHIVO reserva.DAT'
         informe.Reserva_err(ruta,error)
-    return(nombre, cmpval,v,v1, indice_ini,rval)
+    if ierr==None:
+        ierr=0
+    return(nombre, cmpval, v, v1, indice_ini, rval, ierr)
 
 
 def gensale(ruta, nombre_archivo, ibus,nombre,id):
-    id=str(id)
+    id = str(id)
+    ierr = None
     '''Función para verificar los datos de gensale.prn'''
     ierr,ival=psspy.busint(ibus,'TYPE')
     if(ierr==1):
         error= '***** ERROR EN LOS DATOS DE GENSALE.PRN ***** NO SE ENCUENTRA LA BARRA ' + str(ibus) + ' ' + nombre
         informe.Reserva_err(ruta,nombre_archivo, error)
-    #if (ival==4):
-
-    #if (ival==1):
+    if (ierr==2):
+        error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** ERROR EN EL STRING'
+        informe.Reserva_err(ruta,nombre_archivo, error)
 
     ierr,cmpval=psspy.macdt2(ibus,id,'PQ')
 
@@ -164,11 +168,12 @@ def gensale(ruta, nombre_archivo, ibus,nombre,id):
     if(ierr==6) :
         error='***** ERROR EN LOS DATOS DE GENSALE.PRN ***** PARA LA BARRA '+str(ibus)+' '+str(nombre)+' NO HAY DATOS DE SECUENCIA'
         informe.Reserva_err(ruta,nombre_archivo, error)
-    
-    return(cmpval)
+    if ierr==None:
+        ierr=0
+    return(cmpval, ierr)
 
 def area (ruta, nombre_archivo,iarea,nombre_area):
-
+    ierr = None
     ierr,cmpva_area=psspy.ardat(iarea,'GEN')
     if(ierr==1):
         error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** NO SE ENCUENTRA EL AREA INDICADA COMO ' + str(iarea)+' '+str(nombre_area)
@@ -182,8 +187,9 @@ def area (ruta, nombre_archivo,iarea,nombre_area):
         informe.Reserva_err(ruta,nombre_archivo,error)   
 
     #CALL ARDAT(iarea,'INT',PiA,QiA,ierr) revisar esto
-    
-    return(cmpva_area)
+    if ierr==None:
+        ierr=0
+    return(cmpva_area, ierr)
 
  
 #Datos de salida para este modulo:

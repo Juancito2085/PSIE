@@ -39,9 +39,9 @@ def generadores(entrada):
         i+=1
     return bus,governor,CON,porcentaje,idg,comentario,tipo
 
-def regiones_paises_limitrofes():
+def regiones_paises_limitrofes(entrada):
     # Cargar el archivo de Excel
-    workbook = openpyxl.load_workbook('Reserva_entrada.xlsx')
+    workbook = openpyxl.load_workbook(entrada)
     sheet3 = workbook['Regiones paises limitrofes']
     # Creo las listas donde se almacenan los datos
     n_area=list()
@@ -54,9 +54,9 @@ def regiones_paises_limitrofes():
         i+=1
     return n_area,comment
 
-def generadores_no_suman():
+def generadores_no_suman(entrada):
     # Cargar el archivo de Excel
-    workbook = openpyxl.load_workbook('Reserva_entrada.xlsx')  
+    workbook = openpyxl.load_workbook(entrada)  
     sheet4 = workbook['Generadores que no suman']
     ibus=list()
     nombre=list()
