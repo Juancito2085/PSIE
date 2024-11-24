@@ -325,7 +325,7 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
             pga+=pq.real()
 
     # 11 - Generación total a restar
-    total_A, total_R=generacion.total()
+    total_A, total_R=generacion.total(destino, nombre_archivo)
     generacion_total=total_A
     print('la generacion total es ',generacion_total)
     print('la generacion a restar es ',pge)

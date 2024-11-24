@@ -12,9 +12,10 @@ os.environ['PATH'] += ';' + sys_path_PSSE
 import psspy
 import modules.informe as informe
 
-ruta='C:/Users/jcbru/Desktop/psie'
 
-def total():
+
+def total(destino, nombre_archivo):
+    ruta=destino + nombre_archivo
     ierr, cmpval = psspy.systot('GEN')
 
     if(ierr)==2:
