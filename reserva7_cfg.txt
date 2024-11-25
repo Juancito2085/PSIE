@@ -1,0 +1,2 @@
+sys_path_PSSE: C:/Program Files (x86)/PTI/PSSEXplore34/PSSPY34
+os_path_PSSE: C:/Program Files (x86)/PTI/PSSEXplore34/PSSBIN

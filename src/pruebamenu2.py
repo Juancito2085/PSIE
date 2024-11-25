@@ -1,4 +1,4 @@
-import os
+'''import os
 import sys
 #ruta para notebook
 #os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
@@ -20,7 +20,120 @@ import re
 import tkinter as tk
 from tkinter import filedialog, messagebox,Menu
 import pssexplore34
+import psspy'''
+
+import os
+import sys
+import tkinter as tk
+from tkinter import filedialog, messagebox
+
+# verificamos que exista el archivo de configuracion
+if  not os.path.exists("reserva7_cfg.txt"):       
+    # Crear una ventana oculta para usar los diálogos de archivo
+    root = tk.Tk()
+    root.title("Seleccionar Directorios")
+
+    # Definir el tamaño de la ventana secundaria
+    window_width = 600
+    window_height = 400
+
+    # Obtener el tamaño de la pantalla
+    screen_width = root.winfo_screenwidth()
+    screen_height = root.winfo_screenheight()
+
+    # Calcular la posición para centrar la ventana secundaria
+    position_top = int(screen_height / 2 - window_height / 2)
+    position_right = int(screen_width / 2 - window_width / 2)
+
+    # Establecer la geometría de la ventana secundaria usando format()
+    root.geometry("{}x{}+{}+{}".format(window_width, window_height, position_right, position_top))
+
+
+    # Variables globales para almacenar las rutas seleccionadas
+    sys_path_PSSE = None
+    os_path_PSSE = None
+
+    # Función para seleccionar el directorio sys_path_PSSE
+    def seleccionar_sys_path_PSSE():
+        global sys_path_PSSE
+        while True:
+            sys_path_PSSE = filedialog.askdirectory(title="Seleccionar directorio de la carpeta PSSPY34")
+            if sys_path_PSSE:
+                if sys_path_PSSE.endswith("PSSPY34"):
+                    sys_path_label.config(text="sys_path_PSSE: " + sys_path_PSSE)
+                    break
+                else:
+                    messagebox.showerror("Error", "El directorio seleccionado debe terminar con 'PSSPY34'. Por favor, seleccione nuevamente.")
+
+    # Función para seleccionar el directorio os_path_PSSE
+    def seleccionar_os_path_PSSE():
+        global os_path_PSSE
+        while True:
+            os_path_PSSE = filedialog.askdirectory(title="Seleccionar directorio de la carpeta PSSBIN")
+            if os_path_PSSE:
+                if os_path_PSSE.endswith("PSSBIN"):
+                    os_path_label.config(text="os_path_PSSE: " + os_path_PSSE)
+                    break
+                else:
+                    messagebox.showerror("Error", "El directorio seleccionado debe terminar con 'PSSBIN'. Por favor, seleccione nuevamente.")
+            else:
+                break
+
+    # Función para confirmar las selecciones y cerrar la ventana
+    def confirmar_seleccion():
+        if not sys_path_PSSE or not os_path_PSSE:
+            messagebox.showerror("Error", "Debe seleccionar ambos directorios para continuar.")
+        else:
+            with open("reserva7_cfg.txt", "w") as f:
+                f.write("sys_path_PSSE: " + sys_path_PSSE + "\n")
+                f.write("os_path_PSSE: " + os_path_PSSE + "\n")
+            root.destroy()
+
+    # Guardar las rutas seleccionadas en un .txt
+    def guardar_rutas():
+        with open("reserva7_cfg.txt", "w") as f:
+            f.write("sys_path_PSSE: " + sys_path_PSSE + "\n")
+            f.write("os_path_PSSE: " + os_path_PSSE + "\n")
+
+    # Crear etiquetas y botones para seleccionar los directorios
+    sys_path_label = tk.Label(root, text="sys_path_PSSE: No seleccionado")
+    sys_path_label.pack(pady=10)
+
+    btn_seleccionar_sys_path = tk.Button(root, text="Seleccionar sys_path_PSSE", command=seleccionar_sys_path_PSSE)
+    btn_seleccionar_sys_path.pack(pady=10)
+
+    os_path_label = tk.Label(root, text="os_path_PSSE: No seleccionado")
+    os_path_label.pack(pady=10)
+
+    btn_seleccionar_os_path = tk.Button(root, text="Seleccionar os_path_PSSE", command=seleccionar_os_path_PSSE)
+    btn_seleccionar_os_path.pack(pady=10)
+
+    btn_confirmar = tk.Button(root, text="Confirmar", command=confirmar_seleccion)
+    btn_confirmar.pack(pady=20)
+
+    # Ejecutar el bucle principal de tkinter
+    root.mainloop()
+else:
+    with open("reserva7_cfg.txt", "r") as f:
+        lines = f.readlines()
+        sys_path_PSSE = lines[0].split(": ")[1].strip()
+        os_path_PSSE = lines[1].split(": ")[1].strip()
+        
+# Verificar que los directorios hayan sido seleccionados
+if not sys_path_PSSE or not os_path_PSSE:
+    sys.exit(1)
+
+# Configurar las rutas seleccionadas
+sys.path.append(sys_path_PSSE)
+os.environ['PATH'] += '' + os_path_PSSE
+os.environ['PATH'] += '' + sys_path_PSSE
+
+# Importación de librerías necesarias
+import datetime
+import re
+import pssexplore34
 import psspy
+
 
 #importacion de librerias propias
 import modules.lectura as lectura 
@@ -141,7 +254,6 @@ def quit_app():
 # Creacion de la ventana principal
 root = tk.Tk()
 root.title("Calculo de reserva")
-
 
 # Obtener el tamaño de la pantalla
 screen_width = root.winfo_screenwidth()
