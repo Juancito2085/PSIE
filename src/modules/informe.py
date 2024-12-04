@@ -63,16 +63,20 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
         return
 
     #Escribimos los datos en la hoja debajo de los encabezados en la fila 2
-    sheet['A1'] = 'Análisis de la Reserva Total'
+    sheet['A1'] = 'ANÁLISIS DE LA RESERVA TOTAL'
     sheet.merge_cells('A1:F1')
+    # Damos formato en negrita, centrado y tamaño de letra 14
+    sheet['A1'].font = openpyxl.styles.Font(bold=True, size=14)
     sheet['A1'].alignment = openpyxl.styles.Alignment(horizontal='center')
     # sheet['A2'] = 'Escenario'
+    sheet.merge_cells('A2:F2')
     sheet['A3'] = 'RESERVA ROTANTE EN MAQUINAS QUE REGULAN'
     sheet.merge_cells('A3:F3')
+    sheet['A3'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A3'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A4'] = 'RESERVA HIDRO [MW]'
     sheet['D4'] = reservahidro
-    sheet['A5'] = 'RESERVA TERMICA [MW]'
+    sheet['A5'] = 'RESERVA TÉRMICA [MW]'
     sheet['D5'] = reservatermica
     sheet['A6'] = 'RESERVA TOTAL [MW]'
     sheet['D6'] = reservahidro + reservatermica
@@ -81,8 +85,10 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
     sheet.merge_cells('A7:E7')
     sheet['A7'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['F7'] =round(((reservatermica+reservahidro)/generacion_total)*100,2)
-    sheet['A8'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
+    sheet['A8'] = 'RESERVA PROGRAMADA A 50 HZ PARA RPF'
     sheet.merge_cells('A8:F8')
+    sheet['A8'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
+    sheet['A8'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A9'] = 'RESERVA HIDRO [MW]'
     sheet['D9'] = reservahidro_rpf
     sheet['A10'] = 'RESERVA TÉRMICA [MW]'
@@ -101,6 +107,7 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
     sheet['F14'] = round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2)
     sheet['A15'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
     sheet.merge_cells('A15:F15')
+    sheet['A15'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A15'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A16'] = 'HIDRO [MW]'
     sheet['D16'] = pot_hidro
@@ -113,6 +120,7 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
     unir_celdas_resultados(16,19)
     sheet['A20'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
     sheet.merge_cells('A20:F20')
+    sheet['A20'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A20'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A21'] = 'HIDRO [MW]'
     sheet['D21'] = reservahidro_rpf
@@ -168,16 +176,20 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
             bordes_celdas(bordes,i)
         return
     
-    bordes_celdas_total(bordes_titulos,3,26)
+    bordes_celdas_total(bordes_titulos,1,26)
 
-    sheet['A28'] = 'LUEGO DEL RECORTE DE PONTECIA MAXIMA '
+    sheet['A28'] = 'LUEGO DEL RECORTE DE POTENCIA MÁXIMA '
     sheet.merge_cells('A28:F28')
+    sheet['A28'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A28'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A29'] = 'AJUSTE EN BASE A '+ajuste+' SOBRE '+tipo_ajustado
     sheet.merge_cells('A29:F29')
+    sheet['A29'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A29'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A30'] = 'RESERVA ROTANTE EN MÁQUINAS QUE REGULAN'
     sheet.merge_cells('A30:F30')
+    sheet['A30'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
+    sheet['A30'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A31'] = 'RESERVA HIDRO [MW]'
     sheet['D31'] = reservahidro
     sheet['A32'] = 'RESERVA TERMICA [MW]'
@@ -190,6 +202,8 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
     sheet['F34'] =round(((reservatermica+reservahidro)/generacion_total)*100,2)
     sheet['A35'] = 'RESERVA PROGRAMADA A 50Hz PARA RPF'
     sheet.merge_cells('A35:F35')
+    sheet['A35'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
+    sheet['A35'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A36'] = 'RESERVA HIDRO [MW]'
     sheet['D36'] = reservahidro_rpf
     sheet['A37'] = 'RESERVA TÉRMICA [MW]'
@@ -208,6 +222,8 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
     sheet['F41'] = round(((reservahidro-reservahidro_rpf)/generacion_total)*100,2)
     sheet['A42'] = 'POTENCIA OPERABLE EN EL PARQUE REGULANTE'
     sheet.merge_cells('A42:F42')
+    sheet['A42'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
+    sheet['A42'].alignment = openpyxl.styles.Alignment(horizontal='center')
     bordes_celdas(bordes_titulos,42)
     sheet['A42'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A43'] = 'HIDRO [MW]'
@@ -221,6 +237,7 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
     unir_celdas_resultados(43,46)
     sheet['A47'] = 'RESERVA PROGRAMADA EN EL PARQUE REGULANTE'
     sheet.merge_cells('A47:F47')
+    sheet['A47'].font = openpyxl.styles.Font(italic=True, bold=True, size=12)
     sheet['A47'].alignment = openpyxl.styles.Alignment(horizontal='center')
     sheet['A48'] = 'HIDRO [MW]'
     sheet['D48'] = reserva_TV
