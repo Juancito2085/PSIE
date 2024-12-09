@@ -689,7 +689,10 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
             if ierr != 0:
                 print('Error al ejecutar la simulación')
                 return
-        volver_a_simular()
+        # volver_a_simular()
+
+        #guardar un nuevo snap
+        psspy.snap([-1, -1, -1, 1, 1, 0], caso +'_nuevo.snp')
 
         # 4 - Se vuelven a verificar los datos (revisar esto)
         nombre=list()
