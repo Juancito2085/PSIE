@@ -686,7 +686,8 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
                 CL.cambiar_limites(governor[i], indice_ini[i], rval[i], v[i], P[i], dif_nueva[i], pmaxinueva[i],CON[i])
             else:
                 print('no se cambia en ', governor[i])
-        # 16 - Volver a simular el caso por las dudas
+
+        # 16 - Volver a simular el caso por las dudas (revisar esto)
         def volver_a_simular():
             # Cargar el caso
             psspy.case('savnw.sav')
@@ -712,13 +713,13 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
                 return
         # volver_a_simular()
 
-        #guardar un nuevo snap
+        # 16 - Guardar un nuevo snap con los límites cambiados
         nuevo_sfile = os.path.join(destino, caso.split('/')[-1].split('.')[0]+ '_reserva.snp')
         nuevo_sfile = nuevo_sfile.replace('\\', '/')
         
         psspy.snap([-1, -1, -1, -1, -1], nuevo_sfile)
 
-        # 4 - Se vuelven a verificar los datos (revisar esto)
+        # 17 - Se vuelven a verificar los datos (revisar esto)
         nombre=list()
         cmpval=list()
         v=list()
@@ -736,7 +737,7 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
             rval.append(rval_temp)
             ierr
 
-        # 17 - Determinación de los margenes de reserva con los recortes realizados
+        # 18 - Determinación de los margenes de reserva con los recortes realizados
         P=list()
         Q=list()
         for pq in cmpval:
@@ -763,7 +764,7 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
         print(reserva_por)
         print(potencia_maxima)
 
-        # Variables que se utilizan para el informe una vez recortado
+        # 19 - Variables que se utilizan para el informe una vez recortado
         reservahidro=0
         reservatermica=0
         reservahidro_rpf=0
@@ -865,9 +866,7 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
         print('TOTAL [MW] ',reserva_TV+reserva_TG+reservahidro_rpf)
         print('RESERVA NUEVA ',round(parametros[0]*generacion_total/100,2))
         print('RESERVA TOTAL2 ',reservatotal2)
-        print(destino)
-        print(caso)
-        print(nuevo_sfile)  
+
 # Inicio del bucle de la ventana principal
 root.mainloop()
 
