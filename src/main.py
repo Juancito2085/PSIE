@@ -178,6 +178,17 @@ def seleccionar_caso():
         else:
             tk.messagebox.showerror("Error", "El archivo seleccionado no tiene una extensión válida (.sav)")
             caso = None
+def seleccionar_snap():
+    global snap
+    snap = filedialog.askopenfilename(title="Seleccionar snap")
+    if snap:
+        extension = os.path.splitext(snap)[1]
+        if extension.lower() in ['.snp']:  # Verificar si la extensión es .sav
+            #se extrae la extension del archivo
+            snap_label.config(text="Snap seleccionado: " + snap)
+        else:
+            tk.messagebox.showerror("Error", "El archivo seleccionado no tiene una extensión válida (.snp)")
+            snap = None
 
 def nombre_informe():
     global nombre
@@ -260,8 +271,8 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Definir el tamaño de la ventana
-window_width = 1200
-window_height = 800
+window_width = 1350
+window_height = 900
 
 # Calcular la posición para centrar la ventana
 position_top = int(screen_height / 2 - window_height / 2)
@@ -282,7 +293,7 @@ btn_seleccionar_entrada.pack(pady=10)
 destino_label = tk.Label(root, text="Selecciona una carpeta para guardar el informe", font=("Arial", 14))
 destino_label.pack(pady=20)
 
-# Crear botones
+# Crear botón para seleccionar el destino
 btn_seleccionar_destino = tk.Button(root, text="Seleccionar destino", command=seleccionar_destino, width=20, height=2)
 btn_seleccionar_destino.pack(pady=10)
 
@@ -290,8 +301,17 @@ btn_seleccionar_destino.pack(pady=10)
 caso_label = tk.Label(root, text="Selecciona un caso para realizar el análisis", font=("Arial", 14))
 caso_label.pack(pady=20)
 
+# Crear botón para seleccionar el caso
 btn_seleccionar_caso = tk.Button(root, text="Seleccionar caso", command=seleccionar_caso, width=20, height=2)
 btn_seleccionar_caso.pack(pady=10)
+
+# Label para mostrar el snap seleccionado
+snap_label = tk.Label(root, text="Selecciona un snap para realizar el análisis", font=("Arial", 14))
+snap_label.pack(pady=20)
+
+# Crear botón para seleccionar el snap
+btn_seleccionar_snap = tk.Button(root, text="Seleccionar snap", command=seleccionar_snap, width=20, height=2)
+btn_seleccionar_snap.pack(pady=10)
 
 # Crear un label para mostrar el nombre del informe
 nombre_label = tk.Label(root, text="Sin nombre seleccionado", font=("Arial", 14))
@@ -339,11 +359,12 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
     psspy.fact()
     psspy.tysl(0)
 
-    # Open snap.
-    sfile = caso.split('.')[0]
+    # Abrir el snap
+    sfile = snap
     psspy.rstr(sfile)
     psspy.dynamicsmode(0)
     nombre_archivo=nombre_archivo +'.xlsx'
+
     # 1 - Crear el archivo de salida
     informe.crear(destino, nombre_archivo)
 
@@ -692,7 +713,10 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
         # volver_a_simular()
 
         #guardar un nuevo snap
-        psspy.snap([-1, -1, -1, 1, 1, 0], caso +'_nuevo.snp')
+        nuevo_sfile = os.path.join(destino, caso.split('/')[-1].split('.')[0]+ '_reserva.snp')
+        nuevo_sfile = nuevo_sfile.replace('\\', '/')
+        
+        psspy.snap([-1, -1, -1, -1, -1], nuevo_sfile)
 
         # 4 - Se vuelven a verificar los datos (revisar esto)
         nombre=list()
@@ -711,7 +735,6 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
             indice_ini.append(indice_ini_temp)
             rval.append(rval_temp)
             ierr
-
 
         # 17 - Determinación de los margenes de reserva con los recortes realizados
         P=list()
@@ -842,7 +865,9 @@ def ejecutar(entrada, destino, caso, nombre_archivo):
         print('TOTAL [MW] ',reserva_TV+reserva_TG+reservahidro_rpf)
         print('RESERVA NUEVA ',round(parametros[0]*generacion_total/100,2))
         print('RESERVA TOTAL2 ',reservatotal2)
-
+        print(destino)
+        print(caso)
+        print(nuevo_sfile)  
 # Inicio del bucle de la ventana principal
 root.mainloop()
 

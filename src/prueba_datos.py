@@ -101,7 +101,7 @@ for i in range(len(bus)):
 
 
 # Abro el snap de savwn_nuevo.snp
-psspy.rstr('savnw_nuevo.snp')
+psspy.rstr('C:/Users/jcbru/Desktop/savnw_nuevo.snp')
 
 # Mostrar los valores de los CONS para cada generador
 for i in range(len(bus)):
@@ -110,4 +110,4 @@ for i in range(len(bus)):
     valores_cons_cambiados.append(con_value_cambiado)
 
 for i in range(len(bus)):
-    print('Generador ' +generadores['nombre'][i], ' Valor de CON antes del cambio: ', valores_cons[i], ' Valor de CON después del cambio: ', valores_cons_cambiados[i])
+    print('Generador ' + generadores['nombre'][i], ' CON: ', valores_cons[i], ' CON nuevo: ', valores_cons_cambiados[i])

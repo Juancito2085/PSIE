@@ -395,6 +395,7 @@ if parametros[1]==1:
     # volver_a_simular()
 
     #guardar un nuevo snap
+    
     psspy.snap([-1, -1, -1, -1, -1], caso.split('.')[0] + '_nuevo.snp')
 
     # 4 - Se vuelven a verificar los datos (revisar esto)
