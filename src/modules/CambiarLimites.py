@@ -1,23 +1,18 @@
-#comienza en linea 2205
-
-#ver que hacer con el limite nuevo en cada caso, es decir si cambiarlo en cada funcion o cambiarlo luego
-
-
-import os
-import sys
-
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-sys.path.append(sys_path_PSSE)
-sys_path_PSSE=r'E:\PSS\PSSPY34'
-
-
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += ';' + os_path_PSSE
-os.environ['PATH'] += ';' + sys_path_PSSE
-
 import psspy
 
 def cambiar_limites(nombre,indice_ini,rval, v, P,difnue, pmaxinue,CON):
+    '''
+    Funcion que cambia los límites de las máquinas
+
+    :param nombre: Nombre de la máquina
+    :param indice_ini: Indice de la máquina
+    :param rval: Valor de la máquina
+    :param v: Voltaje de la máquina
+    :param P: Potencia de la máquina
+    :param difnue: Diferencia de la máquina
+    :param pmaxinue: Potencia máxima de la máquina
+    :param CON: Constante de la máquina
+    '''
     if nombre=='BSASGO':
         BSASGO(indice_ini,pmaxinue,CON)
     '''if nombre=='RAVYA3':

@@ -1,8 +1,14 @@
 import sys
 import os
 
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
+# Se lee los paths del archivo de configuración
+with open('reserva7_cfg.txt','r') as f:
+    lines = f.readlines()
+    for line in lines:
+        if 'sys_path_PSSE' in line:
+            sys_path_PSSE = line.split(': ')[1].strip()
+        if 'os_path_PSSE' in line:
+            os_path_PSSE = line.split(': ')[1].strip()
 
 # Configurar las rutas seleccionadas
 sys.path.append(sys_path_PSSE)

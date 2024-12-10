@@ -1,7 +1,12 @@
 import openpyxl
 
-
 def parametros(entrada):
+    '''
+    Función que lee los parámetros de entrada del archivo de enrtada Excel
+
+    :param entrada: archivo de entrada Excel
+    :return: lista con los parámetros
+    '''
     # Cargar el archivo de Excel
     workbook = openpyxl.load_workbook(entrada)
     sheet1 = workbook['Parametros']
@@ -14,6 +19,12 @@ def parametros(entrada):
     return parametros
 
 def generadores(entrada):
+    '''
+    Función que lee los generadores del archivo de entrada Excel
+
+    :param entrada: archivo de entrada Excel
+    :return: listas con los generadores
+    '''
     # Cargar el archivo de Excel
     workbook = openpyxl.load_workbook(entrada)
     sheet2 = workbook['Generadores SADI']
@@ -40,6 +51,12 @@ def generadores(entrada):
     return bus,governor,CON,porcentaje,idg,comentario,tipo
 
 def regiones_paises_limitrofes(entrada):
+    '''
+    Función que lee las regiones de los paises limitrofes del archivo de entrada Excel
+
+    :param entrada: archivo de entrada Excel
+    :return: listas con las regiones de los paises limitrofes
+    '''
     # Cargar el archivo de Excel
     workbook = openpyxl.load_workbook(entrada)
     sheet3 = workbook['Regiones paises limitrofes']
@@ -55,6 +72,12 @@ def regiones_paises_limitrofes(entrada):
     return n_area,comment
 
 def generadores_no_suman(entrada):
+    '''
+    Función que lee los generadores que no suman del archivo
+
+    :param entrada: archivo de entrada Excel
+    :return: listas con los generadores que no suman
+    '''
     # Cargar el archivo de Excel
     workbook = openpyxl.load_workbook(entrada)  
     sheet4 = workbook['Generadores que no suman']

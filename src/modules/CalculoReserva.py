@@ -1,19 +1,15 @@
-
-import os
-import sys
-
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-sys.path.append(sys_path_PSSE)
-sys_path_PSSE=r'E:\PSS\PSSPY34'
-
-
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += ';' + os_path_PSSE
-os.environ['PATH'] += ';' + sys_path_PSSE
-
 import psspy
 
 def calculo(nombre,indice_ini,rval,v,potencia):
+    '''
+    Función que calcula la reserva de potencia de una máquina
+
+    :param nombre: Nombre de la máquina
+    :param indice_ini: Índice de la máquina
+    :param rval: Valor de la máquina
+    :param v: Valor de la máquina
+    :param potencia: Potencia de la máquina
+    '''
     if nombre=="BSASGO":
         reserva_maquina,potencia_maxima=BSASGO(indice_ini,potencia)
     elif nombre=="RAVYA3":

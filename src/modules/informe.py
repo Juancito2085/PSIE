@@ -4,7 +4,10 @@ from openpyxl.styles import Font, PatternFill, Border, Side, Alignment
 
 def crear (ruta, nombre_archivo):
     """Crea el archivo excel de salida para los reportes en la ruta especificada
-    :param ruta: ruta donde se guardará el archivo excel"""
+
+    :param ruta: ruta donde se guardará el archivo excel
+    :param nombre_archivo: nombre del archivo excel de salida
+    """
     # Creamos el excel en la ruta especificada por el parametro
     wb = openpyxl.Workbook()
     # Eliminamos la hoja por defecto
@@ -34,7 +37,24 @@ def reserva_total(ruta,nombre_archivo, reservahidro,reservatermica,reservahidro_
                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                     generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param reservahidro: reserva hidroeléctrica
+    :param reservatermica: reserva térmica
+    :param reservahidro_rpf: reserva hidroeléctrica para RPF
+    :param reservatermica_rpf: reserva térmica para RPF
+    :param pot_hidro: potencia operable en el parque hidroeléctrico
+    :param pot_TG: potencia operable en el parque térmico TG
+    :param pot_CC: potencia operable en el parque térmico CC
+    :param pot_TV: potencia operable en el parque térmico TV
+    :param reserva_TV: reserva térmica para TV
+    :param reserva_CC: reserva térmica para CC
+    :param reserva_TG: reserva térmica para TG
+    :param generacion_total: generación total
+    :param reserva_nueva: reserva nueva
+    :param reservatotal2: reserva total 2
+    """
     #Abrimos el archivo de excel
     workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo )
     #Seleccionamos la hoja donde vamos a completar con datos
@@ -148,7 +168,24 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
                     pot_hidro,pot_TG,pot_CC,pot_TV,reserva_TV,reserva_CC,reserva_TG,
                     generacion_total,reserva_nueva,reservatotal2):
     """Completa los datos de la hoja reserva_total.prn con los valores despues del recorte
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param reservahidro: reserva hidroeléctrica
+    :param reservatermica: reserva térmica
+    :param reservahidro_rpf: reserva hidroeléctrica para RPF
+    :param reservatermica_rpf: reserva térmica para RPF
+    :param pot_hidro: potencia operable en el parque hidroeléctrico
+    :param pot_TG: potencia operable en el parque térmico TG
+    :param pot_CC: potencia operable en el parque térmico CC
+    :param pot_TV: potencia operable en el parque térmico TV
+    :param reserva_TV: reserva térmica para TV
+    :param reserva_CC: reserva térmica para CC
+    :param reserva_TG: reserva térmica para TG
+    :param generacion_total: generación total
+    :param reserva_nueva: reserva nueva
+    :param reservatotal2: reserva total 2
+    """
     #Abrimos el archivo de excel
     workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     #Seleccionamos la hoja donde vamos a completar con datos
@@ -263,7 +300,19 @@ def reserva_total_recorte(ruta,nombre_archivo,ajuste, tipo_ajustado,reservahidro
 
 def Pmax_Pgen(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Pmax_Pgen.prn
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param ibus: lista de los ibus de los generadores
+    :param nombre: lista de los nombres de los generadores
+    :param id: lista de los id de los generadores
+    :param pot_max: lista de las potencias máximas de los generadores
+    :param pot_gen: lista de las potencias generadas de los generadores
+    :param max_gen: lista de las potencias máximas de los generadores
+    :param reserva: lista de las reservas de los generadores
+    :param por_dato: lista de los porcentajes de los datos
+    :param resopt: reserva óptima
+    """
     #Verificamos que se pueda abrir el excel
     try:
         workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
@@ -309,7 +358,19 @@ def Pmax_Pgen(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,reserv
 
 def Mayor_maxima(ruta,nombre_archivo,ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Mayor_maxima.prn
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param ibus: lista de los ibus de los generadores
+    :param nombre: lista de los nombres de los generadores
+    :param id: lista de los id de los generadores
+    :param pot_max: lista de las potencias máximas de los generadores
+    :param pot_gen: lista de las potencias generadas de los generadores
+    :param max_gen: lista de las potencias máximas de los generadores
+    :param reserva: lista de las reservas de los generadores
+    :param por_dato: lista de los porcentajes de los datos
+    :param resopt: reserva óptima
+    """
     #Abrimos el archivo de excel
     try:
         workbook = openpyxl.load_workbook(ruta +'/' + nombre_archivo)
@@ -358,7 +419,19 @@ def Mayor_maxima(ruta,nombre_archivo,ibus,nombre,id,pot_max,pot_gen,max_gen,rese
 
 def Menor_optima(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,reserva,por_dato,resopt):
     """Completa los datos de la hoja Menor_optima.prn
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param ibus: lista de los ibus de los generadores
+    :param nombre: lista de los nombres de los generadores
+    :param id: lista de los id de los generadores
+    :param pot_max: lista de las potencias máximas de los generadores
+    :param pot_gen: lista de las potencias generadas de los generadores
+    :param max_gen: lista de las potencias máximas de los generadores
+    :param reserva: lista de las reservas de los generadores
+    :param por_dato: lista de los porcentajes de los datos
+    :param resopt: reserva óptima
+    """
     #Abrimos el archivo de excel
     try:
         workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
@@ -407,6 +480,7 @@ def Menor_optima(ruta,nombre_archivo, ibus,nombre,id,pot_max,pot_gen,max_gen,res
 
 def Reserva_rep(ruta):
     """Completa los datos de la hoja Reserva.rep
+
     :param ruta: ruta donde se encuentra el archivo excel de entrada"""
     #Abrimos el archivo de excel
     workbook = openpyxl.load_workbook(ruta)
@@ -418,7 +492,11 @@ def Reserva_rep(ruta):
 
 def Reserva_err(ruta, nombre_archivo, error):
     """Completa los datos de la hoja Reserva.err
-    :param ruta: ruta donde se encuentra el archivo excel de entrada"""
+
+    :param ruta: ruta donde se encuentra el archivo excel de entrada
+    :param nombre_archivo: nombre del archivo excel de salida
+    :param error: error que se va a escribir en la hoja 
+    """
     #Abrimos el archivo de excel
     workbook = openpyxl.load_workbook(ruta + '/' + nombre_archivo)
     #Seleccionamos la hoja donde vamos a completar con datos

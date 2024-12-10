@@ -1,20 +1,15 @@
-import os
-import sys
-
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-sys.path.append(sys_path_PSSE)
-
- 
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += ';' + os_path_PSSE
-os.environ['PATH'] += ';' + sys_path_PSSE
-
 import psspy
 import modules.informe as informe
 
 
 
 def total(destino, nombre_archivo):
+    '''
+    Función que calcula la generación total del sistema.
+
+    :param destino: Ruta donde se guardará el archivo de salida.
+    :param nombre_archivo: Nombre del archivo de salida.
+    '''
     ruta=destino + nombre_archivo
     ierr, cmpval = psspy.systot('GEN')
 

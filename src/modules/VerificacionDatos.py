@@ -2,17 +2,6 @@
 #ibus numero de barra
 #id id del generador
 #i5-> CON a cambiar
-import os
-import sys
-
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-sys.path.append(sys_path_PSSE)
-
- 
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += ';' + os_path_PSSE
-os.environ['PATH'] += ';' + sys_path_PSSE
-
 
 import psspy
 import modules.informe as informe
@@ -21,11 +10,12 @@ import textwrap
 def generadores(ruta, nombre_archivo,ibus,id,i5):
     '''
     Función que verifica los datos obtenidos del archivo"reserva.dat"
-    Los parámetros de la funcion son 
-    ibus
-    id
-    i5(CON)
-    nombre
+
+    :param ruta: ruta del archivo
+    :param nombre_archivo: nombre del archivo
+    :param ibus: numero de barra
+    :param id: id del generador
+    :param i5: CON a cambiar
     '''
     ruta = ruta+'/'+nombre_archivo
     ierr = None
@@ -128,6 +118,15 @@ def generadores(ruta, nombre_archivo,ibus,id,i5):
 
 
 def gensale(ruta, nombre_archivo, ibus,nombre,id):
+    '''
+    Función que verifica los datos obtenidos del archivo "gensale.prn"
+    
+    :param ruta: ruta del archivo
+    :param nombre_archivo: nombre del archivo
+    :param ibus: numero de barra
+    :param nombre: nombre de la barra
+    :param id: id del generador
+    '''
     id = str(id)
     ierr = None
     '''Función para verificar los datos de gensale.prn'''
@@ -173,6 +172,14 @@ def gensale(ruta, nombre_archivo, ibus,nombre,id):
     return(cmpval, ierr)
 
 def area (ruta, nombre_archivo,iarea,nombre_area):
+    '''
+    Función que verifica los datos obtenidos del archivo "reserva.dat"
+
+    :param ruta: ruta del archivo
+    :param nombre_archivo: nombre del archivo
+    :param iarea: numero de area
+    :param nombre_area: nombre del area
+    '''
     ierr = None
     ierr,cmpva_area=psspy.ardat(iarea,'GEN')
     if(ierr==1):
@@ -180,10 +187,10 @@ def area (ruta, nombre_archivo,iarea,nombre_area):
         informe.Reserva_err(ruta,nombre_archivo,error)    
 
     if(ierr==2):
-        error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SYSTEMA'
+        error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SISTEMA'
         informe.Reserva_err(ruta,nombre_archivo,error)
     if(ierr==3):
-        error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SYSTEMA'
+        error='***** ERROR EN LOS DATOS DE reserva_DEMANDAS ***** EL AREA INDICADA COMO ' + str(iarea) + ' ' + str(nombre_area) + ' NO POSEE SISTEMA'
         informe.Reserva_err(ruta,nombre_archivo,error)   
 
     #CALL ARDAT(iarea,'INT',PiA,QiA,ierr) revisar esto
