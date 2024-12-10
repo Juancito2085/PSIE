@@ -1,33 +1,11 @@
-'''import os
-import sys
-#ruta para notebook
-#os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-#ruta para pc de escritorio
-sys_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSPY34'
-sys.path.append(sys_path_PSSE)
-
-#ruta para notebook
-#os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-#ruta para pc de escritorio
-os_path_PSSE=r'C:\Program Files (x86)\PTI\PSSEXplore34\PSSBIN'
-os.environ['PATH'] += '' + os_path_PSSE
-os.environ['PATH'] += '' + sys_path_PSSE
-
-# Importación de librerias necesarias
-#import redirect
-import datetime
-import re
-import tkinter as tk
-from tkinter import filedialog, messagebox,Menu
-import pssexplore34
-import psspy'''
-
 import os
 import sys
 import tkinter as tk
 from tkinter import filedialog, messagebox
+from tkinter import PhotoImage
+from PIL import Image, ImageTk
 
-# verificamos que exista el archivo de configuracion
+# Se verifica que exista el archivo de configuración
 if  not os.path.exists("reserva7_cfg.txt"):       
     # Crear una ventana oculta para usar los diálogos de archivo
     root = tk.Tk()
@@ -47,8 +25,7 @@ if  not os.path.exists("reserva7_cfg.txt"):
 
     # Establecer la geometría de la ventana secundaria usando format()
     root.geometry("{}x{}+{}+{}".format(window_width, window_height, position_right, position_top))
-
-
+    
     # Variables globales para almacenar las rutas seleccionadas
     sys_path_PSSE = None
     os_path_PSSE = None
@@ -285,7 +262,7 @@ root.geometry("{}x{}+{}+{}".format(window_width, window_height, position_right, 
 entrada_label = tk.Label(root, text="Selecciona un archivo de entrada", font=("Arial", 14))
 entrada_label.pack(pady=20)
 
-# Crear botones
+# Crear botón para seleccionar la entrada
 btn_seleccionar_entrada = tk.Button(root, text="Seleccionar entrada", command=seleccionar_entrada, width=20, height=2)
 btn_seleccionar_entrada.pack(pady=10)
 
