@@ -37,7 +37,7 @@ def calculo(nombre,indice_ini,rval,v,potencia):
     elif nombre=="STGV1P":
         reserva_maquina,potencia_maxima=STGV1P(indice_ini,rval,potencia)
     elif nombre=="STGV4P":
-        reserva_maquina,potencia_maxima=STGV4P(indice_ini,potencia)
+        reserva_maquina,potencia_maxima=STGV4P(indice_ini, rval, potencia)
     elif nombre=="STGV2P":
         reserva_maquina,potencia_maxima=STGV2P(indice_ini,potencia)
     elif nombre=="TGOV1":
@@ -52,6 +52,11 @@ def calculo(nombre,indice_ini,rval,v,potencia):
         reserva_maquina,potencia_maxima=TUCUGO(indice_ini, rval, potencia)
     elif nombre=="GASV94":
         reserva_maquina,potencia_maxima=GASV94(indice_ini,rval,potencia)
+    else:
+        reserva_maquina,potencia_maxima=0,0
+        error= "NO ESTA LA FUNCIÓN DE CÁLCULO DE RESERVA DE POTENCIA" + nombre
+        print(error)
+
     return reserva_maquina,potencia_maxima
 
 
@@ -130,7 +135,7 @@ def GASTWD(indice_ini,potencia):
     if (potencia>0):
         c=rval22
         kf=rval20
-        trate=rval8
+        trate=rval18
         af2=rval2
         a=rval3
         bf2=rval4
@@ -204,7 +209,7 @@ def STGV1P(indice_ini,rval,potencia):
             reserva_maquina=potencia_maxima-potencia
     return(reserva_maquina,potencia_maxima)
 
-def STGV4P(indice_ini,potencia):
+def STGV4P(indice_ini, rval, potencia):
     if (potencia>0.0):
         ierr,rval1=psspy.dsrval('CON',(indice_ini+21))
         potencia_maxima=rval*rval1
@@ -230,9 +235,9 @@ def TGOV1(rval,v,potencia):
 
 def WPIDHY(rval,v,potencia):
     if (potencia>0):
-        potenica_maxima=v*rval
-        if (potenica_maxima>=potencia):
-            reserva_maquina=potenica_maxima-potencia
+        potencia_maxima=v*rval
+        if (potencia_maxima>=potencia):
+            reserva_maquina=potencia_maxima-potencia
     return(reserva_maquina,potencia_maxima)
 
 def GAST5(indice_ini,rval,v,potencia):
