@@ -101,7 +101,7 @@ for i in range(len(bus)):
 
 
 # Abro el snap de savwn_nuevo.snp
-psspy.rstr('C:/Users/jcbru/Desktop/savnw_nuevo.snp')
+psspy.rstr('C:/Users/jcbru/Desktop/psie/savnw_nuevo.snp')
 
 # Mostrar los valores de los CONS para cada generador
 for i in range(len(bus)):
